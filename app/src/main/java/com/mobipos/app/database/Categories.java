@@ -19,6 +19,8 @@ public class Categories extends Controller {
     public static String col_3="sync_status";
     public static String col_4="active_status";
 
+    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+
     public static String CREATE_TABLE_CATEGORIES="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11) PRIMARY KEY AUTO_INCREMENT,"+
             col_2+" VARCHAR(50),"+

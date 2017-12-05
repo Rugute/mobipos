@@ -14,6 +14,8 @@ public class Users {
     public static String col_5="active_status";
     public static String col_6="account_type";
 
+    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+
     public static String CREATE_TABLE_USERS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11) PRIMARY KEY,"+
             col_2+" VARCHAR(50),"+
