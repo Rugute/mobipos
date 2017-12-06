@@ -47,6 +47,9 @@ public class Controller extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Product_Prices.CREATE_TABLE_PRODUCTS_PRICE);
         sqLiteDatabase.execSQL(inventory.CREATE_TABLE_INVENTORY);
         sqLiteDatabase.execSQL(inventory_movement.CREATE_TABLE_INVENTORY_MOVEMENT);
+        sqLiteDatabase.execSQL(Sales.CREATE_TABLE_SALES);
+        sqLiteDatabase.execSQL(Order_Items.CREATE_TABLE_ORDER_ITEMS);
+        sqLiteDatabase.execSQL(Orders.CREATE_TABLE_ORDERS);
 
         return true;
     }
@@ -57,6 +60,9 @@ public class Controller extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Product_Prices.DROP_TABLE);
         sqLiteDatabase.execSQL(inventory.DROP_TABLE);
         sqLiteDatabase.execSQL(inventory_movement.DROP_TABLE);
+        sqLiteDatabase.execSQL(Orders.DROP_TABLE);
+        sqLiteDatabase.execSQL(Order_Items.DROP_TABLE);
+        sqLiteDatabase.execSQL(Sales.DROP_TABLE);
 
         return true;
     }
