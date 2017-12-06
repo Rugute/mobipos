@@ -42,6 +42,7 @@ public class Controller extends SQLiteOpenHelper {
 
     public boolean createTables(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL(Users.CREATE_TABLE_USERS);
+        sqLiteDatabase.execSQL(Users.CREATE_PIN_TABLE);
         sqLiteDatabase.execSQL(Categories.CREATE_TABLE_CATEGORIES);
         sqLiteDatabase.execSQL(Products.CREATE_TABLE_PRODUCTS);
         sqLiteDatabase.execSQL(Product_Prices.CREATE_TABLE_PRODUCTS_PRICE);
@@ -55,6 +56,7 @@ public class Controller extends SQLiteOpenHelper {
     }
     public boolean dropTables(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL(Users.DROP_TABLE);
+        sqLiteDatabase.execSQL(Users.DROP_TABLE_PIN);
         sqLiteDatabase.execSQL(Categories.DROP_TABLE);
         sqLiteDatabase.execSQL(Products.DROP_TABLE);
         sqLiteDatabase.execSQL(Product_Prices.DROP_TABLE);
