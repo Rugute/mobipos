@@ -96,7 +96,8 @@
             android:textColor="#ffffff"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Forgot your Password?"
-            android:id="@+id/link" />
+            android:id="@+id/link"
+            android:visibility="visible"/>
 
     </LinearLayout>
 

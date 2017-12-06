@@ -141,7 +141,8 @@
                 android:textColor='#ffffff'
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Log in"
-                android:id="@+id/link" />
+                android:id="@+id/link"
+                android:visibility="visible"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
