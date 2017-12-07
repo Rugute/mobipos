@@ -26,5 +26,5 @@ public class inventory extends Controller {
             col_2+" INT(11),"+
             col_3+" INT(11),"+
             col_4+" INT(11),"+
-            col_5+" INT(11));";
+            col_5+" INT(11))";
 }

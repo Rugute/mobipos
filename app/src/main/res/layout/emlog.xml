@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,20 +7,6 @@
     android:background="@drawable/gradient_color">
 
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="179dp"
-        tools:ignore="MissingConstraints">
 
 
         <EditText
@@ -31,21 +17,26 @@
             android:background="@drawable/edit_text"
             android:gravity="center"
             android:hint="Enter Login ID"
-            android:inputType="phone"
+            android:inputType="text"
             android:maxLength="20"
             android:padding="10dp"
+            android:layout_margin="25dp"
             android:singleLine="true"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
         <TextView
+            android:id="@+id/check_login"
+            android:layout_below="@id/phno"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="20dp"
+            android:textSize="20dp"
             android:text="Check"
             android:textColor="#fff" />
 
-    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>

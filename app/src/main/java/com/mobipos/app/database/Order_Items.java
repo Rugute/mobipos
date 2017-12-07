@@ -21,7 +21,7 @@ public class Order_Items extends Controller {
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_ORDER_ITEMS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
-            col_1+" INT(11) PRIMARY KEY AUTO_INCREMENT,"+
+            col_1+" INT(11) PRIMARY KEY AUTOINCREMENT,"+
             col_2+" INT(11),"+
-            col_3+" INT(11));";
+            col_3+" INT(11))";
 }

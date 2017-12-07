@@ -16,22 +16,19 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * Created by folio on 12/5/2017.
- */
 
 public class Users extends Controller {
 
     public static String tb_name="tb_user";
-    public static String col_1="user_id";
-    public static String col_2="user_name";
-    public static String col_3="email";
-    public static String col_4="password";
-    public static String col_5="active_status";
-    public static String col_6="account_type";
+    private static String col_1="user_id";
+    private static String col_2="user_name";
+    private static String col_3="email";
+    private static String col_4="password";
+    private static String col_5="active_status";
+    private static String col_6="account_type";
 
-    public static String tb_pin="tb_pin";
-    public static String login_pin="pin";
+    private static String tb_pin="tb_pin";
+    private static String login_pin="pin";
 
 
 
@@ -44,10 +41,10 @@ public class Users extends Controller {
             col_3+" VARCHAR(50),"+
             col_4+" VARCHAR(50),"+
             col_5+" INT(11),"+
-            col_6+" VARCHAR(50));";
+            col_6+" VARCHAR(50))";
 
     public static String CREATE_PIN_TABLE="CREATE TABLE IF NOT EXISTS "+tb_pin+" ("+
-            login_pin+" VARCHAR(250);";
+            login_pin+" VARCHAR(250))";
 
 
 
@@ -67,7 +64,7 @@ public class Users extends Controller {
             NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
             BadPaddingException, IllegalBlockSizeException {
 
-        Cipher cipher=null;
+        Cipher cipher;
         cipher=Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE,secretKey);
         byte[] cipherText=cipher.doFinal(password.getBytes("UTF-8"));
@@ -95,7 +92,7 @@ public class Users extends Controller {
     public boolean insertPin(String pin,String user_id) throws InvalidKeyException, NoSuchAlgorithmException,
             IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
         String encrypt_pin= encryptPassword(pin, generateKey(user_id));
-        String checker="SELECT * FROM "+tb_pin;
+
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(login_pin,encrypt_pin);
@@ -103,11 +100,7 @@ public class Users extends Controller {
         db.close();
         SQLiteDatabase db_read=this.getReadableDatabase();
 
-       if(CheckUserOrPin(tb_pin)>0){
-           return true;
-       }else{
-           return false;
-       }
+        return CheckUserOrPin(tb_pin) > 0;
     }
 
     public boolean insertUserData(String[] data){
@@ -123,11 +116,7 @@ public class Users extends Controller {
         db.insert(tb_name,null,values);
         db.close();
 
-        if(CheckUserOrPin(tb_name)>0){
-            return true;
-        }else{
-           return false;
-        }
+        return CheckUserOrPin(tb_name) > 0;
     }
 
     public boolean password_match(String pin) throws InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
@@ -137,10 +126,6 @@ public class Users extends Controller {
         Cursor cursor=db.rawQuery(sql,null);
         Cursor cursor_pin=db.rawQuery(sql_pin,null);
 
-        if(cursor_pin.getString(0).equals(encryptPassword(pin,generateKey(cursor.getString(0))))){
-            return true;
-        }else{
-            return false;
-        }
+        return cursor_pin.getString(0).equals(encryptPassword(pin, generateKey(cursor.getString(0))));
     }
 }

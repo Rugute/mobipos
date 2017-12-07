@@ -13,9 +13,9 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="160dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="54dp">
 
         <EditText
             android:id="@+id/name"
@@ -23,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:background="@drawable/edit_text"
-            android:gravity="left|center"
+            android:gravity="center"
             android:hint="Enter Pin"
-            android:inputType="text"
+            android:inputType="numberPassword"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor='#fff'

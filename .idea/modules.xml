@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/mobipos.iml" filepath="$PROJECT_DIR$/.idea/mobipos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mobipos.iml" filepath="$PROJECT_DIR$/mobipos.iml" />
+      <module fileurl="file://D:\roy stuff\android projects\mobipos\.idea\mobipos.iml" filepath="D:\roy stuff\android projects\mobipos\.idea\mobipos.iml" />
     </modules>
   </component>
 </project>
