@@ -77,13 +77,19 @@ public class Users extends Controller {
         return secret;
     }
 
-    public String[] get_admin_login_details(){
-        String sql="SELECT * from "+tb_name;
+    public String[] get_login_details(){
+        String sql="SELECT * from "+tb_name +" LIMIT 1";
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=db.rawQuery(sql,null);
-        String[] user_details=new String[cursor.getCount()];
-        user_details[0]=cursor.getString(2);
-        user_details[1]=cursor.getString(3);
+        String[] user_details=new String[3];
+
+        while (cursor.moveToFirst()) {
+
+            user_details[0]=cursor.getString(2);
+            user_details[1]=cursor.getString(3);
+            user_details[2]=cursor.getString(5);
+        }
+
 
         return user_details;
 
@@ -105,6 +111,9 @@ public class Users extends Controller {
 
     public boolean insertUserData(String[] data){
         SQLiteDatabase db=this.getWritableDatabase();
+        String sql="DELETE from "+tb_name;
+
+        db.execSQL(sql);
         ContentValues values=new ContentValues();
         values.put(col_1,data[0]);
         values.put(col_2,data[1]);

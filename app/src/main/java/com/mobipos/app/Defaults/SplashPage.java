@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobipos.app.R;
 import com.mobipos.app.database.*;
@@ -39,7 +40,7 @@ public class SplashPage extends Activity {
         cardCashier=findViewById(R.id.cashier);
         linear_loggers=findViewById(R.id.linear_loggers);
         final ProgressBar bar=findViewById(R.id.progressBar);
-      //  GridView gridView= findViewById(R.id.grid_view);
+        //  GridView gridView= findViewById(R.id.grid_view);
         Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.splash_fade_in);
         Animation animation_text= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.splash_names);
         final Animation animation_linear= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.text_translation);
@@ -77,7 +78,7 @@ public class SplashPage extends Activity {
                 startActivity(new Intent(SplashPage.this, AdminLogin.class));
             }
         });
-       // gridView.setAdapter(new HomepageAdapter(homepage_headings));
+        // gridView.setAdapter(new HomepageAdapter(homepage_headings));
     }
 
 

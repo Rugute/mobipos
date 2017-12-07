@@ -23,7 +23,7 @@ public class Products extends Controller {
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_PRODUCTS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
-            col_1+" INT(11) PRIMARY KEY AUTOINCREMENT,"+
+            col_1+" INT(11) PRIMARY KEY,"+
             col_2+" VARCHAR(50),"+
             col_3+" INT(11),"+
             col_4+" INT(11),"+
