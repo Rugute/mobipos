@@ -73,6 +73,6 @@ public class AdminLogin extends Activity {
 
     public void dialog(boolean state){
         ProgressDialog dialog=new ProgressDialog(this);
-        dialog.setMessage('Loading.please wait...');
+        dialog.setMessage("Loading.please wait...");
     }
 }
