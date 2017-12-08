@@ -1,0 +1,26 @@
+package com.mobipos.app.Dashboard;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+        import android.support.annotation.NonNull;
+        import android.support.design.widget.BottomNavigationView;
+        import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v7.app.AppCompatActivity;
+        import android.view.MenuItem;
+
+import com.mobipos.app.R;
+
+public class DashboardAdmin extends AppCompatActivity {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dashboard_admin);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+
+                findViewById(R.id.navigation);
+    }
+}
+
