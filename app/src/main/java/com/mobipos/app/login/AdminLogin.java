@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +115,8 @@ public class AdminLogin extends Activity {
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+PackageConfig.admin_log,
                     "GET",paramaters);
+
+            Log.d("json object",jsonObject.toString());
             try {
                 success=jsonObject.getInt("success");
                 serverMessage=jsonObject.getString("message");
@@ -144,10 +148,17 @@ public class AdminLogin extends Activity {
             super.onPostExecute(s);
             dialog(false);
             if(success==1){
-                Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
 
-                Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
-                user_db.insertUserData(PackageConfig.login_data);
+                try{
+                    Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
+                   if(!user_db.insertUserData(PackageConfig.login_data)){
+                       Toast.makeText(getApplicationContext(),"data not inserted",Toast.LENGTH_SHORT).show();
+                   }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
 
             }else{
                 Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0d0e48">
+        <TextView
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:text="SET PIN"
+            android:id="@+id/wrong_pin"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"/>
+    </RelativeLayout>
+
+    <TextView
+        android:textColor="#000"
+        android:layout_below="@+id/lin"
+        android:text="name"
+        android:id="@+id/name"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/new_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:hint="NEW PIN"
+        android:inputType="numberPassword"
+        android:maxLength="4" />
+    <EditText
+        android:layout_below="@+id/new_pin"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:maxLength="4"
+        android:layout_height="wrap_content"
+        android:hint="CONFIRM PIN"
+        android:id="@+id/confirm_pin"
+
+        android:inputType="numberPassword"
+        />
+    <LinearLayout
+        android:layout_below="@+id/confirm_pin"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SET PIN"
+            android:background="#21a5e7"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+</RelativeLayout>

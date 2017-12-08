@@ -3,17 +3,22 @@ package com.mobipos.app.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 
@@ -55,14 +60,47 @@ public class Users extends Controller {
     //check user
     public int CheckUserOrPin(String table_name){
         String sql="SELECT * from "+table_name;
+        String sql_pin="SELECT * FROM "+tb_pin;
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery(sql,null);
+        Cursor cursor=null;
+        int count=0;
+        try {
+            if(table_name.equals(tb_name)){
+                cursor =db.rawQuery(sql,null);
+            }else{
+                cursor =db.rawQuery(sql_pin,null);
+            }
 
-        return cursor.getCount();
+         count=cursor.getCount();
+
+
+         if(table_name.equals(tb_name)){
+             if(cursor.moveToFirst()){
+                 Log.d("Value found", cursor.getString(cursor.getColumnIndex(col_2)));
+                 Log.d("size found", String.valueOf(cursor.getCount()));
+             }
+         }else if(table_name.equals(tb_pin)){
+             if(cursor.moveToFirst()){
+                 Log.d("Value found", cursor.getString(cursor.getColumnIndex(login_pin)));
+            //     Log.d("size found", String.valueOf(cursor.getCount()));
+             }
+         }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+           db.close();
+        }
+
+
+        return count;
     }
     public String encryptPassword(String password,SecretKey secretKey) throws NoSuchPaddingException,
             NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
             BadPaddingException, IllegalBlockSizeException {
+
+
 
         Cipher cipher;
         cipher=Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -73,7 +111,10 @@ public class Users extends Controller {
     }
 
     public static  SecretKey generateKey(String user_id) throws NoSuchAlgorithmException,InvalidKeyException{
-        SecretKey secret=new SecretKeySpec(user_id.getBytes(),"AES");
+        SecureRandom random=new SecureRandom();
+        byte[] salt=new byte[16];
+        random.nextBytes(salt);
+        SecretKey secret= new SecretKeySpec(salt,"AES");
         return secret;
     }
 
@@ -83,29 +124,40 @@ public class Users extends Controller {
         Cursor cursor=db.rawQuery(sql,null);
         String[] user_details=new String[3];
 
-        while (cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
 
-            user_details[0]=cursor.getString(2);
-            user_details[1]=cursor.getString(3);
-            user_details[2]=cursor.getString(5);
+            user_details[0]=cursor.getString(cursor.getColumnIndex(col_3));
+            Log.d("email",user_details[0]);
+            user_details[1]=cursor.getString(cursor.getColumnIndex(col_4));
+            Log.d("password",user_details[1]);
+            user_details[2]=cursor.getString(cursor.getColumnIndex(col_6));
+            Log.d("ac type",user_details[2]);
+
+
+
         }
 
-
+        db.close();
         return user_details;
 
     }
 
     public boolean insertPin(String pin,String user_id) throws InvalidKeyException, NoSuchAlgorithmException,
             IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
-        String encrypt_pin= encryptPassword(pin, generateKey(user_id));
+     //   String encrypt_pin= encryptPassword(pin, generateKey(user_id));
 
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(login_pin,encrypt_pin);
-        db.insert(tb_pin,null,values);
-        db.close();
-        SQLiteDatabase db_read=this.getReadableDatabase();
+        values.put(login_pin,pin);
 
+        try{
+            db.insert(tb_pin,null,values);
+            db.close();
+          //  SQLiteDatabase db_read=this.getReadableDatabase();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return CheckUserOrPin(tb_pin) > 0;
     }
 
@@ -113,28 +165,49 @@ public class Users extends Controller {
         SQLiteDatabase db=this.getWritableDatabase();
         String sql="DELETE from "+tb_name;
 
-        db.execSQL(sql);
-        ContentValues values=new ContentValues();
-        values.put(col_1,data[0]);
-        values.put(col_2,data[1]);
-        values.put(col_3,data[2]);
-        values.put(col_4,data[3]);
-        values.put(col_5,data[4]);
-        values.put(col_6,data[5]);
+        try{
+            db.execSQL(sql);
+            ContentValues values=new ContentValues();
+            values.put(col_1,data[0]);
+            values.put(col_2,data[1]);
+            values.put(col_3,data[2]);
+            values.put(col_4,data[3]);
+            values.put(col_5,data[4]);
+            values.put(col_6,data[5]);
 
-        db.insert(tb_name,null,values);
-        db.close();
+            db.insert(tb_name,null,values);
+            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+//        finally {
+//            db.endTransaction();
+//        }
+
 
         return CheckUserOrPin(tb_name) > 0;
     }
 
     public boolean password_match(String pin) throws InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
         SQLiteDatabase db=this.getReadableDatabase();
-        String sql="SELECT user_id from "+tb_name;
-        String sql_pin="SELECT "+login_pin+" from "+tb_pin;
-        Cursor cursor=db.rawQuery(sql,null);
-        Cursor cursor_pin=db.rawQuery(sql_pin,null);
+     //   String sql="SELECT password from "+tb_name ;
+        String sql_pin="SELECT * from "+tb_pin + " LIMIT 1";
+      //   Cursor cursor=null;
+       //   Cursor cursor_pin=null;
+          String the_pin=null;
 
-        return cursor_pin.getString(0).equals(encryptPassword(pin, generateKey(cursor.getString(0))));
+         //   db.beginTransaction();
+         //    cursor=db.rawQuery(sql,null);
+           Cursor  cursor_pin=db.rawQuery(sql_pin,null);
+
+
+        if(cursor_pin.moveToFirst()){
+            Log.d("password count:",String.valueOf(cursor_pin.getCount()));
+            Log.d("password count:",cursor_pin.getString(cursor_pin.getColumnIndex(login_pin)));
+            the_pin=cursor_pin.getString(cursor_pin.getColumnIndex(login_pin));
+        }
+        db.close();
+
+        return the_pin.equals(pin);
     }
 }

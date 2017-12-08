@@ -30,6 +30,9 @@
         <activity android:name=".login.CashierLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>
+        <activity android:name=".login.PinLogin"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateVisible"/>
     </application>
 
 </manifest>

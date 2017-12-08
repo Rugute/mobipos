@@ -20,6 +20,7 @@ import com.mobipos.app.database.*;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.login.AdminLogin;
 import com.mobipos.app.login.CashierLogin;
+import com.mobipos.app.login.PinLogin;
 
 /**
  * Created by folio on 12/6/2017.
@@ -50,20 +51,37 @@ public class SplashPage extends Activity {
         textView.setAnimation(animation_text);
         //linear.setAnimation(animation_linear);
 
+      final  Users users=new Users(SplashPage.this,defaults.database_name,null,1);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                Users users=new Users(SplashPage.this,defaults.database_name,null,1);
 
-                if(users.CheckUserOrPin(users.tb_name)>0){
 
-                }else{
+                if(users.CheckUserOrPin(users.tb_name)>0) {
+
+                   Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name))
+                           +users.get_login_details()[2],Toast.LENGTH_SHORT).show();
                     bar.setVisibility(View.GONE);
-                    linear_loggers.setVisibility(View.VISIBLE);
-                    linear_loggers.startAnimation(animation_linear);
-                }
+
+                    if(users.get_login_details()[2].equals("cashier")){
+                        startActivity(new Intent(SplashPage.this,PinLogin.class));
+                    }else {
+                        startActivity(new Intent(SplashPage.this,AdminLogin.class));
+                    }
+
+               }else{
+                    Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name)),Toast.LENGTH_SHORT).show();
+                    bar.setVisibility(View.GONE);
+                linear_loggers.setVisibility(View.VISIBLE);
+                linear_loggers.startAnimation(animation_linear);
+               }
+
+               finish();
             }
         }, (long) SPLASH_TIME_OUT);
 
+//        if(users.get_login_details()[2].equals("admin")){
+//            startActivity(new Intent(SplashPage.this,AdminLogin.class));
+//        }
 
         cardCashier.setOnClickListener(new View.OnClickListener() {
             @Override

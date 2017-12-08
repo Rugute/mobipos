@@ -55,7 +55,7 @@
                 android:background="@drawable/edit_text"
                 android:gravity="center"
                 android:hint="Password"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:padding="10dp"
                 android:singleLine="true"
                 android:textColor="#fff"
