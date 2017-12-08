@@ -32,7 +32,7 @@ public class PinLogin extends Activity {
         setContentView(R.layout.setpin);
 
         ed_pin=findViewById(R.id.ed_pin);
-        final Users users_id=new Users(getApplicationContext(), defaults.database_name,null,1);
+        final Users users_id =new Users(getApplicationContext(), defaults.database_name,null,1);
 
 
         ed_pin.addTextChangedListener(new TextWatcher() {
