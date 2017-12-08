@@ -19,9 +19,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-/**
- * Created by Chris on 12/6/2017.
- */
+
 
 public class PinLogin extends Activity {
 
