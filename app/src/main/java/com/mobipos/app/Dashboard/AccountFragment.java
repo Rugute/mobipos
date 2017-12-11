@@ -12,12 +12,11 @@ import com.mobipos.app.R;
  * Created by root on 12/8/17.
  */
 
-public class ItemFragmentFour extends Fragment {
-    public static ItemFragmentFour newInstance() {
-        ItemFragmentFour fragment = new ItemFragmentFour();
+public class AccountFragment extends Fragment{
+    public static AccountFragment newInstance(){
+        AccountFragment fragment= new AccountFragment();
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +25,7 @@ public class ItemFragmentFour extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_item_four, container, false);
+        return inflater.inflate(R.layout.account_fragment, container, false);
     }
+
 }
