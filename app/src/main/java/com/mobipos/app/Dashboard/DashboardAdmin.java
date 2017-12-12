@@ -24,6 +24,12 @@ public class DashboardAdmin extends AppCompatActivity {
 
         BottomNavigationView navigationMenuView=findViewById(R.id.bottom_navigation);
 
+        Fragment fragment;
+        fragment=DashboardFragment.newInstance();
+        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout,fragment);
+        transaction.commit();
+
         navigationMenuView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
