@@ -25,8 +25,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/gradient_color"
-        app:itemIconTint="#000"
-        app:itemTextColor="#000"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
         app:menu="@menu/navigation">
 
 
