@@ -75,7 +75,7 @@ public class SplashPage extends Activity {
                 linear_loggers.startAnimation(animation_linear);
                }
 
-               finish();
+         //      finish();
             }
         }, (long) SPLASH_TIME_OUT);
 

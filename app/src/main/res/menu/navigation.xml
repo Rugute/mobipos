@@ -15,5 +15,9 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
+    <item
+        android:id="@+id/navigation_sales"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="Sales" />
 
 </menu>

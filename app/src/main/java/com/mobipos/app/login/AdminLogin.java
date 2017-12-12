@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Dashboard.DashboardAdmin;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Users;
@@ -23,7 +25,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +155,7 @@ public class AdminLogin extends Activity {
                    if(!user_db.insertUserData(PackageConfig.login_data)){
                        Toast.makeText(getApplicationContext(),"data not inserted",Toast.LENGTH_SHORT).show();
                    }
+                    startActivity(new Intent(AdminLogin.this,DashboardAdmin.class));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -171,7 +173,7 @@ public class AdminLogin extends Activity {
         if(state){
             dialog.setMessage("Loading.please wait...");
             dialog.setCancelable(false);
-
+            dialog.show();
         }else {
             dialog.cancel();
         }
