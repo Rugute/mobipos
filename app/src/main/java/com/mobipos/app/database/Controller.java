@@ -6,11 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by folio on 12/5/2017.
  */
 
-public class Controller extends SQLiteOpenHelper {
+public class Controller extends SQLiteOpenHelper implements Serializable {
 
 
 

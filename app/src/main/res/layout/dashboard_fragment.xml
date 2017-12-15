@@ -5,18 +5,18 @@
     tools:context="com.mobipos.app.Dashboard.DashboardFragment">
 
     <ImageView
-        android:id="@+id/dashboard"
+        android:id="@+id/cashier_dashboard_imageview"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/splash"/>
+        android:src="@drawable/mobi"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dashboard"
+        android:layout_below="@id/cashier_dashboard_imageview"
         android:layout_centerHorizontal="true"
-        android:text="Fragment 3"
+        android:text="Cashier dashboard"
         android:textSize="30sp"/>
 
 </RelativeLayout>

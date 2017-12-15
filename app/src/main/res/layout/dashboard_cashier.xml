@@ -27,7 +27,7 @@
         android:background="@drawable/gradient_color"
         app:itemIconTint="#fff"
         app:itemTextColor="#fff"
-        app:menu="@menu/navigation">
+        app:menu="@menu/cashier_bottom_nav_items">
 
 
     </android.support.design.widget.BottomNavigationView>
