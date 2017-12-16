@@ -1,12 +1,14 @@
 package com.mobipos.app.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
@@ -53,7 +55,7 @@ public class PinLogin extends Activity {
 
                     try {
                         if(users_id.password_match(strPin)){
-                            Toast.makeText(getApplicationContext(), "Success Pin", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(PinLogin.this, DashboardCashier.class));
                         }else {
                             Toast.makeText(getApplicationContext(), "Wrong Pin", Toast.LENGTH_SHORT).show();
                         }

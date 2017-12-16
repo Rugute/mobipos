@@ -52,9 +52,9 @@ public class CashierInventoryAdapter extends BaseAdapter  {
         ImageView imageView = (ImageView) view.findViewById(R.id.menu_action_image);
 
         try{
-
-        }catch (OutOfMemoryError e){
             imageView.setImageResource(images[i]);
+        }catch (OutOfMemoryError e){
+           imageView.setImageResource(R.mipmap.ic_launcher);
         }
 
         title.setText(this.title[i]);

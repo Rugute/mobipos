@@ -210,4 +210,21 @@ public class Users extends Controller {
 
         return the_pin.equals(pin);
     }
+
+    public String get_user_id(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_name + " LIMIT 1";
+        String user_id=null;
+
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+
+
+        if(cursor.moveToFirst()){
+            user_id=cursor.getString(cursor.getColumnIndex(col_1));
+            Log.d("User id:",cursor.getString(cursor.getColumnIndex(col_1)));
+        }
+        db.close();
+
+        return user_id;
+    }
 }

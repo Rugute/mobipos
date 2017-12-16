@@ -9,7 +9,7 @@ import android.net.ConnectivityManager;
 import android.support.v7.app.AlertDialog.Builder;
 
 public class CheckInternetSettings {
-    Context context;
+    public Context context;
 
     public CheckInternetSettings(Activity activity) {
         this.context = activity;

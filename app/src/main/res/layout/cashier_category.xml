@@ -2,8 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:padding="16dp"
+    android:orientation="vertical"
     android:background="@drawable/gradient_color"
     >
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cashier_category_bar"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"

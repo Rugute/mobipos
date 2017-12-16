@@ -2,11 +2,19 @@ package com.mobipos.app.Cashier.dashboardFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
+import com.mobipos.app.Cashier.CashierInventoryAdapter;
+import com.mobipos.app.Cashier.DashboardCashier;
+import com.mobipos.app.Cashier.PackageConfig;
+import com.mobipos.app.Dashboard.DashboardFragment;
 import com.mobipos.app.Dashboard.SalesFragment;
 import com.mobipos.app.R;
 
@@ -22,14 +30,41 @@ public class CashierInventory extends Fragment {
     }
 
 
+    GridView gridView;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.cashier_inventory, container, false);
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+    }
+
+    public void onViewCreated(View view,Bundle savedInstanceState){
+
+        gridView=view.findViewById(R.id.grid_view);
+        gridView.setAdapter(new CashierInventoryAdapter(getActivity(), PackageConfig.images,PackageConfig.inventory_title));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int pos= (int) adapterView.getItemIdAtPosition(i);
+                if (pos==0){
+                    Fragment fragment;
+                    fragment = CashierCategories.newInstance();
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout_new, fragment);
+                    transaction.commit();
+                }
+            }
+        });
+
+        ((DashboardCashier) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
 }

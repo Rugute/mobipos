@@ -5,34 +5,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_color">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
+            android:layout_above="@id/grid_view"
             android:visibility="gone"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearItems">
-
             <GridView
-                android:layout_height="429dp"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/grid_view"
                 android:layout_gravity="center"
                 android:verticalSpacing="10dp"
                 android:stretchMode="columnWidth"
                 android:numColumns="2"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:horizontalSpacing="10dp"
                 android:gravity="center"
                 android:columnWidth="90dp"
@@ -41,7 +30,5 @@
 
 
 
-        </LinearLayout>
 
-    </LinearLayout>
 </RelativeLayout>

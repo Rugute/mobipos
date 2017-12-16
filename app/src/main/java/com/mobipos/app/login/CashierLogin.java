@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -165,6 +166,7 @@ public class CashierLogin extends Activity {
                     Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
                     try {
                         if(users_db.insertPin(new_pin.getText().toString(),PackageConfig.login_data[3])){
+                            startActivity(new Intent(CashierLogin.this,PinLogin.class));
                             Toast.makeText(getApplicationContext(),"pin set successfully",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getApplicationContext(),"error in setting pin",Toast.LENGTH_SHORT).show();

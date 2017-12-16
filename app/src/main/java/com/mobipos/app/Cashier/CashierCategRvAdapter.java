@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
+import com.mobipos.app.Cashier.dashboardFragments.CashierCategoryData;
 import com.mobipos.app.R;
 
 import java.util.List;
@@ -34,10 +36,10 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
         }
     }
 
-    List<CashDummy> cashDummies;
+    List<CashierCategoryData> categoryData;
 
-    CashierCategRvAdapter(List<CashDummy> cashDummies){
-        this.cashDummies = cashDummies;
+    public CashierCategRvAdapter(List<CashierCategoryData> categoryData){
+        this.categoryData = categoryData;
     }
 
     @Override
@@ -54,14 +56,14 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
-        itemViewHolder.Category.setText(cashDummies.get(i).category);
-        itemViewHolder.Item.setText(cashDummies.get(i).item);
-       itemViewHolder.CatPic.setImageResource(cashDummies.get(i).image);
+        itemViewHolder.Category.setText(categoryData.get(i).name);
+        itemViewHolder.Item.setText(categoryData.get(i).id);
+       itemViewHolder.CatPic.setImageResource(categoryData.get(i).image);
     }
 
     @Override
     public int getItemCount() {
-        return cashDummies.size();
+        return categoryData.size();
     }
 }
 

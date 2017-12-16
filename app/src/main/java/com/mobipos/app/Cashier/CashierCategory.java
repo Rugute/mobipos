@@ -1,11 +1,11 @@
 package com.mobipos.app.Cashier;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class CashierCategory extends AppCompatActivity {
         rv.setHasFixedSize(true);
 
         initializeData();
-        initializeAdapter();
+      //  initializeAdapter();
     }
 
     private void initializeData(){
@@ -42,8 +42,8 @@ public class CashierCategory extends AppCompatActivity {
         cashDummies.add(new CashDummy("Meat", "Beef", R.mipmap.ic_launcher));
     }
 
-    private void initializeAdapter(){
-        CashierCategRvAdapter adapter = new CashierCategRvAdapter(cashDummies);
-        rv.setAdapter(adapter);
-    }
+//    private void initializeAdapter(){
+//        CashierCategRvAdapter adapter = new CashierCategRvAdapter(ca);
+//        rv.setAdapter(adapter);
+//    }
 }
