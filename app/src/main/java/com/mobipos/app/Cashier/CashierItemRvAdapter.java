@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
 import com.mobipos.app.R;
 
 import java.util.List;

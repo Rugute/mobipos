@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class CashierItems extends AppCompatActivity {
     }
 
     private void initializeAdapter(){
-        CashierCategRvAdapter adapter = new CashierCategRvAdapter(cashDummies);
+        CashierItemRvAdapter adapter = new CashierItemRvAdapter(cashDummies);
         rv1.setAdapter(adapter);
     }
 
