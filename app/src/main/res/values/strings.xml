@@ -9,4 +9,5 @@
     <string name="title_accnt">Account</string>
     <string name="inventory">inventory</string>
     <string name="spinner_title">Category</string>
+    <string name="spinner_title1">Branch</string>
 </resources>

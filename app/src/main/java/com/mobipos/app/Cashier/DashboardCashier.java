@@ -34,6 +34,7 @@ public class DashboardCashier extends AppCompatActivity{
 
 
 
+
         BottomNavigationView navigationMenuView = findViewById(R.id.cashier_bottom_nav);
 
         Fragment fragment;
