@@ -7,9 +7,18 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_marginTop="40dp"
         android:padding="10dp">
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mauzo africa"
+            android:textSize="30dp"
+            android:layout_marginBottom="200dp"
+            android:id="@+id/header"
+            android:textColor="#fff"/>
 
         <LinearLayout
             android:id="@+id/linr"
@@ -17,21 +26,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_below="@+id/header"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
             android:layout_marginBottom="94dp"
             android:gravity="center"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="34dp"
-                android:fitsSystemWindows="true"
-                android:src="@drawable/splash" />
+
+            <!--<ImageView-->
+                <!--android:id="@+id/img"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:layout_marginBottom="34dp"-->
+                <!--android:fitsSystemWindows="true"-->
+                <!--android:src="@drawable/splash" />-->
             <EditText
                 android:id="@+id/email"
                 android:layout_width="fill_parent"

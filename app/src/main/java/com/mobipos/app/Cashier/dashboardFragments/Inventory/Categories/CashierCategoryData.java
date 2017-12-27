@@ -1,4 +1,4 @@
-package com.mobipos.app.Cashier.dashboardFragments;
+package com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories;
 
 /**
  * Created by folio on 12/15/2017.

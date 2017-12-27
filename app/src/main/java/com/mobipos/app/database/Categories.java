@@ -7,7 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mobipos.app.Cashier.dashboardFragments.CashierCategoryData;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierSpinnerData;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -47,15 +48,17 @@ public class Categories extends Controller {
         try {
             if (cursor.moveToFirst()) {
 
-                do{
-                    data.add(new CashierCategoryData(cursor.getString(cursor.getColumnIndex(col_1)),
-                            cursor.getString(cursor.getColumnIndex(col_2)), R.mipmap.ic_launcher));
+                    do{
+                        data.add(new CashierCategoryData(cursor.getString(cursor.getColumnIndex(col_1)),
+                                cursor.getString(cursor.getColumnIndex(col_2)), R.mipmap.ic_launcher));
 
-                    Log.d("category name:",cursor.getString(cursor.getColumnIndex(col_2)));
-                }while (cursor.moveToNext());
+                        Log.d("category name retrived:",cursor.getString(cursor.getColumnIndex(col_2)));
+                    }while (cursor.moveToNext());
+
+
 
             }
-
+            Log.d("list size",String.valueOf(data.size()));
             cursor.close();
         } catch (OutOfMemoryError e){
                 e.printStackTrace();
@@ -66,6 +69,38 @@ public class Categories extends Controller {
 
         return data;
 
+    }
+
+    public List<String> getSpinnerData(){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT * FROM "+tb_name;
+
+        List<String> data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+        data.add("all");
+        try {
+            if (cursor.moveToFirst()) {
+
+                do{
+                    data.add(cursor.getString(cursor.getColumnIndex(col_2)));
+
+                    Log.d("category name retrived:",cursor.getString(cursor.getColumnIndex(col_2)));
+                }while (cursor.moveToNext());
+
+
+
+            }
+            Log.d("list size",String.valueOf(data.size()));
+            cursor.close();
+        } catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+
+
+        // db.close();
+
+        return data;
     }
 
     public int getCategoryCount(){
@@ -112,5 +147,26 @@ public class Categories extends Controller {
         }
 
         return CategoryExists(id);
+    }
+
+    public String categoryId(String value){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql;
+        String id=null;
+        if(value.equals("all")){
+            return "all";
+        }else{
+            sql="SELECT * FROM "+tb_name+ " WHERE "+col_2+"='"+value+"'";
+            Cursor cursor=null;
+            cursor=db.rawQuery(sql,null);
+            if(cursor.moveToFirst()){
+                id =cursor.getString(cursor.getColumnIndex(col_1));
+                Log.d("category id",cursor.getString(cursor.getColumnIndex(col_1)));
+            }
+
+            db.close();
+            return id;
+        }
+
     }
 }

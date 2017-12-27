@@ -1,23 +1,24 @@
 package com.mobipos.app.Cashier;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.mobipos.app.Cashier.dashboardFragments.CashierInventory;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
 import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Dashboard.ProductFragment;
 import com.mobipos.app.Dashboard.SalesFragment;
 import com.mobipos.app.Dashboard.SettingsFragment;
 import com.mobipos.app.R;
 
 import static android.app.PendingIntent.getActivity;
-import static java.security.AccessController.getContext;
 
 /**
  * Created by root on 12/8/17.
@@ -29,7 +30,9 @@ public class DashboardCashier extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_cashier);
-        setTitle("MobiPos Cashier");
+        setTitle("Mauzo Africa");
+
+
 
         BottomNavigationView navigationMenuView = findViewById(R.id.cashier_bottom_nav);
 
@@ -54,6 +57,9 @@ public class DashboardCashier extends AppCompatActivity{
                     case R.id.cashier_item_dashboard:
                         selectedFragment = SalesFragment.newInstance();
                         break;
+                    case R.id.cashier_item_settings:
+                        selectedFragment = SalesFragment.newInstance();
+                        break;
                     case R.id.cashier_item_account:
                         selectedFragment = SettingsFragment.newInstance();
                         break;
@@ -72,7 +78,7 @@ public class DashboardCashier extends AppCompatActivity{
        if(item.getItemId()==android.R.id.home){
            FragmentManager manager=getSupportFragmentManager();
            manager.popBackStack();
-           setTitle("MobiPos Cashier");
+           setTitle("Mauzo Africa");
        }
        return  true;
     }

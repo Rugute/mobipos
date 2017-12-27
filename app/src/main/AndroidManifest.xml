@@ -41,7 +41,11 @@
 
 
         </activity>
-        <activity android:name=".Cashier.DashboardCashier">
+        <activity android:name=".Cashier.DashboardCashier"
+            >
+
+        </activity>
+        <activity android:name=".Defaults.RegisterAdmin">
 
         </activity>
     </application>

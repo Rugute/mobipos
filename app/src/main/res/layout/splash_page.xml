@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:background="@drawable/gradient_color"
+
     android:layout_height="fill_parent">
 
     <ImageView
@@ -11,15 +11,15 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:fitsSystemWindows="true"
-        android:src="@drawable/splash"
+        android:src="@drawable/mauzologo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:text="Mobi.POS"
+        android:textColor="#000"
+        android:text="Mauzo Africa"
         android:textStyle="bold|italic"
         android:layout_below="@+id/image_view"
         android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
             android:layout_gravity="center"
             android:text="Login as"
             android:layout_marginTop="5dp"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:textSize="15dp"/>
         <LinearLayout
             android:id="@+id/linearItems"
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="Admin"
-                        android:textColor="#fff"
+                        android:textColor="#000"
                         android:textSize="30dp" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -95,13 +95,22 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="Cashier"
-                        android:textColor="#fff"
+                        android:textColor="#000"
                         android:textSize="30dp" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
+        <TextView
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/register_new_user"
+            android:text="New User? Click here to Register"
+            android:textColor="#000"/>
     </LinearLayout>
 
     <ProgressBar

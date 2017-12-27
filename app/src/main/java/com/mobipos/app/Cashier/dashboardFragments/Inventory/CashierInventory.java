@@ -1,10 +1,8 @@
-package com.mobipos.app.Cashier.dashboardFragments;
+package com.mobipos.app.Cashier.dashboardFragments.Inventory;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,8 @@ import android.widget.GridView;
 import com.mobipos.app.Cashier.CashierInventoryAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
-import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Dashboard.SalesFragment;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
 import com.mobipos.app.R;
 
 /**
@@ -56,6 +54,13 @@ public class CashierInventory extends Fragment {
                 if (pos==0){
                     Fragment fragment;
                     fragment = CashierCategories.newInstance();
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout_new, fragment);
+                    transaction.commit();
+                }else if(pos==1){
+                    Fragment fragment;
+                    fragment = CashierItems.newInstance();
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout_new, fragment);

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Users;
@@ -163,10 +164,10 @@ public class CashierLogin extends Activity {
             public void onClick(View view) {
 
                 if(new_pin.getText().toString().equals(confirm_pin.getText().toString())){
-                    Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
                     try {
                         if(users_db.insertPin(new_pin.getText().toString(),PackageConfig.login_data[3])){
-                            startActivity(new Intent(CashierLogin.this,PinLogin.class));
+                            startActivity(new Intent(CashierLogin.this,DashboardCashier.class));
                             Toast.makeText(getApplicationContext(),"pin set successfully",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getApplicationContext(),"error in setting pin",Toast.LENGTH_SHORT).show();

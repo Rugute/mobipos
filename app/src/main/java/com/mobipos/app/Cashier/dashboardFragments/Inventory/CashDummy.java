@@ -1,4 +1,4 @@
-package com.mobipos.app.Cashier.dashboardFragments;
+package com.mobipos.app.Cashier.dashboardFragments.Inventory;
 
 /**
  * Created by root on 12/13/17.

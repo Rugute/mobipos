@@ -7,13 +7,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_color"
+        app:itemIconTint="#fff"
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="end"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/account"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/frame_layout_new"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/cashier_bottom_nav"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:animateLayoutChanges="true">
 
     </FrameLayout>

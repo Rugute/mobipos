@@ -15,33 +15,47 @@
     android:layout_height="wrap_content">
 
 
+
+
+
     <TextView
         android:id="@+id/cattext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:text="Category"
+        android:textColor="#fff"
         android:layout_marginBottom="5dp"
         />
-
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
+       >
+    <Spinner
+        android:background="#fff"
+        android:id="@+id/category_spinner"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         android:prompt="@string/spinner_title"
         />
+</RelativeLayout>
+
 
 
 </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progessbar_items"
+        android:visibility="gone"/>
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="20dp"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/rv1">
+        android:id="@+id/cashier_items_rv">
 
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>

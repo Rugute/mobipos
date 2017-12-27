@@ -48,7 +48,7 @@ public class Controller extends SQLiteOpenHelper implements Serializable {
         sqLiteDatabase.execSQL(Categories.CREATE_TABLE_CATEGORIES);
         sqLiteDatabase.execSQL(Products.CREATE_TABLE_PRODUCTS);
         sqLiteDatabase.execSQL(Product_Prices.CREATE_TABLE_PRODUCTS_PRICE);
-        sqLiteDatabase.execSQL(inventory.CREATE_TABLE_INVENTORY);
+        sqLiteDatabase.execSQL(Inventory.CREATE_TABLE_INVENTORY);
         sqLiteDatabase.execSQL(inventory_movement.CREATE_TABLE_INVENTORY_MOVEMENT);
         sqLiteDatabase.execSQL(Sales.CREATE_TABLE_SALES);
         sqLiteDatabase.execSQL(Order_Items.CREATE_TABLE_ORDER_ITEMS);
@@ -62,7 +62,7 @@ public class Controller extends SQLiteOpenHelper implements Serializable {
         sqLiteDatabase.execSQL(Categories.DROP_TABLE);
         sqLiteDatabase.execSQL(Products.DROP_TABLE);
         sqLiteDatabase.execSQL(Product_Prices.DROP_TABLE);
-        sqLiteDatabase.execSQL(inventory.DROP_TABLE);
+        sqLiteDatabase.execSQL(Inventory.DROP_TABLE);
         sqLiteDatabase.execSQL(inventory_movement.DROP_TABLE);
         sqLiteDatabase.execSQL(Orders.DROP_TABLE);
         sqLiteDatabase.execSQL(Order_Items.DROP_TABLE);

@@ -31,11 +31,14 @@ public class SplashPage extends Activity {
     public static int SPLASH_TIME_OUT=2500;
     CardView cardCashier,cardAdmin;
     LinearLayout linear_loggers;
+    TextView register_user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_page);
 
+        register_user=findViewById(R.id.register_new_user);
         ImageView imageView= findViewById(R.id.image_view);
         cardAdmin=findViewById(R.id.admin);
         cardCashier=findViewById(R.id.cashier);
@@ -97,6 +100,13 @@ public class SplashPage extends Activity {
             }
         });
         // gridView.setAdapter(new HomepageAdapter(homepage_headings));
+
+        register_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SplashPage.this,RegisterAdmin.class));
+            }
+        });
     }
 
 

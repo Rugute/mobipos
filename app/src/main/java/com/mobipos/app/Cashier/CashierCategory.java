@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashDummy;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;

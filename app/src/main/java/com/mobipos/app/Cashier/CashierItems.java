@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
+import com.mobipos.app.Cashier.Adapters.CashierItemRvAdapter;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashDummy;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class CashierItems extends AppCompatActivity {
     Spinner spinner;
 
 
-    private List<CashDummy> cashDummies;
+    private List<CashierItemsData> cashDummies;
 
     private RecyclerView rv1;
     @Override
@@ -31,26 +33,26 @@ public class CashierItems extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cashier_items);
 
-        spinner=(Spinner)findViewById(R.id.spinner);
+        spinner=(Spinner)findViewById(R.id.category_spinner);
         cattext=(TextView)findViewById(R.id.cattext);
 
-        rv1=(RecyclerView)findViewById(R.id.rv1);
+        rv1=(RecyclerView)findViewById(R.id.cashier_items_rv);
 
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv1.setLayoutManager(llm);
         rv1.setHasFixedSize(true);
 
-        initializeData();
-        initializeAdapter();
+     //   initializeData();
+    //    initializeAdapter();
     }
 
-    private void initializeData(){
-        cashDummies= new ArrayList<>();
-        cashDummies.add(new CashDummy("FineGhel", "Oops", R.mipmap.ic_launcher));
-        cashDummies.add(new CashDummy("Beaver", "Cough", R.mipmap.ic_launcher));
-        cashDummies.add(new CashDummy("Meaning", "Trump", R.mipmap.ic_launcher));
-    }
+//    private void initializeData(){
+//        cashDummies= new ArrayList<>();
+//        cashDummies.add(new CashDummy("FineGhel", "Oops", R.mipmap.ic_launcher));
+//        cashDummies.add(new CashDummy("Beaver", "Cough", R.mipmap.ic_launcher));
+//        cashDummies.add(new CashDummy("Meaning", "Trump", R.mipmap.ic_launcher));
+//    }
 
     private void initializeAdapter(){
         CashierItemRvAdapter adapter = new CashierItemRvAdapter(cashDummies);

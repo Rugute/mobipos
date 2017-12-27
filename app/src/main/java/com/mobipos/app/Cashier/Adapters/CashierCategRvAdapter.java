@@ -1,15 +1,15 @@
-package com.mobipos.app.Cashier;
+package com.mobipos.app.Cashier.Adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobipos.app.Cashier.dashboardFragments.CashDummy;
-import com.mobipos.app.Cashier.dashboardFragments.CashierCategoryData;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
 import com.mobipos.app.R;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_carditem, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_cardview, viewGroup, false);
         ItemViewHolder pvh = new ItemViewHolder(v);
         return pvh;
     }
@@ -63,6 +63,7 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
 
     @Override
     public int getItemCount() {
+        Log.d("recyclerView size",String.valueOf(categoryData.size()));
         return categoryData.size();
     }
 }
