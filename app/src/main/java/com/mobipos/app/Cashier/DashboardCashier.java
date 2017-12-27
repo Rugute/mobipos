@@ -66,7 +66,7 @@ public class DashboardCashier extends AppCompatActivity{
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout_new, selectedFragment);
-                transaction.commit();
+                 transaction.commit();
 
                 return true;
             }
