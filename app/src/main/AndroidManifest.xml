@@ -34,7 +34,7 @@
         <activity android:name=".login.PinLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>
-        <activity android:name=".Dashboard.DashboardAdmin">
+        <activity android:name=".Admin.DashboardAdmin">
 
         </activity>
         <activity android:name=".Cashier.CashierCategory">

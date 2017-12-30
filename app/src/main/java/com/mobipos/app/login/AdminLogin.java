@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobipos.app.Dashboard.DashboardAdmin;
+import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Users;

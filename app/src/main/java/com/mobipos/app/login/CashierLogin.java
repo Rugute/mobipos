@@ -99,6 +99,8 @@ public class CashierLogin extends Activity {
             try {
                 success=jsonObject.getInt("success");
                 serverMessage=jsonObject.getString("message");
+                PackageConfig.branch_id=jsonObject.getString("branchId");
+                PackageConfig.branch_name=jsonObject.getString("branchname");
 
                 if(success==1){
                     data=jsonObject.getJSONArray("result");
@@ -133,6 +135,10 @@ public class CashierLogin extends Activity {
                     Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
                     if(!user_db.insertUserData(PackageConfig.login_data)){
                         Toast.makeText(getApplicationContext(),"data not inserted",Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(!user_db.insert_branch(PackageConfig.branch_id,PackageConfig.branch_name)){
+                            Toast.makeText(getApplicationContext(),"branch data not inserted",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();

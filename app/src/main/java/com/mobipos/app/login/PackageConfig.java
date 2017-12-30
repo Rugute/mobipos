@@ -12,5 +12,10 @@ public class PackageConfig {
     public static String employee_log="employee-processor.php";
 
     public static String[] login_data;
+    public static String branch_name;
+    public static String branch_id;
+
+
+
 
 }

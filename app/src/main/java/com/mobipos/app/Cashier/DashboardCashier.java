@@ -30,7 +30,7 @@ public class DashboardCashier extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_cashier);
-        setTitle("Mauzo Africa");
+        setTitle("Mauzo Africa: Cashier");
 
 
 

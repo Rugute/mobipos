@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0d0e48">
+        <TextView
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:text="Add New Category"
+            android:id="@+id/wrong_pin"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/add_category_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/linear_add_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Select Branch"/>
+        <Spinner
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/admin_add_category_spinner">
+
+        </Spinner>
+        <EditText
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:id="@+id/ed_add_category"
+            android:layout_height="wrap_content"
+            android:hint="enter new category"
+            android:gravity="center"/>
+
+        <Button
+
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_add_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Category"
+            android:background="#21a5e7"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

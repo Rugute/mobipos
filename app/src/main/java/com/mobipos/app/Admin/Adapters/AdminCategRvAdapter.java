@@ -1,4 +1,4 @@
-package com.mobipos.app.Cashier.Adapters;
+package com.mobipos.app.Admin.Adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by root on 12/13/17.
  */
 
-public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAdapter.ItemViewHolder> {
+public class AdminCategRvAdapter extends RecyclerView.Adapter<AdminCategRvAdapter.ItemViewHolder> {
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,9 +37,9 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
         }
     }
 
-    List<CashierCategoryData> categoryData;
+    List<AdminCategoryData> categoryData;
 
-    public CashierCategRvAdapter(List<CashierCategoryData> categoryData){
+    public AdminCategRvAdapter(List<AdminCategoryData> categoryData){
         this.categoryData = categoryData;
     }
 
@@ -59,7 +59,7 @@ public class CashierCategRvAdapter extends RecyclerView.Adapter<CashierCategRvAd
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
         itemViewHolder.Category.setText(categoryData.get(i).name);
         itemViewHolder.Item.setText(categoryData.get(i).id);
-       itemViewHolder.CatPic.setImageResource(categoryData.get(i).image);
+        itemViewHolder.CatPic.setImageResource(categoryData.get(i).image);
     }
 
     @Override

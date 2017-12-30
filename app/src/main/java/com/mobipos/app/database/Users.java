@@ -32,13 +32,18 @@ public class Users extends Controller {
     private static String col_5="active_status";
     private static String col_6="account_type";
 
+
     private static String tb_pin="tb_pin";
     private static String login_pin="pin";
 
 
+    private static String tb_branch="pin";
+    private static String col_branch_id="branch_id";
+    private static String col_branch_name="branch_name";
 
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
     public static String DROP_TABLE_PIN="DROP TABLE IF NOT EXISTS "+ tb_pin;
+    public static String DROP_TABLE_BRANCH="DROP TABLE IF NOT EXISTS "+ tb_branch;
 
     public static String CREATE_TABLE_USERS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11) PRIMARY KEY,"+
@@ -50,6 +55,8 @@ public class Users extends Controller {
 
     public static String CREATE_PIN_TABLE="CREATE TABLE IF NOT EXISTS "+tb_pin+" ("+
             login_pin+" VARCHAR(250))";
+    public static String CREATE_TABLE_BRANCH="CREATE TABLE IF NOT EXISTS "+tb_branch+" ("+
+            col_branch_id+" INT(11),"+col_branch_name+" VARCHAR(50))";
 
 
 
@@ -226,5 +233,37 @@ public class Users extends Controller {
         db.close();
 
         return user_id;
+    }
+
+    public boolean check_branch(String id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT * FROM "+tb_branch+ " WHERE "+col_branch_id+"= "+id;
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        if(cursor.getCount()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean insert_branch(String id,String name){
+        String sql="DELETE from "+tb_branch;
+        SQLiteDatabase db=this.getWritableDatabase();
+        try{
+
+            ContentValues values=new ContentValues();
+            values.put(col_1,id);
+            values.put(col_2,name);
+
+            db.insert(tb_branch,null,values);
+            Log.d("insert branch name:",name);
+            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return check_branch(id);
     }
 }
