@@ -1,21 +1,18 @@
 package com.mobipos.app.Cashier;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
 import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Dashboard.SalesFragment;
-import com.mobipos.app.Dashboard.SettingsFragment;
+import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
+
 import com.mobipos.app.R;
 
 import static android.app.PendingIntent.getActivity;
@@ -62,7 +59,7 @@ public class DashboardCashier extends AppCompatActivity{
                         selectedFragment = SalesFragment.newInstance();
                         break;
                     case R.id.cashier_item_account:
-                        selectedFragment = SettingsFragment.newInstance();
+                        selectedFragment = SalesFragment.newInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

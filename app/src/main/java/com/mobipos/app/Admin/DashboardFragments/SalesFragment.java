@@ -1,4 +1,4 @@
-package com.mobipos.app.Dashboard;
+package com.mobipos.app.Admin.DashboardFragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,6 +24,6 @@ public class SalesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sales_fragment, container, false);
+        return inflater.inflate(R.layout.admin_sales_fragment, container, false);
     }
 }

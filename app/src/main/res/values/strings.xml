@@ -10,4 +10,59 @@
     <string name="inventory">inventory</string>
     <string name="spinner_title">Category</string>
     <string name="spinner_title1">Branch</string>
+
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+
+
+
+
+    <!-- Names -->
+    <string-array name="names_array">
+        <item>Chris Musikoyo</item>
+        <item>Roy Wati</item>
+        <item>Morgan Freeman</item>
+        <item>Christian Bale</item>
+        <item>Cristiano Ronaldo</item>
+        <item>Arya Stark</item>
+        <item> Brad Pitt</item>
+    </string-array>
+
+    <!-- Pictures -->
+    <array name="pics_array">
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+        <item>@drawable/ic_launcher_background</item>
+    </array>
+
+    <!-- Status -->
+    <string-array name="sta_array">
+        <item>2018 it is!</item>
+        <item>Available</item>
+        <item>Busy</item>
+        <item>In a meeting</item>
+        <item>At work</item>
+        <item>At gym</item>
+        <item>At the movies</item>
+    </string-array>
+
+    <!-- contact type -->
+    <string-array name="contact_array">
+        <item>12:30am</item>
+        <item>11:30am</item>
+        <item>1:00pm</item>
+        <item>12:51pm</item>
+        <item>08:12am</item>
+        <item>06:09am</item>
+        <item>13:56pm</item>
+    </string-array>
+
 </resources>

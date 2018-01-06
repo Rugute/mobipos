@@ -1,7 +1,6 @@
 package com.mobipos.app.Admin;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,9 +11,8 @@ import android.view.MenuItem;
 
 import com.mobipos.app.Admin.DashboardFragments.Inventory.AdminInventory;
 import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Dashboard.ProductFragment;
-import com.mobipos.app.Dashboard.SalesFragment;
-import com.mobipos.app.Dashboard.SettingsFragment;
+import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
+import com.mobipos.app.Admin.DashboardFragments.NotificationsFragment;
 import com.mobipos.app.R;
 
 /**
@@ -44,16 +42,16 @@ public class DashboardAdmin extends AppCompatActivity {
                 Fragment selectedFragment=null;
                 switch (item.getItemId()){
                     case R.id.navigation_home:
-                        selectedFragment= AdminInventory.newInstance();
+                        selectedFragment= DashboardFragment.newInstance();
                         break;
                     case R.id.navigation_dashboard:
-                        selectedFragment= ProductFragment.newInstance();
+                        selectedFragment= AdminInventory.newInstance();
                         break;
                     case R.id.navigation_notifications:
-                        selectedFragment= SalesFragment.newInstance();
+                        selectedFragment= NotificationsFragment.newInstance();
                         break;
                     case R.id.navigation_sales:
-                        selectedFragment= SettingsFragment.newInstance();
+                        selectedFragment= SalesFragment.newInstance();
                         break;
                 }
                 FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();

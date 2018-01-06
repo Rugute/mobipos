@@ -7,7 +7,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +41,7 @@ public class AdminLogin extends Activity {
     EditText email,password;
     static String stremail,strpassword;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,12 @@ public class AdminLogin extends Activity {
         login=findViewById(R.id.login);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
+
+        VectorDrawableCompat drawableCompat= VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, email.getContext().getTheme());
+        email.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableCompat, null, null, null);
+
+        VectorDrawableCompat drawableCompat1= VectorDrawableCompat.create(getResources(), R.drawable.ic_vpn_key_black_24dp, password.getContext().getTheme());
+        password.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableCompat1, null, null, null);
 
         Users user_db=new Users(getApplicationContext(),defaults.database_name,null,1);
         if (user_db.CheckUserOrPin(Users.tb_name)>0){

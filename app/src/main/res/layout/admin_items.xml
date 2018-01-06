@@ -30,12 +30,12 @@
                 android:layout_marginBottom="5dp"
                 />
             <RelativeLayout
-                android:background="@drawable/edit_text"
+                android:background="@drawable/edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="2dp"
                 >
                 <Spinner
-                    android:background="#fff"
                     android:id="@+id/item_branch_spinner"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
@@ -54,12 +54,13 @@
                 android:layout_marginBottom="5dp"
                 />
             <RelativeLayout
-                android:background="@drawable/edit_text"
+                android:background="@drawable/edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="2dp"
                 >
                 <Spinner
-                    android:background="#fff"
+
                     android:id="@+id/item_category_spinner"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
@@ -81,7 +82,7 @@
             android:visibility="gone"/>
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="20dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/admin_items_rv">
 
@@ -96,7 +97,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
         android:gravity="bottom"
         app:backgroundTint="@color/colorpic6"
         app:srcCompat="@drawable/ic_add_black_24dp" />

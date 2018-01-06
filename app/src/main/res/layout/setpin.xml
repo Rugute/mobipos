@@ -22,15 +22,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/edit_text"
+            android:background="@drawable/edittext"
             android:gravity="center"
             android:hint="Enter Pin"
             android:inputType="numberPassword"
             android:padding="10dp"
             android:maxLength="4"
             android:singleLine="true"
-            android:textColor='#fff'
-            android:textColorHint="#fff" />
+            android:textColor='#000'
+            android:textColorHint="#000" />
 
     </LinearLayout>
 

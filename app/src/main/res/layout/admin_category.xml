@@ -36,7 +36,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text"
+            android:background="@drawable/edittext"
+            android:padding="8dp"
             >
             <Spinner
 
@@ -45,8 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:prompt="@string/spinner_title"
-                />
+                android:prompt="@string/spinner_title"/>
         </RelativeLayout>
 
 
@@ -75,7 +75,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="24dp"
         android:gravity="bottom"
         app:backgroundTint="@color/colorpic6"
         app:srcCompat="@drawable/ic_add_black_24dp" />

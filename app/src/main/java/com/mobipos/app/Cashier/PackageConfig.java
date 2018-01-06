@@ -13,8 +13,8 @@ public class PackageConfig {
     public static String get_categories="cashier-get-categories.php";
     public static String get_items="cashier-get-items.php";
 
-    public static int[] images={R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher};
-    public static String[] inventory_title={"Category","Items","Stock Alert","Taxes"};
+    public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_account_box_black_24dp};
+    public static String[] inventory_title={"Category","Items","Stock Alert","Account"};
 
     public static String[] categoryArrayId;
     public static String[] categoryArrayName;
