@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleProductData;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -41,9 +42,15 @@ public class Products extends Controller {
             col_6+" VARCHAR(50),"+
             col_5+" INT(11))";
 
-    public int getProductCount(){
+    public int getProductCount(String category_id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name;
+        String sql=null;
+        if(category_id.equals("all")){
+            sql="SELECT * FROM "+tb_name;
+        }else{
+            sql="SELECT * FROM "+tb_name+" WHERE category_id="+category_id;
+        }
+
 
         List data=new ArrayList();
         Cursor cursor=null;
@@ -134,5 +141,48 @@ public class Products extends Controller {
 
         return data;
     }
+
+    public List<MakeSaleProductData> getSalesProduct(){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+            sql="SELECT tb_products.product_id,tb_products.product_name,tb_products.category_id,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
+                    "  FROM "+tb_name+
+                    " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
+                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id ";
+
+
+
+        List<MakeSaleProductData> data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                do{
+                    data.add(new MakeSaleProductData(Integer.parseInt(cursor.getString(cursor.getColumnIndex(col_3))),
+                            cursor.getString(cursor.getColumnIndex(col_1)),
+                            cursor.getString(cursor.getColumnIndex(col_2)),
+                            cursor.getString(cursor.getColumnIndex(Product_Prices.col_3)),
+                            cursor.getString(cursor.getColumnIndex(Inventory.col_3)),
+                            cursor.getString(cursor.getColumnIndex(col_6)),
+                            R.mipmap.ic_launcher));
+
+                    Log.d("make sale product name:",cursor.getString(cursor.getColumnIndex(col_2)));
+                    Log.d("make sale product id:",cursor.getString(cursor.getColumnIndex(col_1)));
+                    Log.d("make sale price:",cursor.getString(cursor.getColumnIndex(Product_Prices.col_3)));
+                }while (cursor.moveToNext());
+
+            }
+
+            cursor.close();
+        } catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
 
 }

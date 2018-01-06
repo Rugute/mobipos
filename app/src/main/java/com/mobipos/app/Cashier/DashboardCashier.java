@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Dashboard.DashboardFragment;
 import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
 
@@ -53,7 +54,7 @@ public class DashboardCashier extends AppCompatActivity{
                         selectedFragment = CashierInventory.newInstance();
                         break;
                     case R.id.cashier_item_dashboard:
-                        selectedFragment = SalesFragment.newInstance();
+                        selectedFragment = MakeSale.newInstance();
                         break;
                     case R.id.cashier_item_settings:
                         selectedFragment = SalesFragment.newInstance();

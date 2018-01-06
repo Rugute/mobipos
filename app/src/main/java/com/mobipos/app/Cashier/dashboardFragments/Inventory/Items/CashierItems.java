@@ -98,7 +98,7 @@ public class CashierItems extends Fragment {
         if(internetOn.isNetworkConnected()){
             new loadItems().execute();
         }else{
-            if(productsdb.getProductCount()>0){
+            if(productsdb.getProductCount("all")>0){
                 initializeAdapter("all");
             }else{
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
@@ -182,7 +182,7 @@ public class CashierItems extends Fragment {
 
             if(success==1){
 
-                if(productsdb.getProductCount()==0){
+                if(productsdb.getProductCount("all")==0){
                     for(int i=0;i<dataitems.length();i++){
                        if(!productsdb.insertProduct(PackageConfig.itemArrayId[i],PackageConfig.itemArrayName[i],
                                PackageConfig.categoryArrayId[i],PackageConfig.itemArrayMeasurement[i])){
@@ -225,7 +225,7 @@ public class CashierItems extends Fragment {
                 rv.setAdapter(adapter);
 
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(),String.valueOf(productsdb.getProductCount()),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),String.valueOf(productsdb.getProductCount("all")),Toast.LENGTH_SHORT).show();
             }else if(success==0){
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
             }
