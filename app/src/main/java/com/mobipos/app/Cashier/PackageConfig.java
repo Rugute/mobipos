@@ -4,6 +4,9 @@ import android.app.Activity;
 
 import com.mobipos.app.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by folio on 12/15/2017.
  */
@@ -27,6 +30,14 @@ public class PackageConfig {
     public static String[] stockData;
 
 
+    public static ArrayList<String> orders_items;
+
+    public static String order_no;
+    public static String date;
+
+    ;
 
 
- }
+
+
+}

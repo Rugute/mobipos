@@ -56,6 +56,7 @@ public class Products extends Controller {
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 
+        Log.d("product count in loop:",String.valueOf(cursor.getCount()));
         return cursor.getCount();
     }
 

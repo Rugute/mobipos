@@ -6,12 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleInterfaceData;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleProductData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleProductInfo;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Products;
 import com.mobipos.app.database.defaults;
@@ -29,51 +33,43 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 public class MakeSalesAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<CashierCategoryData> category;
-    private List<MakeSaleProductData> products;
+    private List<MakeSaleInterfaceData> data;
     public static LayoutInflater inflater=null;
     Products productsdb;
 
 
-    public MakeSalesAdapter(Context context, List<CashierCategoryData> category, List<MakeSaleProductData> products) {
+    public MakeSalesAdapter(Context context, List<MakeSaleInterfaceData> data) {
         this.context = context;
-        this.category = category;
-        this.products = products;
-
+        this.data = data;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getGroupCount() {
-        return category.size();
+        return data.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return products.size();
+        try {
+            List<MakeSaleProductInfo> products=data.get(i).getProduct();
+            return products.size();
+        }catch (NullPointerException e){
+            return 0;
+        }
     }
 
     @Override
     public Object getGroup(int i) {
-        return category.get(i);
+        return data.get(i);
     }
 
     @Override
-    public List<MakeSaleProductData> getChild(int i, int i1) {
-        int cat_id=Integer.parseInt(category.get(i).id);
-        List<MakeSaleProductData> childData=new ArrayList<>();
-        List<MakeSaleProductData> tempData=new ArrayList<>();
-        int size=products.size()-1;
-        for(int j=0;j<products.size();j++) {
-            int category_id = products.get(j).categoryId;
-            if (cat_id == category_id) {
-                childData.add(new MakeSaleProductData(cat_id, products.get(j).product_id, products.get(j).product_name, products.get(j).price,
-                        products.get(j).stock, products.get(j).measure, R.mipmap.ic_launcher));
-            }
-        }
+    public Object getChild(int i, int i1) {
 
+        List<MakeSaleProductInfo> products;
+        products=data.get(i).getProduct();
 
-
-        return childData;
+        return products.get(i1);
     }
 
     @Override
@@ -83,26 +79,27 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int i, int i1) {
-        return i1;
+        List<MakeSaleProductInfo> prod=data.get(i).getProduct();
+        int serial=prod.get(i1).getId();
+        return serial;
     }
 
     @Override
     public boolean hasStableIds() {
-        return true;
+        return false;
     }
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
 
-      //  catData= (ArrayList<CashierCategoryData>) getGroup(i);
-
+        MakeSaleInterfaceData category=(MakeSaleInterfaceData)getGroup(i);
        if(view==null) {
            view = inflater.inflate(R.layout.cashier_make_sale_custom_category, null);
        }
         TextView category_name=view.findViewById(R.id.cat_name);
         TextView category_id=view.findViewById(R.id.cat_id);
-        category_name.setText(category.get(i).name);
-        category_id.setText(category.get(i).id);
+        category_name.setText(category.getCategory_name());
+        category_id.setText(category.getCategory_id());
 
         return view;
     }
@@ -110,10 +107,7 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
 
-        Log.d("size of child:",String.valueOf(getChild(i,i1).size()));
-        Log.d("child position:",String.valueOf(i1));
-        Log.d("group position:",String.valueOf(i));
-        List<MakeSaleProductData> childData=getChild(i,i1);
+        MakeSaleProductInfo product_info=(MakeSaleProductInfo) getChild(i, i1);
 
         if(view==null) {
             view = inflater.inflate(R.layout.cashier_make_sale_custom_products, null);
@@ -121,18 +115,27 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
         TextView product_name=view.findViewById(R.id.prod_name);
         TextView product_id=view.findViewById(R.id.prod_id);
         TextView product_price=view.findViewById(R.id.prod_price);
+        ImageView image=view.findViewById(R.id.imageView);
+        image.setVisibility(View.INVISIBLE);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"you clicked this guy",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
-        product_name.setText(childData.get(0).product_name);
-        product_id.setText(childData.get(0).product_id);
-        product_price.setText(childData.get(0).price);
+        product_name.setText(product_info.getProduct_name());
+        product_id.setText(product_info.getProduct_id());
+        product_price.setText(product_info.getProduct_price());
 
         return view;
     }
 
     @Override
     public boolean isChildSelectable(int i, int i1) {
-        return false;
+        return true;
     }
 }

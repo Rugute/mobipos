@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+
+        android:id="@+id/imageView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignEnd="@+id/prod_price"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/prod_price"
+        android:paddingTop="5dp"
+        app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
     <TextView
         android:id="@+id/prod_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:paddingLeft="3dp"
+        android:paddingTop="5dp"
         android:text="Product name"
-        android:textColor="#000"
-        android:textSize="15dp"
+        android:textColor="#2140b1"
+        android:textSize="20dp"
         android:textStyle="bold" />
     <TextView
         android:layout_width="wrap_content"
@@ -25,18 +37,17 @@
 
 
     <TextView
+        android:id="@+id/prod_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/prod_name"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/imageView"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
         android:gravity="end"
         android:text="price"
-        android:id="@+id/prod_price"
-        android:textStyle="bold"
         android:textColor="#2140b1"
-        android:textSize="30dp" />
+        android:textSize="20dp"
+        android:textStyle="bold" />
 </RelativeLayout>
