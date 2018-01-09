@@ -2,6 +2,7 @@ package com.mobipos.app.Cashier;
 
 import android.app.Activity;
 
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.cartItemData;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class PackageConfig {
     public static String[] stockData;
 
 
-    public static ArrayList<String> orders_items;
+    public static ArrayList<cartItemData> orders_items;
 
     public static String order_no;
     public static String date;

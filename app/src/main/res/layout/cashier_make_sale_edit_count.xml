@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:id="@+id/text"
+        android:background="#34a12f"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:text="ENTER NUMBER OF ITEMS"
+        android:layout_centerHorizontal="true"
+       android:gravity="center"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:text="1"
+        android:inputType="number"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:id="@+id/current_count"
+        />
+
+</RelativeLayout>
