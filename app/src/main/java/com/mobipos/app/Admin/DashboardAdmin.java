@@ -25,7 +25,7 @@ public class DashboardAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_admin);
-        setTitle("Mauzo Africa: Administrator");
+       // setTitle("Mauzo Africa: Administrator");
 
         BottomNavigationView navigationMenuView=findViewById(R.id.bottom_navigation);
 
@@ -68,7 +68,7 @@ public class DashboardAdmin extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home){
             FragmentManager manager=getSupportFragmentManager();
             manager.popBackStack();
-            setTitle("Mauzo Africa: Administator");
+            //setTitle("Mauzo Africa: Administator");
         }
         return  true;
     }

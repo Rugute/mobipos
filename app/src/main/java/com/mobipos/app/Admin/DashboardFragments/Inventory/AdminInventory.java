@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.mobipos.app.Admin.AccountFragment;
 import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminItems;
@@ -66,7 +67,19 @@ public class AdminInventory extends Fragment {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
-                }
+                }else if(pos==2){
+                    Fragment fragment;
+                    fragment = AccountFragment.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout, fragment);
+                    transaction.commit();
+                }else if(pos==3){
+                    Fragment fragment;
+                    fragment = AccountFragment.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout, fragment);
+                    transaction.commit();
+                    }
             }
         });
 

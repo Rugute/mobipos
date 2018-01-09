@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:id="@+id/appBarLayout">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:paddingTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:id="@+id/nameOfPerson"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="75dp"
+                        android:layout_marginRight="75dp"
+                        android:text="Receipt"
+                        android:textColor="#fff"
+                        android:textSize="35dp" />
+
+                    <TextView
+                        android:id="@+id/phoneOfPerson"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/nameOfPerson"
+                        android:layout_toRightOf="@+id/nameOfPerson"
+                        android:text=""
+                        android:textColor="#fff"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/transaction_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="212dp"
+                        android:layout_marginStart="212dp"
+                        android:text="Date"
+                        android:textColor="#fff"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/expiry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/transaction_code"
+                        android:layout_marginTop="23dp"
+                        android:text="Order Number"
+                        android:textColor="#e90c0c"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/expiry"
+                        android:layout_alignBottom="@+id/expiry"
+                        android:layout_alignLeft="@+id/transaction_code"
+                        android:layout_alignStart="@+id/transaction_code"
+                        android:text="PAID"
+                        android:textColor="#fff"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/logout_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:src="@drawable/useraccount"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="right|top" />-->
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:weightSum="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/recrv">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <include layout="@layout/receipt_cardview"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

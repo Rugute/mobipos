@@ -25,6 +25,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity android:name=".login.AdminLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -35,6 +37,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".Admin.DashboardAdmin">
+
 
         </activity>
         <activity android:name=".Cashier.CashierCategory">

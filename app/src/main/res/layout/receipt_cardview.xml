@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_marginBottom="3dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cvreceipt"
+        android:layout_margin="@dimen/cardview_default_elevation"
+        android:elevation="3dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="16dp">
+
+
+            <TextView
+                android:id="@+id/sub_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="56dp"
+                android:layout_marginRight="56dp"
+                android:layout_toLeftOf="@+id/sub_total"
+                android:layout_toStartOf="@+id/sub_total"
+                android:text="subtotal"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/validity_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/discount"
+                android:layout_alignBottom="@+id/discount"
+                android:layout_alignEnd="@+id/sub_name"
+                android:layout_alignRight="@+id/sub_name"
+                android:text="discount"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/sub_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="sub_total"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/sub_total"
+                android:layout_alignStart="@+id/sub_total"
+                android:layout_below="@+id/sub_total"
+                android:layout_marginTop="13dp"
+                android:text="discount_off"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/sales_tax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignLeft="@+id/discount"
+                android:layout_alignStart="@+id/discount"
+                android:layout_below="@+id/discount"
+                android:text="sales_tax"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/sales_tax"
+                android:layout_alignBottom="@+id/sales_tax"
+                android:layout_alignEnd="@+id/validity_status"
+                android:layout_alignRight="@+id/validity_status"
+                android:text="sales tax"
+                android:textSize="18sp"/>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="13dp"
+                android:text="Total"
+                android:textSize="18sp"
+                android:id="@+id/total" />
+
+            <TextView
+                android:id="@+id/total_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/total"
+                android:layout_alignBottom="@+id/total"
+                android:layout_alignEnd="@+id/discount"
+                android:layout_alignRight="@+id/discount"
+                android:text="Total_sales"
+                android:textSize="18sp" />
+
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
