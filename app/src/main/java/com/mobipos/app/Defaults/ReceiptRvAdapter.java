@@ -44,7 +44,7 @@ public class ReceiptRvAdapter extends RecyclerView.Adapter<ReceiptRvAdapter.Item
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int j) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.receipt, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rec_card, parent, false);
         ReceiptRvAdapter.ItemViewHolder pvh = new ReceiptRvAdapter.ItemViewHolder(v);
         return pvh;
     }

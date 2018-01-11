@@ -29,7 +29,7 @@
                 android:layout_toLeftOf="@+id/sub_total"
                 android:layout_toStartOf="@+id/sub_total"
                 android:text="subtotal"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/validity_status"
@@ -40,7 +40,7 @@
                 android:layout_alignEnd="@+id/sub_name"
                 android:layout_alignRight="@+id/sub_name"
                 android:text="discount"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/sub_total"
@@ -50,7 +50,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:text="sub_total"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/discount"
@@ -60,8 +60,8 @@
                 android:layout_alignStart="@+id/sub_total"
                 android:layout_below="@+id/sub_total"
                 android:layout_marginTop="13dp"
-                android:text="discount_off"
-                android:textSize="18dp" />
+                android:text="discount"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/sales_tax"
@@ -73,7 +73,7 @@
                 android:layout_alignStart="@+id/discount"
                 android:layout_below="@+id/discount"
                 android:text="sales_tax"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="13dp"
                 android:text="Total"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:id="@+id/total" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_alignEnd="@+id/discount"
                 android:layout_alignRight="@+id/discount"
                 android:text="Total_sales"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
 
 
