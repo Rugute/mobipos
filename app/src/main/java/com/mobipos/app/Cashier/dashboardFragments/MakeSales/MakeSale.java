@@ -3,10 +3,13 @@ package com.mobipos.app.Cashier.dashboardFragments.MakeSales;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,15 +29,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Cashier.Adapters.CashierItemRvAdapter;
+import com.mobipos.app.Cashier.Adapters.ListViewCartAdapter;
 import com.mobipos.app.Cashier.Adapters.MakeSalesAdapter;
 import com.mobipos.app.Cashier.Adapters.RecyclerItemClickListener;
 import com.mobipos.app.Cashier.Adapters.ViewCartAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
+import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.DatabaseInitializers;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
@@ -66,10 +73,13 @@ public class MakeSale extends Fragment {
     Products productsdb;
     Order_Items orderItemsdb;
     TextView total_value;
+    TextView navigator;
     List<String> orders_items;
     CardView total_card;
     FloatingActionButton fab_back;
     TextView text_order_no;
+
+    ListView listView;
 
     RelativeLayout view_cart;
     RecyclerView rv;
@@ -102,6 +112,8 @@ public class MakeSale extends Fragment {
         orderItemsdb=new Order_Items(getActivity(), defaults.database_name,null,1);
 
         expandableListView=view.findViewById(R.id.make_sale_list);
+        listView=view.findViewById(R.id.view_cart_list);
+        navigator=view.findViewById(R.id.navigator);
         text_order_no=view.findViewById(R.id.order_no);
         total_value=view.findViewById(R.id.total_value);
         total_card=view.findViewById(R.id.total_card);
@@ -115,6 +127,32 @@ public class MakeSale extends Fragment {
         showBackButton(false,"Make Sale");
 
 
+        final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
+        if(internetOn.isNetworkConnected()){
+            DatabaseInitializers init=new DatabaseInitializers(getContext());
+            if(!init.loaded()){
+               Toast.makeText(getContext(),"data loaded",Toast.LENGTH_SHORT).show();
+                
+            }
+            expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+        }else{
+            if(categoriesdb.getCategoryCount()==0){
+                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
+                        setTitle("Data not found").
+                        setMessage("Enable your internet to sync data from server").
+                        setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                internetOn.context.startActivity(new Intent("android.settings.DATA_ROAMING_SETTINGS"));
+                            }
+                        });
+                alertBuilder.show();
+            }else{
+                expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+            }
+        }
+
+
+
 
         fab_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +160,7 @@ public class MakeSale extends Fragment {
                 expandableListView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
+                navigator.setText("Click to Proceed");
             }
         });
 
@@ -136,28 +175,29 @@ public class MakeSale extends Fragment {
                     total_card.setCardBackgroundColor(Color.parseColor("#605398"));
                         expandableListView.setVisibility(View.GONE);
                         view_cart.setVisibility(View.VISIBLE);
-                        initializeAdapter(PackageConfig.order_no);
-
+                    initializeListAdapter(PackageConfig.order_no);
+                    navigator.setText("Click to Cash out");
 
                 }
 
             }
         });
 
-        rv.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView txt_count=view.findViewById(R.id.cart_quantity);
+                TextView txt_id=view.findViewById(R.id.cart_item_id);
+                if(editCountPopUp(txt_count.getText().toString(),txt_id.getText().toString(),text_order_no.getText().toString())){
+                    initializeListAdapter(text_order_no.getText().toString());
+                }
 
-                      TextView textView=view.findViewById(R.id.cart_quantity);
-                      TextView product_id=view.findViewById(R.id.cart_item_id);
-                      editCountPopUp(textView.getText().toString(),product_id.getText().toString(),
-                                text_order_no.getText().toString());
+            }
+        });
 
-                    }
-                })
-        );
 
-        expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+
+
 
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -176,48 +216,44 @@ public class MakeSale extends Fragment {
                     PackageConfig.order_no=order.format(new Date());
                     PackageConfig.date=simpleDateFormat.format(new Date());
 
-                    if(!ordersdb.createOrder(PackageConfig.order_no,PackageConfig.date)){
+                    if(ordersdb.createOrder(PackageConfig.order_no,PackageConfig.date)){
 
                         order_created=true;
                         text_order_no.setText(PackageConfig.order_no);
-                        Toast.makeText(getContext(),"Order created",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
 
                     }
-
-
                 }
-
                 if(orderItemsdb.insertOrderItem(text_order_no.getText().toString(),stId,"1")){
                     Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
+                   // total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+
                 }
-                total_value.setText(String.valueOf(Integer.parseInt(total_value.getText().toString())+
-                        Integer.parseInt(textView.getText().toString())));
+                Toast.makeText(getContext(),PackageConfig.order_no,Toast.LENGTH_SHORT).show();
+                total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+
                 return true;
             }
         });
-
-        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),"yeee!!!",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-
 
     }
 
-    public void initializeAdapter(String order_id){
+    public void initializeListAdapter(String order_id){
 
 
         Log.d("list of data",orderItemsdb.getCartData(order_id).toString());
-        ViewCartAdapter adapter = new ViewCartAdapter(getActivity(),orderItemsdb.getCartData(order_id),
-                total_value,text_order_no.getText().toString());
+
+
+        ListViewCartAdapter adapter = new ListViewCartAdapter(getActivity(),
+                orderItemsdb.getCartData(order_id),
+                text_order_no.getText().toString(),
+                total_value);
+
 
         adapter.notifyDataSetChanged();
-        rv.setAdapter(adapter);
-      //  rv.refreshDrawableState();
+        adapter.notifyDataSetInvalidated();
+        listView.setAdapter(adapter);
+        //  rv.refreshDrawableState();
 
     }
 
@@ -288,7 +324,8 @@ public class MakeSale extends Fragment {
 
     public static boolean dataChange=false;
 
-    public void editCountPopUp(String count, final String product_id, final String order_id){
+    public boolean editCountPopUp(String count, final String product_id,
+                                  final String order_id){
 
         View view=LayoutInflater.from(getActivity()).inflate(R.layout.cashier_make_sale_edit_count,null);
         AlertDialog alertDialog=new AlertDialog.Builder(getActivity()).create();
@@ -303,9 +340,12 @@ public class MakeSale extends Fragment {
 
                 if(orderItemsdb.update_count(product_id,order_id,get_item_count)){
                     dataChange=true;
-                    initializeAdapter(text_order_no.getText().toString());
-                    Toast.makeText(getActivity(),"Item updated successfully",Toast.LENGTH_SHORT).show();
                 }
+
+                total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+                initializeListAdapter(text_order_no.getText().toString());
+
+
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
@@ -316,7 +356,11 @@ public class MakeSale extends Fragment {
         });
         alertDialog.show();
 
+        return  dataChange;
 
+    }
+
+    public void itemListeners(){
 
     }
 

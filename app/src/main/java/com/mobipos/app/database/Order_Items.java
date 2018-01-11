@@ -194,4 +194,18 @@ public class Order_Items extends Controller {
         }
     }
 
+    public int getCartTotal(String order_id){
+        List<viewCartData> orderitems=getCartData(order_id);
+        int total=0;
+        for(int i=0;i<orderitems.size();i++){
+            total=total+Integer.parseInt(orderitems.get(i).price)*Integer.parseInt(orderitems.get(i).count);
+            Log.d("prod price:",orderitems.get(i).price);
+            Log.d("total prod count:",orderitems.get(i).count);
+        }
+
+        Log.d("total value of items:",String.valueOf(total));
+
+        return total;
+    }
+
 }

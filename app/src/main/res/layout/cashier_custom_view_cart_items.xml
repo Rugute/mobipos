@@ -52,14 +52,25 @@
                 android:textStyle="bold"
                 />
 
+            <ImageView
+                android:id="@+id/edit_count"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+
             <TextView
                 android:id="@+id/cart_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:layout_alignParentBottom="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:layout_toEndOf="@+id/edit_count"
+                android:layout_toRightOf="@+id/edit_count"
                 android:gravity="end|bottom"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:text="Item price"
                 android:textAlignment="textEnd"
                 android:textColor="#456ce2"
@@ -79,9 +90,11 @@
                 android:id="@+id/total_value_per_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/cart_item_price"
-                android:layout_alignBottom="@+id/cart_item_price"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="53dp"
+                android:layout_marginRight="53dp"
+                android:layout_toLeftOf="@+id/imageView2"
+                android:layout_toStartOf="@+id/imageView2"
                 android:gravity="end"
                 android:text="Item price"
                 android:textAlignment="textEnd"

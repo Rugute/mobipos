@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashDummy;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.viewCartData;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Order_Items;
@@ -37,6 +40,7 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         TextView product_quantity;
         TextView total_value;
         ImageView deleteIcon;
+        ImageView edit_icon;
         CardView cardView;
 
         ItemListViewHolder(View itemView){
@@ -48,6 +52,7 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
             product_quantity = itemView.findViewById(R.id.cart_quantity);
             total_value = itemView.findViewById(R.id.total_value_per_item);
             deleteIcon = itemView.findViewById(R.id.imageView2);
+            edit_icon = itemView.findViewById(R.id.edit_count);
             cardView=itemView.findViewById(R.id.card_item);
 
 
@@ -61,13 +66,16 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
 
     public static String get_item_count="1";
     public static boolean dataChanged=false;
+    RecyclerView rv;
 
-    public ViewCartAdapter(Context context, List<viewCartData> itemsData,TextView cart_total_value, String str_order_id)
+    public ViewCartAdapter(Context context, List<viewCartData> itemsData,
+                           TextView cart_total_value, String str_order_id,RecyclerView rv)
     {
         this.itemsData = itemsData;
         this.cart_total_value=cart_total_value;
         this.context=context;
         this.str_order_id=str_order_id;
+        this.rv=rv;
         orderitemsdb=new Order_Items(context, defaults.database_name,null,1);
     }
 
@@ -101,9 +109,10 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
                 int item_total=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
                 int cart_total=Integer.parseInt(cart_total_value.getText().toString());
 
-                cart_total_value.setText(String.valueOf(cart_total-item_total));
+
 
                 if(!orderitemsdb.deleteProduct(itemsData.get(i).product_id)){
+                    cart_total_value.setText(String.valueOf(orderitemsdb.getCartTotal(str_order_id)));
                     itemsData.remove(i);
                     notifyItemRemoved(i);
                     notifyDataSetChanged();
@@ -116,6 +125,30 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
             }
         });
 
+        itemListViewHolder.edit_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if(editCountPopUp(itemsData.get(i).count,itemsData.get(i).product_id,
+//                        str_order_id,rv)){
+//                    Toast.makeText(context,get_item_count,Toast.LENGTH_SHORT).show();
+//                }
+
+
+
+
+                itemListViewHolder.product_quantity.setText(String.valueOf(Integer.parseInt(itemsData.get(i).count)+1));
+
+                notifyItemChanged(i);
+                notifyItemInserted(i);
+                notifyDataSetChanged();
+//                int item_total=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
+//                itemListViewHolder.total_value.setText(String.valueOf(item_total));
+
+
+
+            }
+        });
+
     }
 
     @Override
@@ -123,7 +156,8 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         return itemsData.size();
     }
 
-    public boolean editCountPopUp(String count, final String product_id, final String order_id){
+    public boolean editCountPopUp(String count, final String product_id,
+                                  final String order_id, final RecyclerView recyclerView){
 
         View view=LayoutInflater.from(context).inflate(R.layout.cashier_make_sale_edit_count,null);
         AlertDialog alertDialog=new AlertDialog.Builder(context).create();
@@ -138,8 +172,12 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
 
                 if(orderitemsdb.update_count(product_id,order_id,get_item_count)){
                     dataChanged=true;
-                    Toast.makeText(context,get_item_count,Toast.LENGTH_SHORT).show();
                 }
+
+                cart_total_value.setText(String.valueOf(orderitemsdb.getCartTotal(PackageConfig.order_no)));
+
+
+
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
@@ -150,8 +188,11 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         });
         alertDialog.show();
 
-        return dataChanged;
+        return  dataChanged;
+
     }
+
+
 }
 
 
