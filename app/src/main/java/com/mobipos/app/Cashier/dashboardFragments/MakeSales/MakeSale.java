@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
+import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
@@ -80,6 +82,7 @@ public class MakeSale extends Fragment {
     TextView text_order_no;
 
     ListView listView;
+    ImageView refresh;
 
     RelativeLayout view_cart;
     RecyclerView rv;
@@ -113,6 +116,7 @@ public class MakeSale extends Fragment {
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
+        refresh=view.findViewById(R.id.refresh);
         navigator=view.findViewById(R.id.navigator);
         text_order_no=view.findViewById(R.id.order_no);
         total_value=view.findViewById(R.id.total_value);
@@ -126,15 +130,22 @@ public class MakeSale extends Fragment {
 
         showBackButton(false,"Make Sale");
 
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment=null;
+                fragment=MakeSale.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout_new, fragment);
+                transaction.commit();
+            }
+        });
 
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
         if(internetOn.isNetworkConnected()){
-            DatabaseInitializers init=new DatabaseInitializers(getContext());
-            if(!init.loaded()){
-               Toast.makeText(getContext(),"data loaded",Toast.LENGTH_SHORT).show();
-                
+            if(new DatabaseInitializers(getContext()).loaded()){
+               AppConfig.firstRefresh=true;
             }
-            expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
         }else{
             if(categoriesdb.getCategoryCount()==0){
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
@@ -148,11 +159,14 @@ public class MakeSale extends Fragment {
                 alertBuilder.show();
             }else{
                 expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+                refresh.setVisibility(View.GONE);
             }
         }
+        expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
 
-
-
+        if(AppConfig.firstRefresh){
+            refresh.setVisibility(View.GONE);
+        }
 
         fab_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,11 +209,6 @@ public class MakeSale extends Fragment {
             }
         });
 
-
-
-
-
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
@@ -236,6 +245,16 @@ public class MakeSale extends Fragment {
             }
         });
 
+    }
+
+    public void initializeExtend(){
+
+        expandableListView.invalidate();
+        MakeSalesAdapter adapter=new MakeSalesAdapter(getActivity(),cartData());
+        adapter.notifyDataSetChanged();
+        expandableListView.setAdapter(adapter);
+        Toast.makeText(getContext(),"we are here too",Toast.LENGTH_SHORT).show();
+      //  expandableListView.setAdapter();
     }
 
     public void initializeListAdapter(String order_id){

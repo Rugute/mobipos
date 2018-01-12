@@ -8,4 +8,7 @@ public class AppConfig {
 
     public static String protocol="http://192.168.173.1";
     public static String hostname="/mobipos.com/app/";
+
+
+    public static boolean firstRefresh=false;
 }
