@@ -174,7 +174,7 @@ public class MakeSale extends Fragment {
                 expandableListView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
-                navigator.setText("Click to Proceed");
+                 navigator.setText("Click to Proceed");
             }
         });
 
