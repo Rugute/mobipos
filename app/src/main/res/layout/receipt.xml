@@ -81,15 +81,16 @@
                         android:textColor="#e90c0c"
                         android:textSize="20dp" />
 
-                    <TextView
-                        android:id="@+id/status"
+                    <Button
+                        android:id="@+id/button_bottom_sheet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/expiry"
                         android:layout_alignBottom="@+id/expiry"
                         android:layout_alignLeft="@+id/transaction_code"
                         android:layout_alignStart="@+id/transaction_code"
-                        android:text="PAID"
+                        android:text="Pay"
+                        android:background="#000"
                         android:textColor="#fff"
                         android:textSize="20dp" />
                 </RelativeLayout>
@@ -130,7 +131,6 @@
 
             </android.support.v7.widget.RecyclerView>
 
-            <include layout="@layout/receipt_cardview"/>
 
         </LinearLayout>
 
