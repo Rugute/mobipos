@@ -17,6 +17,7 @@ public class inventory_movement extends Controller {
     public static String col_2="product_id";
     public static String col_3="movement_type";
     public static String col_4="count";
+    public static String col_6="DATE";
     public static String col_5="sync_status";
 
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
@@ -26,5 +27,6 @@ public class inventory_movement extends Controller {
             col_2+" INT(11),"+
             col_3+" VARCHAR(50),"+
             col_4+" INT(11),"+
+            col_6+" VARCHAR(50),"+
             col_5+" INT(11))";
 }

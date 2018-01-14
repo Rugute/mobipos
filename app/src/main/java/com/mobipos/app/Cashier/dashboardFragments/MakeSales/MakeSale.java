@@ -8,16 +8,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,33 +25,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobipos.app.Cashier.Adapters.CashierItemRvAdapter;
 import com.mobipos.app.Cashier.Adapters.ListViewCartAdapter;
 import com.mobipos.app.Cashier.Adapters.MakeSalesAdapter;
-import com.mobipos.app.Cashier.Adapters.RecyclerItemClickListener;
-import com.mobipos.app.Cashier.Adapters.ViewCartAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
-import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
-import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
+import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.DatabaseInitializers;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
-import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -91,6 +78,8 @@ public class MakeSale extends Fragment {
     String get_item_count;
     Orders ordersdb;
 
+    public boolean view_cart_seen;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,7 +97,7 @@ public class MakeSale extends Fragment {
         PackageConfig.orders_items=new ArrayList<>();
 
 
-
+        view_cart_seen=false;
         ordersdb=new Orders(getActivity(),defaults.database_name,null,1);
         categoriesdb=new Categories(getActivity(), defaults.database_name,null,1);
         productsdb=new Products(getActivity(), defaults.database_name,null,1);
@@ -158,8 +147,9 @@ public class MakeSale extends Fragment {
                         });
                 alertBuilder.show();
             }else{
-                expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
                 refresh.setVisibility(View.GONE);
+                expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+
             }
         }
         expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
@@ -171,6 +161,7 @@ public class MakeSale extends Fragment {
         fab_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view_cart_seen=false;
                 expandableListView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
@@ -182,10 +173,14 @@ public class MakeSale extends Fragment {
             @Override
             public void onClick(View view) {
 
+                if(view_cart_seen){
+                    startActivity(new Intent(getActivity(), PaymentActivity.class));
+                }
 
                 if(total_value.getText().toString().equals("0")){
                     Toast.makeText(getContext(),"No products selected",Toast.LENGTH_SHORT).show();
                 }else{
+                    view_cart_seen=true;
                     total_card.setCardBackgroundColor(Color.parseColor("#605398"));
                         expandableListView.setVisibility(View.GONE);
                         view_cart.setVisibility(View.VISIBLE);

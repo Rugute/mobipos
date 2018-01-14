@@ -87,4 +87,25 @@ public class Orders  extends Controller{
         return cursor.getCount();
     }
 
+    public String getOrderDate(String order){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql="SELECT date FROM "+tb_name+ " WHERE "+col_1+"= "+order;
+
+        List data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+        String date=null;
+        if(cursor.moveToFirst()){
+          date =cursor.getString(cursor.getColumnIndex(col_2));
+        }
+
+        db.close();
+
+
+        //    Log.d("product count in loop:",String.valueOf(cursor.getCount()));
+        return date;
+    }
+
 }

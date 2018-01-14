@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
+import com.mobipos.app.Cashier.dashboardFragments.ViewSales.ViewSale;
 import com.mobipos.app.Dashboard.DashboardFragment;
 import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
 
@@ -36,7 +37,7 @@ public class DashboardCashier extends AppCompatActivity{
         BottomNavigationView navigationMenuView = findViewById(R.id.cashier_bottom_nav);
 
         Fragment fragment;
-        fragment = DashboardFragment.newInstance();
+        fragment = MakeSale.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout_new, fragment);
         transaction.commit();
@@ -48,11 +49,12 @@ public class DashboardCashier extends AppCompatActivity{
                 Fragment selectedFragment = null;
                 switch (item.getItemId()) {
                     case R.id.cashier_item_sale:
-                        selectedFragment = DashboardFragment.newInstance();
+                        selectedFragment = ViewSale.newInstance();
                         break;
                     case R.id.cashier_item_inventory_details:
                         selectedFragment = CashierInventory.newInstance();
                         break;
+
                     case R.id.cashier_item_dashboard:
                         selectedFragment = MakeSale.newInstance();
                         break;

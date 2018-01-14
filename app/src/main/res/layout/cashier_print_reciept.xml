@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/recipt_radio"
+        android:text="Print Receipt Options"
+        android:textSize="20dp"
+
+        />
+
+    <RadioGroup
+        android:paddingTop="20dp"
+        android:id="@+id/recipt_radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/print_rec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   Print"
+            android:textSize="20dp"
+            android:paddingLeft="5dp"
+            android:drawableLeft="@mipmap/printer"
+
+            />
+        <RadioButton
+            android:id="@+id/mail_rec"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="   Email"
+            android:paddingLeft="5dp"
+            android:drawableLeft="@mipmap/ic_mail"/>
+        <RadioButton
+            android:id="@+id/no_rec"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:text="   No receipt"
+            android:paddingLeft="5dp"
+            android:drawableLeft="@mipmap/ic_done"
+            android:layout_marginBottom="20dp"/>
+    </RadioGroup>
+</LinearLayout>

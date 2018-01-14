@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary">
+
+    <LinearLayout
+        android:id="@+id/tender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+
+        android:layout_marginTop="10dp">
+        <TextView
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Enter Amount"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cash_tendered"
+            android:inputType="number"
+            android:textColor="#fff"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/tender"
+        android:id="@+id/grand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#fff"
+            android:text="Grand Total"
+            />
+        <EditText
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/amount_grand_total"
+            android:textColor="#fff"
+            android:inputType="number"
+            android:textStyle="bold"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/grand"
+        android:id="@+id/change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#fff"
+            android:text="Change Due"
+            />
+        <EditText
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_due"
+            android:textColor="#fff"
+            android:editable="false"
+            android:inputType="number"
+            android:textAlignment="textEnd"
+            android:gravity="end" />
+    </LinearLayout>
+
+</RelativeLayout>

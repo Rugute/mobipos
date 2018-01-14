@@ -61,21 +61,18 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
     List<viewCartData> itemsData;
     Context context;
     Order_Items orderitemsdb;
-    TextView cart_total_value;
+
     String str_order_id;
 
     public static String get_item_count="1";
     public static boolean dataChanged=false;
-    RecyclerView rv;
 
-    public ViewCartAdapter(Context context, List<viewCartData> itemsData,
-                           TextView cart_total_value, String str_order_id,RecyclerView rv)
+
+    public ViewCartAdapter(Context context, List<viewCartData> itemsData,String str_order_id)
     {
         this.itemsData = itemsData;
-        this.cart_total_value=cart_total_value;
         this.context=context;
         this.str_order_id=str_order_id;
-        this.rv=rv;
         orderitemsdb=new Order_Items(context, defaults.database_name,null,1);
     }
 
@@ -86,7 +83,7 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
 
     @Override
     public ItemListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cashier_custom_view_cart_items, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cashier_view_reciept, viewGroup, false);
         ViewCartAdapter.ItemListViewHolder pvh = new ViewCartAdapter.ItemListViewHolder(v);
         return pvh;
     }
@@ -98,98 +95,19 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         itemListViewHolder.product_price.setText(itemsData.get(i).count+"x"+itemsData.get(i).price);
         itemListViewHolder.product_quantity.setText(itemsData.get(i).count);
         itemListViewHolder.product_quantity.setVisibility(View.GONE);
-
         itemListViewHolder.total_value.setText(String.valueOf(Integer.parseInt(itemsData.get(i).count)*
         Integer.parseInt(itemsData.get(i).price)));
 
-        itemListViewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-           //     Toast.makeText(context,"Toast bread",Toast.LENGTH_SHORT).show();
-                int item_total=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
-                int cart_total=Integer.parseInt(cart_total_value.getText().toString());
 
+        itemListViewHolder.deleteIcon.setVisibility(View.INVISIBLE);
+        itemListViewHolder.edit_icon.setVisibility(View.INVISIBLE);
 
-
-                if(!orderitemsdb.deleteProduct(itemsData.get(i).product_id)){
-                    cart_total_value.setText(String.valueOf(orderitemsdb.getCartTotal(str_order_id)));
-                    itemsData.remove(i);
-                    notifyItemRemoved(i);
-                    notifyDataSetChanged();
-
-                }else{
-                    Toast.makeText(context,"delete failed",Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-        });
-
-        itemListViewHolder.edit_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                if(editCountPopUp(itemsData.get(i).count,itemsData.get(i).product_id,
-//                        str_order_id,rv)){
-//                    Toast.makeText(context,get_item_count,Toast.LENGTH_SHORT).show();
-//                }
-
-
-
-
-                itemListViewHolder.product_quantity.setText(String.valueOf(Integer.parseInt(itemsData.get(i).count)+1));
-
-                notifyItemChanged(i);
-                notifyItemInserted(i);
-                notifyDataSetChanged();
-//                int item_total=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
-//                itemListViewHolder.total_value.setText(String.valueOf(item_total));
-
-
-
-            }
-        });
 
     }
 
     @Override
     public int getItemCount() {
         return itemsData.size();
-    }
-
-    public boolean editCountPopUp(String count, final String product_id,
-                                  final String order_id, final RecyclerView recyclerView){
-
-        View view=LayoutInflater.from(context).inflate(R.layout.cashier_make_sale_edit_count,null);
-        AlertDialog alertDialog=new AlertDialog.Builder(context).create();
-        alertDialog.setView(view);
-        final EditText edit_count=view.findViewById(R.id.current_count);
-        edit_count.setText(count);
-        edit_count.setCursorVisible(true);
-        alertDialog.setButton(Dialog.BUTTON_POSITIVE,"UPDATE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                get_item_count=edit_count.getText().toString();
-
-                if(orderitemsdb.update_count(product_id,order_id,get_item_count)){
-                    dataChanged=true;
-                }
-
-                cart_total_value.setText(String.valueOf(orderitemsdb.getCartTotal(PackageConfig.order_no)));
-
-
-
-            }
-        });
-        alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        alertDialog.show();
-
-        return  dataChanged;
-
     }
 
 

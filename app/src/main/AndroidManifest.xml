@@ -19,7 +19,8 @@
 
         </activity>
         <activity android:name=".Defaults.SplashPage"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,8 @@
             android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".login.PinLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateVisible"/>
+            android:windowSoftInputMode="stateVisible"
+            android:noHistory="true"/>
         <activity android:name=".Admin.DashboardAdmin">
 
 
@@ -44,13 +46,14 @@
 
         </activity>
         <activity android:name=".Cashier.DashboardCashier"
-            >
+            android:noHistory="true">
 
         </activity>
         <activity android:name=".Defaults.RegisterAdmin">
 
         </activity>
-        <activity android:name=".Defaults.ReceiptActivity">
+        <activity android:name=".Defaults.PaymentActivity"
+            android:noHistory="true">
 
         </activity>
     </application>
