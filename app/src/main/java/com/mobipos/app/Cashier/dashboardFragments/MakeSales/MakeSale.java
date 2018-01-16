@@ -132,9 +132,9 @@ public class MakeSale extends Fragment {
 
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
         if(internetOn.isNetworkConnected()){
-            if(new DatabaseInitializers(getContext()).loaded()){
-               AppConfig.firstRefresh=true;
-            }
+//            if(new DatabaseInitializers(getContext()).loaded()){
+//               AppConfig.firstRefresh=true;
+//            }
         }else{
             if(categoriesdb.getCategoryCount()==0){
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
@@ -215,7 +215,7 @@ public class MakeSale extends Fragment {
 
                 if(!order_created){
                     Long timestamp= System.currentTimeMillis();
-                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-yyyy HH:MM:ss");
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
                     SimpleDateFormat order=new SimpleDateFormat("ddMMyyyyHHMMSS");
                     PackageConfig.order_no=order.format(new Date());
                     PackageConfig.date=simpleDateFormat.format(new Date());
@@ -224,12 +224,12 @@ public class MakeSale extends Fragment {
 
                         order_created=true;
                         text_order_no.setText(PackageConfig.order_no);
-                        Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
+                   //     Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
 
                     }
                 }
                 if(orderItemsdb.insertOrderItem(text_order_no.getText().toString(),stId,"1")){
-                    Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
                    // total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
 
                 }

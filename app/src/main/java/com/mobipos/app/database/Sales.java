@@ -7,11 +7,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.viewCartData;
 import com.mobipos.app.Cashier.dashboardFragments.ViewSales.PullSaleData;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.PushSaleData;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 
 public class Sales extends Controller {
+
     public Sales(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, defaults.database_name, null, 1);
     }
@@ -118,11 +121,11 @@ public class Sales extends Controller {
             Log.d("sales id: ",String.valueOf(salesId));
             db.close();
 
-            List<productInterface> products=getProductCount(data.get(0).orderId);
+            List<viewCartData> products=getCartData(PackageConfig.order_no);
             for(int i=0;i<products.size();i++){
 
-                updateInventory(products.get(i).product_id,products.get(i).count);
-                updateMovement(products.get(i).product_id,products.get(i).count);
+                updateInventory(Integer.parseInt(products.get(i).product_id),Integer.parseInt(products.get(i).count),salesId);
+
 
                 Log.d("product id no:", String.valueOf(products.get(i).product_id));
                 Log.d("count number", String.valueOf(products.get(i).product_id));
@@ -195,32 +198,37 @@ public class Sales extends Controller {
         return data;
     }
 
-    public void updateInventory(int product_id,int count){
+    public void updateInventory(int product_id,int count,int saleId){
         SQLiteDatabase db=getReadableDatabase();
 
         String sql="UPDATE "+Inventory.tb_name+" SET inventory_count=inventory_count-"+count+" WHERE product_id="+product_id;
         db.execSQL(sql);
+        updateMovement(product_id,count,saleId);
         db.close();
     }
 
-    public void updateMovement(int product_id,int count){
+    public void updateMovement(int product_id,int count,int saleId){
         SQLiteDatabase db=this.getWritableDatabase();
         //  String sql="DELETE from "+tb_name;
 
-
+        int move_id=createMovementId();
         try{
-            // db.execSQL(sql);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+
             ContentValues values=new ContentValues();
-            values.put(inventory_movement.col_1,createMovementId());
+          //  values.put(inventory_movement.col_1,move_id);
             values.put(inventory_movement.col_2,product_id);
-            values.put(inventory_movement.col_3,"OUT");
+            values.put(inventory_movement.col_3,"STOCK_OUT");
             values.put(inventory_movement.col_4,count);
-            values.put(inventory_movement.col_6,new Date().toString());
+            values.put(inventory_movement.col_6,simpleDateFormat.format(new Date()));
             values.put(inventory_movement.col_5,"0");
+            values.put(inventory_movement.col_7,PackageConfig.order_no);
 
             db.insert(inventory_movement.tb_name,null,values);
+            String sql="UPDATE "+Inventory.tb_name+" SET inventory_count=inventory_count-"+count+" WHERE product_id="+product_id;
+
             Log.d("produc id:",String.valueOf(product_id));
-            db.close();
+        //    db.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -235,20 +243,67 @@ public class Sales extends Controller {
         cursor=db.rawQuery(sql,null);
 
         int i=0;
+
         if(cursor.moveToFirst()){
-            i= cursor.getInt(cursor.getColumnIndex(col_1));
+            i= cursor.getInt(cursor.getColumnIndex(inventory_movement.col_1));
         }
         cursor.close();
         return i+1;
+
+
+
+
     }
 
-    public void updateSyncStatus(String sales_id){
+    public void updateSyncStatus(String data_value,String table_name,String column_name){
         SQLiteDatabase db=getWritableDatabase();
         String sql=null;
+        String where_clause=column_name+"="+data_value;
         ContentValues value=new ContentValues();
         value.put("sync_status",1);
-        db.update(tb_name,value,"tb_sale_id="+sales_id,null);
+        db.update(table_name,value,where_clause,null);
         db.close();
-        Log.d("sync update",sales_id+" was executed");
+        Log.d("sync update",data_value+" was executed");
+    }
+
+    public  List<viewCartData> getCartData(String order_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+        sql="SELECT tb_products.product_id,tb_products.product_name,tb_products_price.price,SUM(tb_order_items.product_count) as total " +
+                "FROM tb_products " +
+                "inner join tb_products_price on tb_products.product_id=tb_products_price.product_id " +
+                "inner join tb_order_items on tb_products.product_id=tb_order_items.product_id " +
+                "WHERE tb_order_items.order_id='"+order_id+"' GROUP BY tb_products.product_id";
+
+
+
+        List<viewCartData> data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                do{
+
+                    data.add(new viewCartData(cursor.getString(cursor.getColumnIndex(Products.col_1)),
+                            cursor.getString(cursor.getColumnIndex(Products.col_2)),
+                            cursor.getString(cursor.getColumnIndex(Product_Prices.col_3)),
+                            cursor.getString(cursor.getColumnIndex("total"))));
+
+                    Log.d("order item id:",cursor.getString(cursor.getColumnIndex(Products.col_1)));
+                    Log.d("order item name:",cursor.getString(cursor.getColumnIndex(Products.col_2)));
+                    Log.d("total:",  cursor.getString(cursor.getColumnIndex("total")));
+
+                }while (cursor.moveToNext());
+
+            }
+
+            cursor.close();
+        } catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+
+        return data;
     }
 }

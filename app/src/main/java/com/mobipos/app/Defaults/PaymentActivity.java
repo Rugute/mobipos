@@ -29,6 +29,7 @@ import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.PushSaleData;
 import com.mobipos.app.R;
 import com.mobipos.app.Sync.SalesSync;
+import com.mobipos.app.Sync.Synchronizer;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Sales;
@@ -304,7 +305,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                     CheckInternetSettings internetSettings=new CheckInternetSettings(PaymentActivity.this);
                     if (internetSettings.isNetworkConnected()){
-                        new SalesSync(getApplicationContext());
+                        new Synchronizer(getApplicationContext());
                     }
 
                     startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
