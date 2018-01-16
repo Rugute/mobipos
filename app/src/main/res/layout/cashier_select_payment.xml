@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/payment_radio_group">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_cash"
+            android:text="Cash"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_mpesa"
+            android:text="Mpesa"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_visa"
+            android:text="Visa"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio_master"
+            android:text="Master Card"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:layout_marginBottom="10dp"
+            />
+    </RadioGroup>
+</RelativeLayout>

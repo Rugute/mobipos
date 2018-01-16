@@ -30,6 +30,7 @@
 
         <TextView
             android:layout_width="0dp"
+            android:id="@+id/receipt_total"
             android:gravity="right"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,6 +77,7 @@
         android:layout_gravity="right"
         android:textStyle="bold"
         android:textColor="#000"
+        android:id="@+id/grand_total"
         android:textSize="18sp"
         android:text="350.00" />
 
@@ -84,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="#000"
+        android:id="@+id/btn_proceed_payment"
         android:foreground="?attr/selectableItemBackground"
         android:text="PROCEED PAYMENT"
         android:textColor="#fff" />

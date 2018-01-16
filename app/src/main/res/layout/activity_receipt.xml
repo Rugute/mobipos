@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#efefef"
-    tools:context="com.mobipos.app.Defaults.ReceiptActivity">
+    tools:context="com.mobipos.app.Defaults.PaymentActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -73,7 +73,7 @@ public class Order_Items extends Controller {
         return orderItemExists("order",String.valueOf(i));
     }
 
-    public List<viewCartData> getCartData(String order_id){
+    public  List<viewCartData> getCartData(String order_id){
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
         sql="SELECT tb_products.product_id,tb_products.product_name,tb_products_price.price,SUM(tb_order_items.product_count) as total " +
@@ -114,24 +114,19 @@ public class Order_Items extends Controller {
         return data;
     }
 
-    public int getItemCount(String order_id){
+    public int getProducCount(String product_id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_2+"='"+order_id+"'";
-        String sql1="SELECT * FROM "+tb_name;
+        String sql="SELECT SUM(product_count) as total FROM "+tb_name+ " WHERE "+col_3+"="+product_id;
 
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
+        int i=0;
         if(cursor.moveToFirst()){
-            do{
-                Log.d("order item id",cursor.getString(cursor.getColumnIndex(col_1)));
-                Log.d("order id",cursor.getString(cursor.getColumnIndex(col_2)));
-                Log.d("product id",cursor.getString(cursor.getColumnIndex(col_3)));
-                Log.d("item count",cursor.getString(cursor.getColumnIndex(col_4)));
-            }while(cursor.moveToNext());
+            i=Integer.parseInt(cursor.getString(cursor.getColumnIndex("total")));
+                Log.d("count :",cursor.getString(cursor.getColumnIndex("total")));
         }
 
-        Log.d("number of order items:",String.valueOf(cursor.getCount()));
-        return cursor.getCount();
+        return i;
     }
 
     public int getLastId(){

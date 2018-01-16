@@ -8,52 +8,41 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobipos.app.Cashier.Adapters.CashierItemRvAdapter;
 import com.mobipos.app.Cashier.Adapters.ListViewCartAdapter;
 import com.mobipos.app.Cashier.Adapters.MakeSalesAdapter;
-import com.mobipos.app.Cashier.Adapters.RecyclerItemClickListener;
-import com.mobipos.app.Cashier.Adapters.ViewCartAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
-import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
-import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
+import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
+import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.DatabaseInitializers;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
-import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -80,6 +69,7 @@ public class MakeSale extends Fragment {
     TextView text_order_no;
 
     ListView listView;
+    ImageView refresh;
 
     RelativeLayout view_cart;
     RecyclerView rv;
@@ -87,6 +77,8 @@ public class MakeSale extends Fragment {
     public  boolean order_created=false;
     String get_item_count;
     Orders ordersdb;
+
+    public boolean view_cart_seen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,7 +97,7 @@ public class MakeSale extends Fragment {
         PackageConfig.orders_items=new ArrayList<>();
 
 
-
+        view_cart_seen=false;
         ordersdb=new Orders(getActivity(),defaults.database_name,null,1);
         categoriesdb=new Categories(getActivity(), defaults.database_name,null,1);
         productsdb=new Products(getActivity(), defaults.database_name,null,1);
@@ -113,6 +105,7 @@ public class MakeSale extends Fragment {
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
+        refresh=view.findViewById(R.id.refresh);
         navigator=view.findViewById(R.id.navigator);
         text_order_no=view.findViewById(R.id.order_no);
         total_value=view.findViewById(R.id.total_value);
@@ -126,15 +119,22 @@ public class MakeSale extends Fragment {
 
         showBackButton(false,"Make Sale");
 
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment=null;
+                fragment=MakeSale.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout_new, fragment);
+                transaction.commit();
+            }
+        });
 
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
         if(internetOn.isNetworkConnected()){
-            DatabaseInitializers init=new DatabaseInitializers(getContext());
-            if(!init.loaded()){
-               Toast.makeText(getContext(),"data loaded",Toast.LENGTH_SHORT).show();
-                
-            }
-            expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+//            if(new DatabaseInitializers(getContext()).loaded()){
+//               AppConfig.firstRefresh=true;
+//            }
         }else{
             if(categoriesdb.getCategoryCount()==0){
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
@@ -147,20 +147,25 @@ public class MakeSale extends Fragment {
                         });
                 alertBuilder.show();
             }else{
+                refresh.setVisibility(View.GONE);
                 expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+
             }
         }
+        expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
 
-
-
+        if(AppConfig.firstRefresh){
+            refresh.setVisibility(View.GONE);
+        }
 
         fab_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view_cart_seen=false;
                 expandableListView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
-                navigator.setText("Click to Proceed");
+                 navigator.setText("Click to Proceed");
             }
         });
 
@@ -168,10 +173,14 @@ public class MakeSale extends Fragment {
             @Override
             public void onClick(View view) {
 
+                if(view_cart_seen){
+                    startActivity(new Intent(getActivity(), PaymentActivity.class));
+                }
 
                 if(total_value.getText().toString().equals("0")){
                     Toast.makeText(getContext(),"No products selected",Toast.LENGTH_SHORT).show();
                 }else{
+                    view_cart_seen=true;
                     total_card.setCardBackgroundColor(Color.parseColor("#605398"));
                         expandableListView.setVisibility(View.GONE);
                         view_cart.setVisibility(View.VISIBLE);
@@ -195,11 +204,6 @@ public class MakeSale extends Fragment {
             }
         });
 
-
-
-
-
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
@@ -211,7 +215,7 @@ public class MakeSale extends Fragment {
 
                 if(!order_created){
                     Long timestamp= System.currentTimeMillis();
-                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-yyyy HH:MM:ss");
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
                     SimpleDateFormat order=new SimpleDateFormat("ddMMyyyyHHMMSS");
                     PackageConfig.order_no=order.format(new Date());
                     PackageConfig.date=simpleDateFormat.format(new Date());
@@ -220,12 +224,12 @@ public class MakeSale extends Fragment {
 
                         order_created=true;
                         text_order_no.setText(PackageConfig.order_no);
-                        Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
+                   //     Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
 
                     }
                 }
                 if(orderItemsdb.insertOrderItem(text_order_no.getText().toString(),stId,"1")){
-                    Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
                    // total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
 
                 }
@@ -236,6 +240,16 @@ public class MakeSale extends Fragment {
             }
         });
 
+    }
+
+    public void initializeExtend(){
+
+        expandableListView.invalidate();
+        MakeSalesAdapter adapter=new MakeSalesAdapter(getActivity(),cartData());
+        adapter.notifyDataSetChanged();
+        expandableListView.setAdapter(adapter);
+        Toast.makeText(getContext(),"we are here too",Toast.LENGTH_SHORT).show();
+      //  expandableListView.setAdapter();
     }
 
     public void initializeListAdapter(String order_id){

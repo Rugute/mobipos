@@ -35,60 +35,51 @@
 
                     <TextView
                         android:id="@+id/nameOfPerson"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginEnd="75dp"
-                        android:layout_marginRight="75dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginRight="30dp"
                         android:text="Receipt"
                         android:textColor="#fff"
                         android:textSize="35dp" />
 
-                    <TextView
-                        android:id="@+id/phoneOfPerson"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nameOfPerson"
-                        android:layout_toRightOf="@+id/nameOfPerson"
-                        android:text=""
-                        android:textColor="#fff"
-                        android:textSize="20dp" />
+
 
                     <TextView
-                        android:id="@+id/transaction_code"
-                        android:layout_width="match_parent"
+                        android:id="@+id/reciept_order_date"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="212dp"
-                        android:layout_marginStart="212dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginStart="0dp"
                         android:text="Date"
+                        android:layout_below="@+id/nameOfPerson"
                         android:textColor="#fff"
                         android:textSize="20dp" />
 
                     <TextView
-                        android:id="@+id/expiry"
-                        android:layout_width="match_parent"
+                        android:id="@+id/receipt_order_no"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/transaction_code"
-                        android:layout_marginTop="23dp"
+                        android:paddingBottom="10pt"
                         android:text="Order Number"
                         android:textColor="#e90c0c"
                         android:textSize="20dp" />
 
                     <Button
                         android:id="@+id/button_bottom_sheet"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/expiry"
-                        android:layout_alignBottom="@+id/expiry"
-                        android:layout_alignLeft="@+id/transaction_code"
-                        android:layout_alignStart="@+id/transaction_code"
+                       android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:text="Pay"
                         android:background="#000"
                         android:textColor="#fff"
@@ -125,9 +116,9 @@
             android:weightSum="1">
 
             <android.support.v7.widget.RecyclerView
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:id="@+id/recrv">
+                android:id="@+id/reciept_recycler">
 
             </android.support.v7.widget.RecyclerView>
 
