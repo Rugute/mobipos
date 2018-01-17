@@ -9,11 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.mobipos.app.Admin.DashboardFragments.AdminViewSales;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Cashier.dashboardFragments.ViewSales.ViewSale;
-import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
 
 import com.mobipos.app.R;
 
@@ -59,10 +58,10 @@ public class DashboardCashier extends AppCompatActivity{
                         selectedFragment = MakeSale.newInstance();
                         break;
                     case R.id.cashier_item_settings:
-                        selectedFragment = SalesFragment.newInstance();
+                        selectedFragment = AdminViewSales.newInstance();
                         break;
                     case R.id.cashier_item_account:
-                        selectedFragment = SalesFragment.newInstance();
+                        selectedFragment = AdminViewSales.newInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

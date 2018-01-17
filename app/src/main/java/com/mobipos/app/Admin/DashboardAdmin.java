@@ -9,9 +9,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.mobipos.app.Admin.DashboardFragments.AdminViewSales;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.AdminInventory;
 import com.mobipos.app.Dashboard.DashboardFragment;
-import com.mobipos.app.Admin.DashboardFragments.SalesFragment;
 import com.mobipos.app.Admin.DashboardFragments.NotificationsFragment;
 import com.mobipos.app.R;
 
@@ -51,7 +51,7 @@ public class DashboardAdmin extends AppCompatActivity {
                         selectedFragment= NotificationsFragment.newInstance();
                         break;
                     case R.id.navigation_sales:
-                        selectedFragment= SalesFragment.newInstance();
+                        selectedFragment= AdminViewSales.newInstance();
                         break;
                 }
                 FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();

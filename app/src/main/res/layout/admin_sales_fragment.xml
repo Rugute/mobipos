@@ -62,7 +62,7 @@
             android:visibility="gone"/>
 
         <android.support.v7.widget.CardView
-
+            android:id="@+id/card_sales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -84,6 +84,15 @@
                     android:textSize="18sp"/>
 
                 <TextView
+                    android:id="@+id/d_sales"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=" "
@@ -93,7 +102,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-
+            android:id="@+id/card_inventory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -113,6 +122,14 @@
                     android:textStyle="bold"
                     android:textColor="#000"
                     android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/d_inventory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -124,7 +141,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-
+            android:id="@+id/card_profit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -141,6 +158,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Profit Margins"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/d_profit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
                     android:textStyle="bold"
                     android:textColor="#000"
                     android:textSize="18sp"/>
