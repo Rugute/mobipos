@@ -266,4 +266,14 @@ public class Users extends Controller {
 
         return check_branch(id);
     }
+
+    public int clearUserData(){
+        String sql="DELETE from "+tb_name;
+        String sql_pin="DELETE from "+tb_pin;
+        SQLiteDatabase db=this.getWritableDatabase();
+        db.execSQL(sql);
+        db.execSQL(sql_pin);
+
+        return CheckUserOrPin(tb_name);
+    }
 }
