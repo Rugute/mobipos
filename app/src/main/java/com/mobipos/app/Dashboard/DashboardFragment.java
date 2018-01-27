@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
+import com.mobipos.app.Sync.DatabaseInitializers;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
@@ -74,6 +76,16 @@ public class DashboardFragment extends Fragment {
             no_branch.setVisibility(View.VISIBLE);
         }else{
             listView.setAdapter(new QuickSaleAdapter(getContext(),AppConfig.branchNames));
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    int pos= (int) adapterView.getItemIdAtPosition(i);
+                    AppConfig.selected_branch_id=AppConfig.branchIds[pos];
+
+                    new DatabaseInitializers(getActivity(),0);
+                }
+            });
         }
 
         dialog.setView(view);
