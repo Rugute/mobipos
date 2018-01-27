@@ -35,7 +35,6 @@ import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
-import com.mobipos.app.database.DatabaseInitializers;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
@@ -116,6 +115,8 @@ public class MakeSale extends Fragment {
         final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+
 
         showBackButton(false,"Make Sale");
 

@@ -1,5 +1,7 @@
 package com.mobipos.app.Admin.DashboardFragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.mobipos.app.Defaults.AppConfig;
+import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 
 import com.mobipos.app.R;
@@ -60,7 +63,22 @@ public class AdminViewSales extends Fragment {
         dailyprofit=(TextView)view.findViewById(R.id.d_profit);
         spin=(Spinner)view.findViewById(R.id.sales_spinner_admin);
 
-        new ViewSale().execute();
+       final CheckInternetSettings internet=new CheckInternetSettings(getActivity());
+        if(internet.isNetworkConnected()){
+            new ViewSale().execute();
+        }else{
+            AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
+                    setTitle("Cannot Sync Data").
+                    setMessage("Enable your internet to Synce Sales").
+                    setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            internet.context.startActivity(new Intent("android.settings.DATA_ROAMING_SETTINGS"));
+                        }
+                    });
+            alertBuilder.show();
+        }
+
+
 
     }
     public class ViewSale extends AsyncTask<String,String,String>{

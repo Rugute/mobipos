@@ -1,15 +1,19 @@
-package com.mobipos.app.database;
+package com.mobipos.app.Sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mobipos.app.Cashier.Adapters.CashierCategRvAdapter;
-import com.mobipos.app.Cashier.Adapters.CashierItemRvAdapter;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
+import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Inventory;
+import com.mobipos.app.database.Product_Prices;
+import com.mobipos.app.database.Products;
+import com.mobipos.app.database.Users;
+import com.mobipos.app.database.defaults;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -19,118 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by folio on 1/11/2018.
+ * Created by folio on 1/18/2018.
  */
 
-
-public class DatabaseInitializers {
-
-    public static boolean productsLoaded=false;
-    public static boolean categoriesLoaded=false;
-    Categories categories;
+public class ProductIntitalizer {
     Users users;
+    Categories categories;
     Context context;
     Products productsdb;
     Product_Prices pricesdb;
     Inventory inventorydb;
-    public  DatabaseInitializers(Context context){
+    int user_type;
+    public ProductIntitalizer(Context context,int user_type){
         this.context=context;
-        categories=new Categories(context,defaults.database_name,null,1);
-        users=new Users(context,defaults.database_name,null,1);
-        productsdb=new Products(context,defaults.database_name,null,1);
-        pricesdb=new Product_Prices(context,defaults.database_name,null,1);
-        inventorydb=new Inventory(context,defaults.database_name,null,1);
-
-
-
-
-    }
-
-    public boolean loaded(){
-        new loadCategories().execute();
+        users=new Users(context, defaults.database_name,null,1);
+        categories=new Categories(context, defaults.database_name,null,1);
+        productsdb=new Products(context, defaults.database_name,null,1);
+        pricesdb=new Product_Prices(context, defaults.database_name,null,1);
+        inventorydb=new Inventory(context, defaults.database_name,null,1);
+        this.user_type=user_type;
         new loadItems().execute();
 
-        if(productsLoaded && categoriesLoaded){
-            return true;
-        }else{
-            return false;
-        }
     }
 
-    public class loadCategories extends AsyncTask<String,String,String> {
-
-        int success=0;
-        String serverMessage;
-        JSONArray categoryArray;
-
-
-        protected void onPreExecute(){
-            super.onPreExecute();
-        }
-        @Override
-        protected String doInBackground(String... strings) {
-            JSONParser jsonParser=new JSONParser();
-            List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
-
-            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_categories,
-                    "GET",paramters);
-
-            Log.d("json object",jsonObject.toString());
-
-            try {
-                success=jsonObject.getInt("success");
-                serverMessage=jsonObject.getString("message");
-
-                categoryArray=jsonObject.getJSONArray("data");
-
-                PackageConfig.categoryArrayId=new String[categoryArray.length()];
-                PackageConfig.categoryArrayName=new String[categoryArray.length()];
-
-                for(int i=0;i<categoryArray.length();i++){
-                    JSONObject jObj=categoryArray.getJSONObject(i);
-
-                    PackageConfig.categoryArrayName[i]=jObj.getString("cat_name");
-                    PackageConfig.categoryArrayId[i]=jObj.getString("cat_id");
-
-                }
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        protected void onPostExecute(String s){
-            super.onPostExecute(s);
-            if (success==1){
-                if(categories.getCategoryCount()==0){
-                    for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
-                        if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])) {
-                            Log.d("error inserting data","data not inserted");
-
-                        }
-                    }
-                }else{
-                    //check if category exists
-                    for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
-                        if(!categories.CategoryExists(PackageConfig.categoryArrayId[i])){
-                            if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])){
-                                Log.d("error inserting data","data not inserted");
-                            }
-                        }
-                    }
-                }
-
-                categoriesLoaded=true;
-            }else{
-                Toast.makeText(context,serverMessage,Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    public class loadItems extends AsyncTask<String,String,String>{
+    public class loadItems extends AsyncTask<String,String,String> {
 
         int success=0;
         String serverMessage;
@@ -142,11 +58,22 @@ public class DatabaseInitializers {
         @Override
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
+            JSONObject jsonObject;
             List parameters=new ArrayList();
-            parameters.add(new BasicNameValuePair("user_id",users.get_user_id()));
 
-            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_items,
-                    "GET",parameters);
+
+            if(user_type==0) {
+                //admin loading data
+                parameters.add(new BasicNameValuePair("branch_id",AppConfig.branchId));
+                jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_items,
+                        "GET",parameters);
+            }else{
+                //cashier load data
+                parameters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+                jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_items,
+                        "GET",parameters);
+            }
+
             Log.d("json object",jsonObject.toString());
 
             try{
@@ -230,12 +157,11 @@ public class DatabaseInitializers {
                     }
                 }
 
-                productsLoaded=true;
+              //  productsLoaded=true;
             }else if(success==0){
                 Toast.makeText(context,serverMessage,Toast.LENGTH_SHORT).show();
             }
 
         }
     }
-
 }

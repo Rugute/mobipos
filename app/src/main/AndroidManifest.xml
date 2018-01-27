@@ -37,7 +37,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"
             android:noHistory="true"/>
-        <activity android:name=".Admin.DashboardAdmin">
+        <activity android:name=".Admin.DashboardAdmin"
+            android:noHistory="true">
 
 
         </activity>

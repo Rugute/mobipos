@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mobipos.app.Cashier.DashboardCashier;
+import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.R;
+import com.mobipos.app.Sync.DatabaseInitializers;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
@@ -55,7 +57,20 @@ public class PinLogin extends Activity {
 
                     try {
                         if(users_id.password_match(strPin)){
-                            startActivity(new Intent(PinLogin.this, DashboardCashier.class));
+                            final CheckInternetSettings internet=new CheckInternetSettings(PinLogin.this);
+                            if(internet.isNetworkConnected()){
+                                try{
+                                    new DatabaseInitializers(getApplicationContext(),1);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }finally {
+                                    startActivity(new Intent(PinLogin.this, DashboardCashier.class));
+                                }
+                            }else{
+                                startActivity(new Intent(PinLogin.this, DashboardCashier.class));
+                            }
+
+
                         }else {
                             Toast.makeText(getApplicationContext(), "Wrong Pin", Toast.LENGTH_SHORT).show();
                         }
