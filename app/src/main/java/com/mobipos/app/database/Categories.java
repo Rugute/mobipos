@@ -170,7 +170,12 @@ public class Categories extends Controller {
 
     }
 
-    public void deleteCatandProd(){
+    public void EmptyTables(){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql_cat="DELETE FROM "+tb_name;
+        String sql_prod="DELETE FROM "+Products.tb_name;
 
+        db.execSQL(sql_cat);
+        db.execSQL(sql_prod);
     }
 }
