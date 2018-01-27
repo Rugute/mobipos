@@ -83,7 +83,7 @@ public class DashboardFragment extends Fragment {
                     int pos= (int) adapterView.getItemIdAtPosition(i);
                     AppConfig.selected_branch_id=AppConfig.branchIds[pos];
 
-                    new DatabaseInitializers(getActivity(),0);
+                     new DatabaseInitializers(getActivity(),0);
                 }
             });
         }
