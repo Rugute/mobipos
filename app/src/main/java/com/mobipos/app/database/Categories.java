@@ -169,4 +169,8 @@ public class Categories extends Controller {
         }
 
     }
+
+    public void deleteCatandProd(){
+
+    }
 }

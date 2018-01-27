@@ -64,7 +64,7 @@ public class ProductIntitalizer {
 
             if(user_type==0) {
                 //admin loading data
-                parameters.add(new BasicNameValuePair("branch_id",AppConfig.branchId));
+                parameters.add(new BasicNameValuePair("branch_id",AppConfig.selected_branch_id));
                 jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_items,
                         "GET",parameters);
             }else{

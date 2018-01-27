@@ -54,7 +54,7 @@ public class CategoriesIntiliazer {
 
             if(user_type==0){
                 //admin loading data
-                paramters.add(new BasicNameValuePair("branch_id",AppConfig.branchId));
+                paramters.add(new BasicNameValuePair("branch_id",AppConfig.selected_branch_id));
 
                 jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_categories,
                         "GET",paramters);
