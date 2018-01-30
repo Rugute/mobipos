@@ -131,22 +131,27 @@ public class Categories extends Controller {
         SQLiteDatabase db=this.getWritableDatabase();
       //  String sql="DELETE from "+tb_name;
 
-        try{
-           // db.execSQL(sql);
-            ContentValues values=new ContentValues();
-            values.put(col_1,id);
-            values.put(col_2,name);
-            values.put(col_4,"1");
+        if(CategoryExists(id)){
+            return true;
+        }else{
+            try{
+
+                ContentValues values=new ContentValues();
+                values.put(col_1,id);
+                values.put(col_2,name);
+                values.put(col_4,"1");
 
 
-            db.insert(tb_name,null,values);
-            Log.d("insert category name:",name);
-            db.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+                db.insert(tb_name,null,values);
+                Log.d("insert category name:",name);
+                db.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            return CategoryExists(id);
         }
 
-        return CategoryExists(id);
     }
 
     public String categoryId(String value){
@@ -170,12 +175,14 @@ public class Categories extends Controller {
 
     }
 
-    public void EmptyTables(){
-        SQLiteDatabase db=getReadableDatabase();
+    public int EmptyTables(){
+        SQLiteDatabase db=getWritableDatabase();
         String sql_cat="DELETE FROM "+tb_name;
         String sql_prod="DELETE FROM "+Products.tb_name;
 
         db.execSQL(sql_cat);
         db.execSQL(sql_prod);
+
+        return getCategoryCount();
     }
 }

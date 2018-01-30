@@ -76,25 +76,32 @@ public class Products extends Controller {
         SQLiteDatabase db=this.getWritableDatabase();
         //  String sql="DELETE from "+tb_name;
 
-        try{
-            // db.execSQL(sql);
-            ContentValues values=new ContentValues();
-            values.put(col_1,id);
-            values.put(col_2,name);
-            values.put(col_3,category_id);
-            values.put(col_4,"1");
-            values.put(col_5,"1");
-            values.put(col_6,measure);
+        if(ProductExists(id)){
+            return  true;
+        }else{
+            try{
+                // db.execSQL(sql);
+                ContentValues values=new ContentValues();
+                values.put(col_1,id);
+                values.put(col_2,name);
+                values.put(col_3,category_id);
+                values.put(col_4,"1");
+                values.put(col_5,"1");
+                values.put(col_6,measure);
 
 
-            db.insert(tb_name,null,values);
-            Log.d("insert product name:",name);
-            db.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+                db.insert(tb_name,null,values);
+                Log.d("insert product name:",name);
+                db.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            return ProductExists(id);
         }
 
-        return ProductExists(id);
+
+
     }
 
     public List<CashierItemsData> getProducts(String category){

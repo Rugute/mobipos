@@ -12,7 +12,7 @@ public class AppConfig {
     public static String hostname_admin="/mobipos.com/admin/custom/data/apis/log/";
     public static String url_register="register.php";
     public static String get_today_sales="admin-get-todays-sales.php";
-    public static String admin_select_branches="admin-get-todays-sales.php";
+    public static String admin_select_branches="admin-get-branches.php";
     public static String get_items="admin-get-products-to-sale.php";
     public static String get_categories="admin-get-categories.php";
 

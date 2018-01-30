@@ -40,7 +40,7 @@ public class DashboardAdmin extends AppCompatActivity {
 
         usersdb=new Users(this, defaults.database_name,null,1);
         Fragment fragment;
-        fragment= DashboardFragment.newInstance();
+        fragment= AdminInventory.newInstance();
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout,fragment);
         transaction.commit();
@@ -52,13 +52,13 @@ public class DashboardAdmin extends AppCompatActivity {
                 Fragment selectedFragment=null;
                 switch (item.getItemId()){
                     case R.id.navigation_home:
-                        selectedFragment= DashboardFragment.newInstance();
+                       selectedFragment= AdminInventory.newInstance();
                         break;
-                    case R.id.navigation_dashboard:
-                        selectedFragment= AdminInventory.newInstance();
-                        break;
-                    case R.id.navigation_notifications:
-                        selectedFragment= NotificationsFragment.newInstance();
+                   // case R.id.navigation_dashboard:
+                      //  selectedFragment= AdminInventory.newInstance();
+                      //  break;
+                    case R.id.navigation_account:
+                        selectedFragment= AccountFragment.newInstance();
                         break;
                     case R.id.navigation_sales:
                         selectedFragment= AdminViewSales.newInstance();

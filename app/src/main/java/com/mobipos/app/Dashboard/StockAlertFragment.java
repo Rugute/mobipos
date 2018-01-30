@@ -12,9 +12,9 @@ import com.mobipos.app.R;
  * Created by root on 12/8/17.
  */
 
-public class ProductFragment extends Fragment {
-    public static ProductFragment newInstance(){
-        ProductFragment fragment= new ProductFragment();
+public class StockAlertFragment extends Fragment {
+    public static StockAlertFragment newInstance(){
+        StockAlertFragment fragment= new StockAlertFragment();
         return fragment;
     }
     @Override
@@ -24,6 +24,6 @@ public class ProductFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_fragment, container, false);
+        return inflater.inflate(R.layout.admin_alert_fragment, container, false);
     }
 }

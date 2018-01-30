@@ -33,12 +33,16 @@ import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCa
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.PaymentActivity;
+import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
+import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
+import com.mobipos.app.login.AdminLogin;
+import com.mobipos.app.login.PinLogin;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +80,7 @@ public class MakeSale extends Fragment {
     public  boolean order_created=false;
     String get_item_count;
     Orders ordersdb;
+    Users users;
 
     public boolean view_cart_seen;
 
@@ -101,6 +106,7 @@ public class MakeSale extends Fragment {
         categoriesdb=new Categories(getActivity(), defaults.database_name,null,1);
         productsdb=new Products(getActivity(), defaults.database_name,null,1);
         orderItemsdb=new Order_Items(getActivity(), defaults.database_name,null,1);
+        users=new Users(getActivity(), defaults.database_name,null,1);
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
@@ -123,11 +129,19 @@ public class MakeSale extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment=null;
-                fragment=MakeSale.newInstance();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                transaction.replace(R.id.frame_layout_new, fragment);
-                transaction.commit();
+
+                    Fragment fragment=null;
+                    fragment=MakeSale.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    if(users.get_login_details()[2].equals("cashier")){
+                        transaction.replace(R.id.frame_layout_new, fragment);
+                        transaction.commit();
+                    }else {
+                        transaction.replace(R.id.frame_layout, fragment);
+                        transaction.commit();
+                    }
+
+
             }
         });
 

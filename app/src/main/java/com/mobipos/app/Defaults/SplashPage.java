@@ -33,6 +33,8 @@ public class SplashPage extends Activity {
     LinearLayout linear_loggers;
     TextView register_user;
 
+    Categories categoriesdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class SplashPage extends Activity {
         imageView.startAnimation(animation);
         TextView textView= findViewById(R.id.splash_text);
 
+        categoriesdb=new Categories(this,defaults.database_name,null,1);
         textView.setAnimation(animation_text);
         //linear.setAnimation(animation_linear);
 
@@ -66,9 +69,14 @@ public class SplashPage extends Activity {
                     bar.setVisibility(View.GONE);
 
                     if(users.get_login_details()[2].equals("cashier")){
+
+
                         startActivity(new Intent(SplashPage.this,PinLogin.class));
                     }else {
-                        startActivity(new Intent(SplashPage.this,AdminLogin.class));
+                        if(categoriesdb.EmptyTables()==0){
+                            startActivity(new Intent(SplashPage.this,AdminLogin.class));
+                        }
+
                     }
 
                }else{

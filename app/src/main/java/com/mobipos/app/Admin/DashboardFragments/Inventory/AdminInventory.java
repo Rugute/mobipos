@@ -18,6 +18,8 @@ import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
+import com.mobipos.app.Dashboard.ReportFragment;
+import com.mobipos.app.Dashboard.StockAlertFragment;
 import com.mobipos.app.R;
 
 /**
@@ -69,13 +71,13 @@ public class AdminInventory extends Fragment {
                     transaction.commit();
                 }else if(pos==2){
                     Fragment fragment;
-                    fragment = AccountFragment.newInstance();
+                    fragment = StockAlertFragment.newInstance();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
                 }else if(pos==3){
                     Fragment fragment;
-                    fragment = AccountFragment.newInstance();
+                    fragment = ReportFragment.newInstance();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();

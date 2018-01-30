@@ -96,23 +96,30 @@ public class CategoriesIntiliazer {
         protected void onPostExecute(String s){
             super.onPostExecute(s);
             if (success==1){
-                if(categories.getCategoryCount()==0){
-                    for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
-                        if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])) {
-                            Log.d("error inserting data","data not inserted");
+
+
+                    if(categories.getCategoryCount()==0){
+                        for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
+                            try{
+                                if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])) {
+                                    Log.d("error inserting data","data not inserted");
+
+                                }
+                            }catch (ArrayIndexOutOfBoundsException e){
+                                e.printStackTrace();
+                            }
 
                         }
-                    }
-                }else{
-                    //check if category exists
-                    for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
-                        if(!categories.CategoryExists(PackageConfig.categoryArrayId[i])){
-                            if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])){
-                                Log.d("error inserting data","data not inserted");
+                    }else{
+                        //check if category exists
+                        for(int i=0;i<PackageConfig.categoryArrayId.length;i++){
+                            if(!categories.CategoryExists(PackageConfig.categoryArrayId[i])){
+                                if(!categories.insertCategory(PackageConfig.categoryArrayId[i],PackageConfig.categoryArrayName[i])){
+                                    Log.d("error inserting data","data not inserted");
+                                }
                             }
                         }
                     }
-                }
 
                // categoriesLoaded=true;
             }else{

@@ -1,25 +1,25 @@
 package com.mobipos.app.Dashboard;
 
+import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
-import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
-import com.mobipos.app.Sync.DatabaseInitializers;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
@@ -28,50 +28,105 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import static com.mobipos.app.Admin.PackageConfig.branches;
+import java.util.Locale;
 
 /**
  * Created by root on 12/8/17.
  */
 
-public class DashboardFragment extends Fragment {
-    CardView reportcard,quicksalecard;
+public class ReportFragment extends Fragment{
+    Button datefrom,dateto,genreport;
+    TextView branchselect;
+    EditText date1,date2;
     Users users;
     Categories categoriesdb;
-    public static DashboardFragment newInstance(){
-        DashboardFragment fragment= new DashboardFragment();
+    Calendar calendar=Calendar.getInstance();
+
+    DatePickerDialog fromPicker,toPicker;
+    public static ReportFragment newInstance(){
+        ReportFragment fragment= new ReportFragment();
         return fragment;
     }
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dashboard_fragment, container, false);
+        return inflater.inflate(R.layout.admin_report_fragment, container, false);
     }
-    public  void onViewCreated(View view,Bundle savedInstanceState){
+    public void onViewCreated(View view ,Bundle savedInstanceState){
+       datefrom=(Button)view.findViewById(R.id.button_from);
+       dateto=(Button)view.findViewById(R.id.button_to);
+       genreport=(Button)view.findViewById(R.id.gen);
+       date1=(EditText)view.findViewById(R.id.fro1);
+       date2=(EditText)view.findViewById(R.id.editText);
+       branchselect=(TextView)view.findViewById(R.id.choose);
         users=new Users(getContext(), defaults.database_name,null,1);
-        categoriesdb=new Categories(getContext(), defaults.database_name,null,1);
-        reportcard=(CardView)view.findViewById(R.id.report_card);
-        quicksalecard=(CardView)view.findViewById(R.id.quick_sale_card);
+        //categoriesdb=new Categories(getContext(), defaults.database_name,null,1);
 
 
-        quicksalecard.setOnClickListener(new View.OnClickListener() {
+      final DatePickerDialog.OnDateSetListener fDate=new DatePickerDialog.OnDateSetListener() {
+          @Override
+          public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+              calendar.set(Calendar.YEAR,year);
+              calendar.set(Calendar.MONTH,month);
+              calendar.set(Calendar.DAY_OF_MONTH,day);
+              updateDate(date1);
+          }
+      } ;
+
+
+        final DatePickerDialog.OnDateSetListener tDate=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,day);
+                updateDate(date2);
+            }
+        } ;
+
+      datefrom.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              new DatePickerDialog(getContext(),fDate,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),
+                      calendar.get(Calendar.DAY_OF_MONTH)).show();
+          }
+      });
+
+      dateto.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              new DatePickerDialog(getContext(),tDate,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),
+                      calendar.get(Calendar.DAY_OF_MONTH)).show();
+          }
+      });
+        branchselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //new SelectBranch().execute();
+                new SelectBranch().execute();
+
             }
         });
 
 
+
     }
-   /* public void SelectOutletPop (int i){
+
+    public void updateDate(EditText editText){
+        String format="yyyy-MM-dd";
+        SimpleDateFormat dateFormat=new SimpleDateFormat(format, Locale.US);
+        editText.setText(dateFormat.format(calendar.getTime()));
+    }
+    public void SelectOutletPop (int i){
         final AlertDialog dialog= new AlertDialog.Builder(getContext()).create();
         View view=LayoutInflater.from(getContext()).inflate(R.layout.admin_list_branches,null);
         ListView listView=view.findViewById(R.id.view_outlet);
@@ -88,7 +143,8 @@ public class DashboardFragment extends Fragment {
                     int pos= (int) adapterView.getItemIdAtPosition(i);
                     AppConfig.selected_branch_id=AppConfig.branchIds[pos];
 
-                    if(categoriesdb.EmptyTables()==0){
+
+                    /*if(categoriesdb.EmptyTables()==0){
                         new DatabaseInitializers(getActivity(),0);
 
                         Fragment fragment;
@@ -98,7 +154,7 @@ public class DashboardFragment extends Fragment {
                         transaction.commit();
 
                         dialog.dismiss();
-                    }
+                    }*/
 
                 }
             });
@@ -106,8 +162,9 @@ public class DashboardFragment extends Fragment {
 
         dialog.setView(view);
         dialog.show();
-    }*/
-   /** public class SelectBranch extends AsyncTask<String,String,String> {
+    }
+
+    public class SelectBranch extends AsyncTask<String,String,String> {
         int success=0;
         String serverMessage;
         JSONArray branch ;
@@ -161,6 +218,6 @@ public class DashboardFragment extends Fragment {
 
             }
         }
-    }**/
+    }
 
 }
