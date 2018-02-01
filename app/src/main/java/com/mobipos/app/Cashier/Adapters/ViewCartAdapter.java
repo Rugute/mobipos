@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.viewCartData;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Order_Items;
+import com.mobipos.app.database.Products;
+import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.defaults;
 
 import java.util.List;
@@ -61,6 +64,8 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
     List<viewCartData> itemsData;
     Context context;
     Order_Items orderitemsdb;
+    Products productsdb;
+    Taxes taxesdb;
 
     String str_order_id;
 
@@ -74,6 +79,8 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         this.context=context;
         this.str_order_id=str_order_id;
         orderitemsdb=new Order_Items(context, defaults.database_name,null,1);
+        taxesdb=new Taxes(context, defaults.database_name,null,1);
+        productsdb=new Products(context, defaults.database_name,null,1);
     }
 
     @Override
@@ -97,6 +104,22 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         itemListViewHolder.product_quantity.setVisibility(View.GONE);
         itemListViewHolder.total_value.setText(String.valueOf(Integer.parseInt(itemsData.get(i).count)*
         Integer.parseInt(itemsData.get(i).price)));
+
+         Log.d("tax selected",String.valueOf(productsdb.taxMode(itemsData.get(i).product_id)));
+        int total_product_price=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
+
+        int tax_value=Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[0])*total_product_price/100;
+
+        if(productsdb.taxMode(itemsData.get(i).product_id)!=0){
+            if(Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[1])==1){
+                PackageConfig.INCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
+
+            }else if(Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[1])==2){
+                PackageConfig.EXCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
+            }
+        }
+
+
 
 
         itemListViewHolder.deleteIcon.setVisibility(View.INVISIBLE);

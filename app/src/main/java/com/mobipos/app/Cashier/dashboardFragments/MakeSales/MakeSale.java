@@ -70,6 +70,7 @@ public class MakeSale extends Fragment {
     CardView total_card;
     FloatingActionButton fab_back;
     TextView text_order_no;
+    TextView new_order_no;
 
     ListView listView;
     ImageView refresh;
@@ -111,8 +112,9 @@ public class MakeSale extends Fragment {
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
         refresh=view.findViewById(R.id.refresh);
-        navigator=view.findViewById(R.id.navigator);
-        text_order_no=view.findViewById(R.id.order_no);
+       navigator=view.findViewById(R.id.navigator);
+        text_order_no=view.findViewById(R.id.txt_order_no);
+        new_order_no=view.findViewById(R.id.new_order_no);
         total_value=view.findViewById(R.id.total_value);
         total_card=view.findViewById(R.id.total_card);
         view_cart=view.findViewById(R.id.view_cart_layout);
@@ -121,6 +123,8 @@ public class MakeSale extends Fragment {
         final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+
 
 
 
@@ -212,8 +216,8 @@ public class MakeSale extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView txt_count=view.findViewById(R.id.cart_quantity);
                 TextView txt_id=view.findViewById(R.id.cart_item_id);
-                if(editCountPopUp(txt_count.getText().toString(),txt_id.getText().toString(),text_order_no.getText().toString())){
-                    initializeListAdapter(text_order_no.getText().toString());
+                if(editCountPopUp(txt_count.getText().toString(),txt_id.getText().toString(),new_order_no.getText().toString())){
+                    initializeListAdapter(new_order_no.getText().toString());
                 }
 
             }
@@ -238,18 +242,21 @@ public class MakeSale extends Fragment {
                     if(ordersdb.createOrder(PackageConfig.order_no,PackageConfig.date)){
 
                         order_created=true;
-                        text_order_no.setText(PackageConfig.order_no);
+                      //  text_order_no.setText(PackageConfig.order_no);
+                        new_order_no.setText(PackageConfig.order_no);
                    //     Toast.makeText(getContext(),"Order Created",Toast.LENGTH_SHORT).show();
 
                     }
                 }
-                if(orderItemsdb.insertOrderItem(text_order_no.getText().toString(),stId,"1")){
+                if(orderItemsdb.insertOrderItem(new_order_no.getText().toString(),stId,"1")){
                    // Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
                    // total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
 
                 }
                 Toast.makeText(getContext(),PackageConfig.order_no,Toast.LENGTH_SHORT).show();
                 total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+
+                Toast.makeText(getActivity(),"order no: "+new_order_no.getText().toString(),Toast.LENGTH_SHORT).show();
 
                 return true;
             }
@@ -275,7 +282,7 @@ public class MakeSale extends Fragment {
 
         ListViewCartAdapter adapter = new ListViewCartAdapter(getActivity(),
                 orderItemsdb.getCartData(order_id),
-                text_order_no.getText().toString(),
+                new_order_no.getText().toString(),
                 total_value);
 
 
@@ -372,7 +379,8 @@ public class MakeSale extends Fragment {
                 }
 
                 total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
-                initializeListAdapter(text_order_no.getText().toString());
+                initializeListAdapter(new_order_no.getText().toString());
+               // initializeListAdapter(PackageConfig.order_no);
 
 
             }

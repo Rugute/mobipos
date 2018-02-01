@@ -37,7 +37,7 @@ public class Users extends Controller {
     private static String login_pin="pin";
 
 
-    private static String tb_branch="pin";
+    private static String tb_branch="tb_branch";
     private static String col_branch_id="branch_id";
     private static String col_branch_name="branch_name";
 
@@ -254,8 +254,8 @@ public class Users extends Controller {
         try{
 
             ContentValues values=new ContentValues();
-            values.put(col_1,id);
-            values.put(col_2,name);
+            values.put(col_branch_id,id);
+            values.put(col_branch_name,name);
 
             db.insert(tb_branch,null,values);
             Log.d("insert branch name:",name);

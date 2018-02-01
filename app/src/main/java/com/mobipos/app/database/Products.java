@@ -31,6 +31,7 @@ public class Products extends Controller {
     public static String col_4="sync_status";
     public static String col_5="active_status";
     public static String col_6="measure";
+    public static String col_7="tax_margin";
 
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
@@ -39,6 +40,7 @@ public class Products extends Controller {
             col_2+" VARCHAR(50),"+
             col_3+" INT(11),"+
             col_4+" INT(11),"+
+            col_7+" INT(11),"+
             col_6+" VARCHAR(50),"+
             col_5+" INT(11))";
 
@@ -72,7 +74,7 @@ public class Products extends Controller {
             return false;
         }
     }
-    public boolean insertProduct(String id,String name,String category_id,String measure){
+    public boolean insertProduct(String id,String name,String category_id,String measure,String tax_mode){
         SQLiteDatabase db=this.getWritableDatabase();
         //  String sql="DELETE from "+tb_name;
 
@@ -88,6 +90,7 @@ public class Products extends Controller {
                 values.put(col_4,"1");
                 values.put(col_5,"1");
                 values.put(col_6,measure);
+                values.put(col_7,tax_mode);
 
 
                 db.insert(tb_name,null,values);
@@ -108,13 +111,13 @@ public class Products extends Controller {
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
         if(category.equals("all")){
-            sql="SELECT tb_products.product_id,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
+            sql="SELECT tb_products.product_id,tb_products.tax_margin,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
                     Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id";
 
         }else{
-            sql="SELECT tb_products.product_id,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
+            sql="SELECT tb_products.product_id,tb_products.tax_margin,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
                     Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id  WHERE " +
@@ -138,6 +141,7 @@ public class Products extends Controller {
                     Log.d("product name:",cursor.getString(cursor.getColumnIndex(col_2)));
                     Log.d("product id:",cursor.getString(cursor.getColumnIndex(col_1)));
                     Log.d("price:",cursor.getString(cursor.getColumnIndex(Product_Prices.col_3)));
+                    Log.d("tax margin:",cursor.getString(cursor.getColumnIndex(col_7)));
                 }while (cursor.moveToNext());
 
             }
@@ -192,5 +196,24 @@ public class Products extends Controller {
         return data;
     }
 
+    public int taxMode(String product_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT tax_margin FROM tb_products WHERE product_id="+product_id;
+
+        Cursor cursor=db.rawQuery(sql,null);
+        int i=0;
+
+        try{
+            if(cursor.moveToFirst()){
+                    Log.d("selected tax id",cursor.getString(cursor.getColumnIndex("tax_margin")));
+                    i=cursor.getInt(cursor.getColumnIndex(col_7));
+            }
+
+            db.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return i;
+    }
 
 }

@@ -55,12 +55,13 @@ public class Orders  extends Controller{
             e.printStackTrace();
         }
 
+        Log.d("order boolean",String.valueOf(OrderExists(order)));
         return OrderExists(order);
     }
 
     public boolean OrderExists(String order){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_1+"= "+order;
+        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_1+"='"+order+"'";
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 

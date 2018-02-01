@@ -55,11 +55,23 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sales Tax 10%" />
+        android:text="INCLUSIVE TAX" />
+    <TextView
+        android:id="@+id/txt_inclusive_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="200.00" />
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXCLUSIVE TAX" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:id="@+id/txt_exclusive_tax"
         android:text="200.00" />
 
     <TextView

@@ -72,6 +72,11 @@ public class PaymentActivity extends AppCompatActivity {
     @BindView(R.id.grand_total)
     TextView grand_total;
 
+   // @BindView(R.id.txt_inclusive_data)
+    TextView inclusive;
+    //@BindView(R.id.txt_exclusive_tax)
+    TextView exclusive;
+
 
 
 
@@ -91,6 +96,9 @@ public class PaymentActivity extends AppCompatActivity {
         final LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        inclusive=findViewById(R.id.txt_inclusive_data);
+        exclusive=findViewById(R.id.txt_exclusive_tax);
 
         salesdb=new Sales(this,defaults.database_name,null,1);
         initializeAdapter();
@@ -170,6 +178,8 @@ public class PaymentActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
 
+        inclusive.setText(String.valueOf(PackageConfig.INCLUSIVE_TAX));
+        exclusive.setText(String.valueOf(PackageConfig.EXCLUSIVE_TAX));
     }
 
 

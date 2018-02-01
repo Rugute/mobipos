@@ -88,6 +88,7 @@ public class ProductIntitalizer {
                 PackageConfig.price_id=new String[dataitems.length()];
                 PackageConfig.price=new String[dataitems.length()];
                 PackageConfig.stockData=new String[dataitems.length()];
+                PackageConfig.tax_margin=new String[dataitems.length()];
 
                 for(int i=0;i<dataitems.length();i++){
                     JSONObject jObj=dataitems.getJSONObject(i);
@@ -99,6 +100,7 @@ public class ProductIntitalizer {
                     PackageConfig.price_id[i]=jObj.getString("price_id");
                     PackageConfig.price[i]=jObj.getString("price");
                     PackageConfig.stockData[i]=jObj.getString("opening_stock");
+                    PackageConfig.tax_margin[i]=jObj.getString("tax_mode");
 
                 }
 
@@ -120,7 +122,7 @@ public class ProductIntitalizer {
                 if(productsdb.getProductCount("all")==0){
                     for(int i=0;i<dataitems.length();i++){
                         if(!productsdb.insertProduct(PackageConfig.itemArrayId[i],PackageConfig.itemArrayName[i],
-                                PackageConfig.categoryArrayId[i],PackageConfig.itemArrayMeasurement[i])){
+                                PackageConfig.categoryArrayId[i],PackageConfig.itemArrayMeasurement[i],PackageConfig.tax_margin[i])){
                             Log.d("err inserting products","not inserted");
                         }else{
                             if(!pricesdb.insertPrices(PackageConfig.price_id[i],PackageConfig.itemArrayId[i],
@@ -140,7 +142,7 @@ public class ProductIntitalizer {
 
                         if(!productsdb.ProductExists(PackageConfig.itemArrayId[i])){
                             if(!productsdb.insertProduct(PackageConfig.itemArrayId[i],PackageConfig.itemArrayName[i],
-                                    PackageConfig.categoryArrayId[i],PackageConfig.itemArrayMeasurement[i])){
+                                    PackageConfig.categoryArrayId[i],PackageConfig.itemArrayMeasurement[i],PackageConfig.tax_margin[i])){
                                 Log.d("err inserting products","not inserted");
                             }else{
                                 if(!pricesdb.insertPrices(PackageConfig.price_id[i],PackageConfig.itemArrayId[i],

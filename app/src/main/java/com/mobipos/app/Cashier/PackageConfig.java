@@ -33,12 +33,15 @@ public class PackageConfig {
     public static String[] price_id;
     public static String[] price;
     public static String[] stockData;
+    public static String[] tax_margin;
 
 
     public static ArrayList<cartItemData> orders_items;
 
     public static String order_no;
     public static String date;
+    public static int INCLUSIVE_TAX=0;
+    public static int EXCLUSIVE_TAX=0;
 
 
 

@@ -51,9 +51,18 @@
              android:layout_below="@+id/rela"
              android:text="click to proceed"
              android:textColor="#fff"
-             android:id="@+id/order_no"
+             android:id="@+id/txt_order_no"
              android:textSize="20dp"
              android:layout_centerHorizontal="true"/>
+           <TextView
+               android:visibility="gone"
+               android:layout_width="wrap_content"
+               android:text="hii kitu inasumbua"
+               android:layout_height="wrap_content"
+               android:textColor="#fff"
+               android:id="@+id/new_order_no"
+               android:textSize="20dp"
+               android:layout_centerHorizontal="true"/>
            <TextView
 
                android:layout_width="wrap_content"
@@ -72,8 +81,8 @@
                android:layout_centerVertical="true"
                android:layout_marginLeft="21dp"
                android:layout_marginStart="21dp"
-               android:layout_toEndOf="@+id/order_no"
-               android:layout_toRightOf="@+id/order_no"
+               android:layout_toEndOf="@+id/txt_order_no"
+               android:layout_toRightOf="@+id/txt_order_no"
                android:visibility="visible"
                app:srcCompat="@drawable/ic_refresh_black_24dp" />
 

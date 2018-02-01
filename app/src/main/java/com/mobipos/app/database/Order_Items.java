@@ -43,6 +43,10 @@ public class Order_Items extends Controller {
         SQLiteDatabase db=this.getWritableDatabase();
         String sql="SELECT * from "+tb_name;
 
+        Log.d("order no inserted er",order_id);
+        Log.d("inserting product id",product_id);
+        Log.d("inserting count",count);
+
         Cursor cursor;
         cursor=db.rawQuery(sql,null);
         int i=0;

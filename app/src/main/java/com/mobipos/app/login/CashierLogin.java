@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
+import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
@@ -49,12 +50,14 @@ public class CashierLogin extends Activity {
     EditText ed_check_id;
     TextView check_login;
     Users users_db;
+    Taxes taxesdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emlog);
 
         users_db=new Users(getApplicationContext(),defaults.database_name,null,1);
+        taxesdb=new Taxes(getApplicationContext(),defaults.database_name,null,1);
         ed_check_id=findViewById(R.id.emp_id);
         check_login=findViewById(R.id.check_login);
 
@@ -75,9 +78,9 @@ public class CashierLogin extends Activity {
 
     public class employeeProcessor extends AsyncTask<String,String,String> {
 
-        int success;
+        int success,tax_success;
         String serverMessage;
-        JSONArray data;
+        JSONArray data,tax_data;
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -115,6 +118,37 @@ public class CashierLogin extends Activity {
                     PackageConfig.login_data[4]="1";
                     PackageConfig.login_data[5]="cashier";
 
+                    List params=new ArrayList();
+                    params.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));
+
+                    JSONObject jobjTaxes=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                            PackageConfig.tax_load,"GET",params);
+
+
+                    Log.d("json object",jsonObject.toString());
+
+                    try{
+                        tax_success=jobjTaxes.getInt("success");
+
+                        if(tax_success==1){
+                            tax_data=jobjTaxes.getJSONArray("data");
+
+                            for (int i=0;i<tax_data.length();i++){
+                                JSONObject j=tax_data.getJSONObject(i);
+                                if(!taxesdb.insertTax(j.getString("tb_tax_id"),
+                                        j.getString("tax_margin"),j.getString("margin_mode"))){
+                                    Toast.makeText(getApplicationContext(),"Error inserting tax",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+
+
+                        }
+
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
 
                 }
@@ -130,6 +164,8 @@ public class CashierLogin extends Activity {
             super.onPostExecute(s);
             //dialog(false);
             if(success==1){
+
+                taxesdb.getTaxes();
 
                 try{
                     Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
@@ -149,6 +185,7 @@ public class CashierLogin extends Activity {
             }else{
                 Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 

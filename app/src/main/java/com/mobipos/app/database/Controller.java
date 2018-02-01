@@ -54,6 +54,7 @@ public class Controller extends SQLiteOpenHelper implements Serializable {
         sqLiteDatabase.execSQL(Sales.CREATE_TABLE_SALES);
         sqLiteDatabase.execSQL(Order_Items.CREATE_TABLE_ORDER_ITEMS);
         sqLiteDatabase.execSQL(Orders.CREATE_TABLE_ORDERS);
+        sqLiteDatabase.execSQL(Taxes.CREATE_TABLE_TAXES);
 
 
         return true;
@@ -70,6 +71,7 @@ public class Controller extends SQLiteOpenHelper implements Serializable {
         sqLiteDatabase.execSQL(Orders.DROP_TABLE);
         sqLiteDatabase.execSQL(Order_Items.DROP_TABLE);
         sqLiteDatabase.execSQL(Sales.DROP_TABLE);
+        sqLiteDatabase.execSQL(Taxes.DROP_TABLE);
 
         return true;
     }
