@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.mobipos.app.Defaults.AppConfig;
@@ -43,6 +46,9 @@ public class AdminViewSales extends Fragment {
     CardView card_profit,card_sales,card_inventory;
     Users users;
 
+    static String[] shop_ids,shop_names;
+
+    List<ViewSalesInterface> shopDetails;
     public static AdminViewSales newInstance() {
         AdminViewSales fragment = new AdminViewSales();
         return fragment;
@@ -96,6 +102,7 @@ public class AdminViewSales extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
+            shopDetails=new ArrayList<>();
             paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_today_sales,
@@ -104,8 +111,16 @@ public class AdminViewSales extends Fragment {
 
             try {
                 success=jsonObject.getInt("success");
-                total_sales_value=jsonObject.getString("total_today_sale");
-                total_inventory_value=jsonObject.getString("total_today_inventory");
+                sale=jsonObject.getJSONArray("shops");
+
+                for(int i=0;i<sale.length();i++){
+                    JSONObject object=sale.getJSONObject(i);
+                    shopDetails.add(new ViewSalesInterface(object.getString("shop_id"),
+                            object.getString("shop_name"),
+                            object.getString("total_today_sale"),
+                            object.getString("total_today_inventory")));
+                }
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -116,14 +131,56 @@ public class AdminViewSales extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            //Toast.makeText(getContext(),"yoh",Toast.LENGTH_SHORT).show();
+            if(success==1){
+                spinnerUpdate();
+            }else{
+                Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+            }
 
-            dailysales.setText(total_sales_value);
-            dailyinventory.setText(total_inventory_value);
-            dailyprofit.setText(String.valueOf(Integer.parseInt(total_sales_value)-Integer.parseInt(total_inventory_value)));
         }
     }
 
+    public void spinnerUpdate(){
+       shop_ids=new String[shopDetails.size()];
+        shop_names=new String[shopDetails.size()];
+
+        for(int i=0;i<shopDetails.size();i++){
+            shop_ids[i]=shopDetails.get(i).shop_id;
+            shop_names[i]=shopDetails.get(i).shop_name;
+        }
+
+        ArrayAdapter adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,shop_names);
+        spin.setAdapter(adapter);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int pos= (int) adapterView.getItemIdAtPosition(i);
+                branchFilter(shop_ids[pos]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    public void branchFilter(String id){
+        List<ViewSalesInterface> data=new ArrayList<>();
+
+        for(int i=0;i<shopDetails.size();i++){
+            String idOfShop=shopDetails.get(i).shop_id;
+            if(idOfShop.equals(id)){
+                data.add(new ViewSalesInterface(shopDetails.get(i).shop_id,
+                        shopDetails.get(i).shop_name,shopDetails.get(i).shop_sales,shopDetails.get(i).shop_inv));
+            }
+
+        }
+
+        dailysales.setText(data.get(0).shop_sales);
+        dailyinventory.setText(data.get(0).shop_inv);
+        dailyprofit.setText(String.valueOf(Integer.parseInt(data.get(0).shop_sales)-Integer.parseInt(data.get(0).shop_inv)));
+    }
 
 
     }

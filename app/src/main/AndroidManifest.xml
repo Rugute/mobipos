@@ -29,7 +29,8 @@
 
         </activity>
         <activity android:name=".login.AdminLogin"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:noHistory="true"/>
         <activity android:name=".login.CashierLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>

@@ -144,17 +144,8 @@ public class ReportFragment extends Fragment{
                     AppConfig.selected_branch_id=AppConfig.branchIds[pos];
 
 
-                    /*if(categoriesdb.EmptyTables()==0){
-                        new DatabaseInitializers(getActivity(),0);
 
-                        Fragment fragment;
-                        fragment= MakeSale.newInstance();
-                        FragmentTransaction transaction=getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout,fragment);
-                        transaction.commit();
 
-                        dialog.dismiss();
-                    }*/
 
                 }
             });
@@ -189,7 +180,6 @@ public class ReportFragment extends Fragment{
 
             try {
                 success=jsonObject.getInt("success");
-//                outlet=jsonObject.getString("branches");
                 branch=jsonObject.getJSONArray("data");
 
                 AppConfig.branchNames=new String[branch.length()];

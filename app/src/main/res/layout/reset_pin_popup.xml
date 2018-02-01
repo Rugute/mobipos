@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_color">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RESET PIN"
+            android:textColor="#2a3d1a"
+            android:background="#faf8f8"/>
+    <EditText
+        android:id="@+id/cur_pin_reset"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/edit_text"
+        android:hint="Current Pin"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor='#fff'
+        android:textColorHint="#fff"
+        android:inputType="numberPassword"
+        android:gravity="left|center" />
+    <EditText
+        android:id="@+id/new_pin_reset"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background='@drawable/edit_text'
+        android:hint="New Pin"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor='#fff'
+        android:textColorHint='#fff'
+        android:inputType="numberPassword"
+        android:gravity="left|center" />
+    <EditText
+        android:id="@+id/confirm_pin_reset"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background='@drawable/edit_text'
+        android:hint="Confirm Pin"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor='#fff'
+        android:textColorHint='#fff'
+        android:inputType="numberPassword"
+        android:gravity="left|center" />
+
+        <Button
+            android:id="@+id/reset_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" RESET "
+            android:textColor="#1c2615"
+            android:background="#fff"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

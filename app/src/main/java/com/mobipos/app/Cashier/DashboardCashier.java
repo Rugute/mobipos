@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mobipos.app.Admin.DashboardFragments.AdminViewSales;
+import com.mobipos.app.Cashier.dashboardFragments.CashierAccount;
+import com.mobipos.app.Cashier.dashboardFragments.CashierSettings;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashierInventory;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Cashier.dashboardFragments.ViewSales.ViewSale;
@@ -68,10 +70,10 @@ public class DashboardCashier extends AppCompatActivity{
                         selectedFragment = MakeSale.newInstance();
                         break;
                     case R.id.cashier_item_settings:
-                        selectedFragment = AdminViewSales.newInstance();
+                        selectedFragment = CashierSettings.newInstance();
                         break;
                     case R.id.cashier_item_account:
-                        selectedFragment = AdminViewSales.newInstance();
+                        selectedFragment = CashierAccount.newInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
