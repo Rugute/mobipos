@@ -11,8 +11,9 @@ public class Synchronizer {
     public Synchronizer(Context context){
 
         this.context=context;
-        new SalesSync(context);
         new OrdersSync(context);
         new InventoryMovementSync(context);
+      //  new SalesSync(context);
+
     }
 }

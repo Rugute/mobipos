@@ -69,4 +69,66 @@ public class Inventory extends Controller {
 
         return ProductExists(product_id);
     }
+
+    public String getOpeningStock(String product_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT inventory_count FROM "+tb_name+ " WHERE "+col_2+"="+product_id;
+        Cursor cursor=null;
+        String count=null;
+        cursor=db.rawQuery(sql,null);
+
+        try {
+            if(cursor.moveToFirst()){
+                count=cursor.getString(cursor.getColumnIndex(col_3));
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+    public boolean updateStock(String product_id,String stock_count){
+        SQLiteDatabase db=this.getWritableDatabase();
+        //  String sql="DELETE from "+tb_name;
+
+        try{
+            // db.execSQL(sql);
+            ContentValues values=new ContentValues();
+            values.put(col_3,stock_count);
+
+           db.update(tb_name,values,"product_id="+product_id,null);
+            Log.d("insert stock count:",stock_count);
+            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        if(getOpeningStock(product_id).equals(stock_count)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public int getStockCount(String product_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT tb_inventory.inventory_count,SUM(tb_order_items.product_count) as total from  tb_inventory inner" +
+                " join tb_order_items on tb_inventory.product_id=tb_order_items.product_id where tb_inventory.product_id="
+                +product_id;
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+        int count=0;
+        try {
+            if(cursor.moveToFirst()){
+                count=cursor.getInt(cursor.getColumnIndex(col_3))-cursor.getInt(cursor.getColumnIndex("total"));
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
 }

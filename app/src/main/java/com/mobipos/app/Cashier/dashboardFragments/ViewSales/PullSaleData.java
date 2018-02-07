@@ -11,6 +11,7 @@ public class PullSaleData {
     public String amount_total;
     public String transaction_type;
     public String transaction_code;
+    public String date;
 
     public PullSaleData(String sale_id,String orderId,String amount_total,String transaction_type,String transaction_code){
 
@@ -19,5 +20,6 @@ public class PullSaleData {
         this.amount_total=amount_total;
         this.transaction_type=transaction_type;
         this.transaction_code=transaction_code;
+
     }
 }

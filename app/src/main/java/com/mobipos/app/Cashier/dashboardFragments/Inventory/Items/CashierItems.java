@@ -26,6 +26,8 @@ import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
+import com.mobipos.app.Sync.ProductIntitalizer;
+import com.mobipos.app.Sync.SyncDefaults;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Product_Prices;
 import com.mobipos.app.database.Products;
@@ -130,6 +132,7 @@ public class CashierItems extends Fragment {
         protected void onPreExecute(){
             super.onPreExecute();
             showBar(true);
+            new updateStockIn().execute();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -166,6 +169,21 @@ public class CashierItems extends Fragment {
                     PackageConfig.price[i]=jObj.getString("price");
                     PackageConfig.stockData[i]=jObj.getString("opening_stock");
                     PackageConfig.tax_margin[i]=jObj.getString("tax_mode");
+
+                    List params=new ArrayList();
+                    params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
+                    JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+                                    PackageConfig.sync_product_movement,
+                            "GET",params);
+
+                    try {
+                        int state=UpdateSyncStatus.getInt("success");
+                        if(state==1){
+                            Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                 }
 
@@ -226,6 +244,7 @@ public class CashierItems extends Fragment {
                 CashierItemRvAdapter adapter=new CashierItemRvAdapter(productsdb.getProducts("all"));
                 rv.setAdapter(adapter);
 
+
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(),String.valueOf(productsdb.getProductCount("all")),Toast.LENGTH_SHORT).show();
             }else if(success==0){
@@ -284,4 +303,60 @@ public class CashierItems extends Fragment {
     }
 
 
+    public class updateStockIn extends AsyncTask<String,String,String>{
+
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser=new JSONParser();
+            List params=new ArrayList();
+            params.add(new BasicNameValuePair("user_id",users.get_user_id()));
+
+            JSONObject stock_in_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+                            SyncDefaults.sync_stock_in_movement,
+                    "GET",params);
+            try{
+                int success=stock_in_object.getInt("success");
+                JSONArray updateArray=stock_in_object.getJSONArray("data");
+                if(success==1){
+
+                    if(updateArray.length()>0){
+                        for (int i=0;i<updateArray.length();i++){
+                            JSONObject updateObject=updateArray.getJSONObject(i);
+                            String inventory_count=inventorydb.getOpeningStock(updateObject.getString("product_id"));
+                            String inventory_update=updateObject.getString("quantity");
+                            String count=String.valueOf(Integer.parseInt(inventory_count)+Integer.parseInt(inventory_update));
+
+                            if(!inventorydb.updateStock(updateObject.getString("product_id"),count)){
+                                Log.d("inventory stock in","update failed for "+updateObject.getString("product_id"));
+                            }else{
+                                List par=new ArrayList();
+                                par.add(new BasicNameValuePair("movement_id",updateObject.getString("movement_id")));
+
+                                JSONObject serverUpdateObject=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+                                                SyncDefaults.sync_stock_in_server_update,
+                                        "GET",par);
+
+                                try {
+                                    int successSt=serverUpdateObject.getInt("success");
+                                    if(successSt==1){
+                                        Log.d("server message",serverUpdateObject.getString("message"));
+                                    }
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    }
+
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }

@@ -30,6 +30,7 @@ public class JSONParser {
                 httpPost.setEntity(new UrlEncodedFormEntity((List) params));
                 is = httpClient.execute(httpPost).getEntity().getContent();
             } else if (method == HttpGet.METHOD_NAME) {
+                Log.d("http request",url + "?" + URLEncodedUtils.format((List)params,"utf-8"));
                 is = new DefaultHttpClient().execute(new HttpGet(url + "?" + URLEncodedUtils.format((List) params, "utf-8"))).getEntity().getContent();
             }
         } catch (UnsupportedEncodingException e) {
@@ -51,6 +52,7 @@ public class JSONParser {
             }
             is.close();
             json = sb.toString();
+            Log.d("http response:",json);
         } catch (Exception e4) {
             Log.e("Buffer Error", "Error converting result " + e4.toString());
         }

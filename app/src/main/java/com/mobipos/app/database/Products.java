@@ -58,7 +58,7 @@ public class Products extends Controller {
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 
-        Log.d("product count in loop:",String.valueOf(cursor.getCount()));
+      //  Log.d("product count in loop:",String.valueOf(cursor.getCount()));
         return cursor.getCount();
     }
 
@@ -111,7 +111,8 @@ public class Products extends Controller {
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
         if(category.equals("all")){
-            sql="SELECT tb_products.product_id,tb_products.tax_margin,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
+            sql="SELECT tb_products.product_id,tb_products.tax_margin,tb_products.product_name,tb_products.measure," +
+                    "tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
                     Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id";
@@ -215,5 +216,6 @@ public class Products extends Controller {
         }
         return i;
     }
+
 
 }

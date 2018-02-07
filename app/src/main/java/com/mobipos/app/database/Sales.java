@@ -38,6 +38,7 @@ public class Sales extends Controller {
     public static String col_7="trans_type";
     public static String col_8="trans_code";
 
+
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_SALES="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
@@ -139,14 +140,16 @@ public class Sales extends Controller {
         return salesIdExists("sales_id",String.valueOf(createId()));
     }
 
-    public List<PullSaleData> getSalesData(String mode){
+    public List<PullSaleData> getSalesData(String mode,String order){
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
         if(mode.equals("loadLocal")){
-            sql="SELECT * from "+tb_name+" ORDER BY tb_sale_id DESC";
+            sql= "SELECT * FROM tb_sales ORDER BY tb_sale_id DESC";
+
 
         }else{
-            sql="SELECT * from "+tb_name+" WHERE sync_status=0";
+             sql= "SELECT * FROM tb_sales WHERE  sync_status=0 AND order_id='"+order+"'";
+
 
         }
 
@@ -305,5 +308,28 @@ public class Sales extends Controller {
         }
 
         return data;
+    }
+
+    public String getSaleDate(String order){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql="SELECT * FROM "+Orders.tb_name+ " WHERE "+Orders.col_1+"= "+order;
+
+        List data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+        String date=null;
+        if(cursor.moveToFirst()){
+
+            date =cursor.getString(cursor.getColumnIndex("date"));
+            Log.d("date selected ",date);
+        }
+
+        cursor.close();
+
+
+        //    Log.d("product count in loop:",String.valueOf(cursor.getCount()));
+        return date;
     }
 }

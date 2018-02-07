@@ -95,24 +95,39 @@ public class Taxes extends Controller {
 
     }
 
-    public String[] taxMode(int tax_margin_id){
+    public int taxMode(int tax_margin_id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT tax_margin,margin_mode FROM tb_taxes WHERE tb_tax_id="+tax_margin_id;
+        String sql="SELECT margin_mode FROM tb_taxes WHERE tb_tax_id="+tax_margin_id;
         Cursor cursor=db.rawQuery(sql,null);
 
-        String[] tax=new String[2];
+        int mode=0;
         try{
             if(cursor.moveToFirst()){
-                tax[0]=cursor.getString(cursor.getColumnIndex(col_2));
-                tax[1]=cursor.getString(cursor.getColumnIndex(col_3));
+                mode=cursor.getInt(cursor.getColumnIndex(col_3));
+                Log.d("margin mode",cursor.getString(cursor.getColumnIndex(col_3)));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+        return mode;
+    }
+    public int tax(int tax_margin_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT tax_margin FROM tb_taxes WHERE tb_tax_id="+tax_margin_id;
+        Cursor cursor=db.rawQuery(sql,null);
+
+        String mode="0";
+        try{
+            if(cursor.moveToFirst()){
+                mode=cursor.getString(cursor.getColumnIndex(col_2));
                 Log.d("tax margin",cursor.getString(cursor.getColumnIndex(col_2)));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return tax;
+        return Integer.parseInt(mode);
     }
 
 }

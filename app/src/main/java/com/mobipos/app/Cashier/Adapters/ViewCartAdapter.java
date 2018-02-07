@@ -72,8 +72,10 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
     public static String get_item_count="1";
     public static boolean dataChanged=false;
 
+    TextView inclusive,exclusive,grand_total;
 
-    public ViewCartAdapter(Context context, List<viewCartData> itemsData,String str_order_id)
+    public ViewCartAdapter(Context context, List<viewCartData> itemsData,String str_order_id,TextView inclusive,
+                           TextView exclusive,TextView grand_total)
     {
         this.itemsData = itemsData;
         this.context=context;
@@ -81,6 +83,10 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         orderitemsdb=new Order_Items(context, defaults.database_name,null,1);
         taxesdb=new Taxes(context, defaults.database_name,null,1);
         productsdb=new Products(context, defaults.database_name,null,1);
+
+        this.inclusive=inclusive;
+        this.exclusive=exclusive;
+        this.grand_total=grand_total;
     }
 
     @Override
@@ -108,17 +114,22 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
          Log.d("tax selected",String.valueOf(productsdb.taxMode(itemsData.get(i).product_id)));
         int total_product_price=Integer.parseInt(itemsData.get(i).count)*Integer.parseInt(itemsData.get(i).price);
 
-        int tax_value=Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[0])*total_product_price/100;
+        Log.d("tax margin for item",String.valueOf(taxesdb.tax(productsdb.taxMode(itemsData.get(i).product_id))));
+        Log.d("tax id of item",String.valueOf(productsdb.taxMode(itemsData.get(i).product_id)));
 
-        if(productsdb.taxMode(itemsData.get(i).product_id)!=0){
-            if(Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[1])==1){
-                PackageConfig.INCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
+        int tax_value=taxesdb.tax(productsdb.taxMode(itemsData.get(i).product_id))*total_product_price/100;
 
-            }else if(Integer.parseInt(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))[1])==2){
-                PackageConfig.EXCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
-            }
+        Log.d("total tax for item",String.valueOf(tax_value));
+
+        if(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))==1){
+            PackageConfig.INCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
+            inclusive.setText(String.valueOf(PackageConfig.INCLUSIVE_TAX));
+        }else if(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))==2){
+            PackageConfig.EXCLUSIVE_TAX=PackageConfig.EXCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
+            exclusive.setText(String.valueOf(PackageConfig.EXCLUSIVE_TAX));
+            int total=orderitemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
+            grand_total.setText(String.valueOf(total));
         }
-
 
 
 

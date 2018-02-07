@@ -174,12 +174,12 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void initializeAdapter(){
         ViewCartAdapter adapter = new ViewCartAdapter(this,orderItemsdb.getCartData(PackageConfig.order_no),
-                PackageConfig.order_no);
+                PackageConfig.order_no,inclusive,exclusive,grand_total);
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
 
-        inclusive.setText(String.valueOf(PackageConfig.INCLUSIVE_TAX));
-        exclusive.setText(String.valueOf(PackageConfig.EXCLUSIVE_TAX));
+       // inclusive.setText(String.valueOf(PackageConfig.INCLUSIVE_TAX));
+     //   exclusive.setText(String.valueOf(PackageConfig.EXCLUSIVE_TAX));
     }
 
 
@@ -222,7 +222,7 @@ public class PaymentActivity extends AppCompatActivity {
         grand=view.findViewById(R.id.amount_grand_total);
         change=view.findViewById(R.id.change_due);
 
-        grand.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+        grand.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX));
         grand.setEnabled(false);
 
         tender.addTextChangedListener(new TextWatcher() {
@@ -262,7 +262,7 @@ public class PaymentActivity extends AppCompatActivity {
                         ));
 
                         if(!salesdb.addSaleData(data)){
-                            salesdb.getSalesData("loadLocal");
+                            salesdb.getSalesData("loadLocal","NO NEED");
                             showPrinterPopUp();
                             alertDialog.dismiss();
                             Toast.makeText(getApplicationContext(),"PAYMENT SUCCESSFUL",Toast.LENGTH_SHORT).show();
@@ -297,7 +297,7 @@ public class PaymentActivity extends AppCompatActivity {
         final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
         alertDialog.setView(view);
         alertDialog.setCancelable(false);
-        alertDialog.show();
+
 
 
         final RadioButton print,mail,no_rec;
@@ -322,6 +322,8 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             }
         });
+
+        alertDialog.show();
     }
 
 }

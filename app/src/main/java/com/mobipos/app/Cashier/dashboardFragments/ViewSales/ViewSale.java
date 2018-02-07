@@ -55,7 +55,7 @@ public class ViewSale extends Fragment {
     }
 
     public void initializeAdapter(){
-        ViewSalesAdapter adapter=new ViewSalesAdapter(salesdb.getSalesData("loadLocal"));
+        ViewSalesAdapter adapter=new ViewSalesAdapter(salesdb.getSalesData("loadLocal","no need"));
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }

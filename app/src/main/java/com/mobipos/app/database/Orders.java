@@ -103,7 +103,9 @@ public class Orders  extends Controller{
         cursor=db.rawQuery(sql,null);
         String date=null;
         if(cursor.moveToFirst()){
+
           date =cursor.getString(cursor.getColumnIndex(col_2));
+            Log.d("date selected ",date);
         }
 
         db.close();

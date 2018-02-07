@@ -38,7 +38,7 @@ public class AccountFragment extends Fragment {
 
         subscription_card= (CardView)view.findViewById(R.id.subscription_card);
         payments_card=view.findViewById(R.id.payments_card);
-        showBackButton(true,"Account");
+     //   showBackButton(true,"Account");
 
 
         subscription_card.setOnClickListener(new View.OnClickListener() {

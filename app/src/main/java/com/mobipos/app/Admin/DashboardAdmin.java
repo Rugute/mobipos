@@ -89,9 +89,9 @@ public class DashboardAdmin extends AppCompatActivity {
             final CheckInternetSettings internet=new CheckInternetSettings(this);
 
             if(internet.isNetworkConnected()){
-                if(usersdb.clearUserData()<=0){
-                    startActivity(new Intent(DashboardAdmin.this, SplashPage.class));
-                }
+                  finish();
+                  System.exit(0);
+
             }else{
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(this).
                         setTitle("Cannot Logout").

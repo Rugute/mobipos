@@ -36,6 +36,7 @@ import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Products;
@@ -82,6 +83,7 @@ public class MakeSale extends Fragment {
     String get_item_count;
     Orders ordersdb;
     Users users;
+    Inventory inventorydb;
 
     public boolean view_cart_seen;
 
@@ -100,7 +102,8 @@ public class MakeSale extends Fragment {
     public void onViewCreated(View view,Bundle savedInstanceState){
 
         PackageConfig.orders_items=new ArrayList<>();
-
+        PackageConfig.EXCLUSIVE_TAX=0;
+        PackageConfig.INCLUSIVE_TAX=0;
 
         view_cart_seen=false;
         ordersdb=new Orders(getActivity(),defaults.database_name,null,1);
@@ -108,6 +111,7 @@ public class MakeSale extends Fragment {
         productsdb=new Products(getActivity(), defaults.database_name,null,1);
         orderItemsdb=new Order_Items(getActivity(), defaults.database_name,null,1);
         users=new Users(getActivity(), defaults.database_name,null,1);
+        inventorydb=new Inventory(getActivity(), defaults.database_name,null,1);
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
@@ -248,15 +252,20 @@ public class MakeSale extends Fragment {
 
                     }
                 }
-                if(orderItemsdb.insertOrderItem(new_order_no.getText().toString(),stId,"1")){
-                   // Toast.makeText(getContext(),String.valueOf(orderItemsdb.getLastId()),Toast.LENGTH_SHORT).show();
-                   // total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+                if(Integer.parseInt(inventorydb.getOpeningStock(stId))>0){
+                    Toast.makeText(getActivity(),"item remaining "+inventorydb.getOpeningStock(stId),Toast.LENGTH_SHORT).show();
+                    if(orderItemsdb.insertOrderItem(new_order_no.getText().toString(),stId,"1")){
+                    }
+                    Toast.makeText(getContext(),PackageConfig.order_no,Toast.LENGTH_SHORT).show();
+                    total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
 
+
+                }else{
+                    Toast.makeText(getActivity(),"Product Out Of Stock!!",Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(),PackageConfig.order_no,Toast.LENGTH_SHORT).show();
-                total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
 
-                Toast.makeText(getActivity(),"order no: "+new_order_no.getText().toString(),Toast.LENGTH_SHORT).show();
+
+          //      Toast.makeText(getActivity(),"order no: "+new_order_no.getText().toString(),Toast.LENGTH_SHORT).show();
 
                 return true;
             }

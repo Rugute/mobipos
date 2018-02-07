@@ -30,10 +30,12 @@ public class OrdersSync{
 
     Context context;
     List<orders_interface> orders=new ArrayList<>();
+    List<PullSaleData> saleData=new ArrayList<>();
     Sales salesdb;
     Users usersdb;
     Orders ordersdb;
     int successState=0;
+    int successStateSales=0;
     Controller controller;
     public OrdersSync(Context context){
         this.context=context;
@@ -49,6 +51,7 @@ public class OrdersSync{
         @Override
         protected void onPreExecute(){
             orders=ordersdb.DataSync();
+
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -60,7 +63,11 @@ public class OrdersSync{
                 parameters.add(new BasicNameValuePair("order_id",orders.get(i).order_id));
                 parameters.add(new BasicNameValuePair("date",orders.get(i).date));
 
-                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+SyncDefaults.sync_orders,
+                saleData=new ArrayList<>();
+                saleData=salesdb.getSalesData("sync",orders.get(i).order_id);
+
+                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                SyncDefaults.sync_orders,
                         "GET",parameters);
 
                 Log.d("sync order status:",jsonObject.toString());
@@ -68,12 +75,39 @@ public class OrdersSync{
                 try{
                     int success=jsonObject.getInt("success");
                     if (success==1){
+
+                        List param=new ArrayList();
+                        param.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                        param.add(new BasicNameValuePair("order_id",saleData.get(0).orderId));
+                        param.add(new BasicNameValuePair("amount_total",saleData.get(0).amount_total));
+                        param.add(new BasicNameValuePair("app_sale_id",saleData.get(0).sale_id));
+                        param.add(new BasicNameValuePair("trans_type",saleData.get(0).transaction_type));
+                        param.add(new BasicNameValuePair("trans_code",saleData.get(0).transaction_code));
+                        param.add(new BasicNameValuePair("date",orders.get(i).date));
+
+                        JSONObject jsonObject1=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                        SyncDefaults.sync_sales,
+                                "GET",param);
+
+                        Log.d("sync sales status:",jsonObject1.toString());
+                        //    salesdb.updateSyncStatus(saleData.get(i).sale_id,salesdb.tb_name,salesdb.col_5);
+                        try{
+                            int successSales=jsonObject1.getInt("success");
+                            if (successSales==1){
+                                successStateSales=1;
+                                //  server=jsonObject.getString("message");
+
+                                Log.d("sale id:",saleData.get(i).sale_id);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         successState=1;
 
                         Log.d("sale id:",orders.get(i).order_id);
                     }
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
 
             }

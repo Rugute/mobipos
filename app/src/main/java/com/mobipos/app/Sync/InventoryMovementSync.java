@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.database.Controller;
+import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Sales;
 import com.mobipos.app.database.Users;
@@ -17,6 +18,7 @@ import com.mobipos.app.database.orders_interface;
 import com.mobipos.app.login.PackageConfig;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class InventoryMovementSync{
     List<inventory_movement_interface> stock_out=new ArrayList<>();
     Sales salesdb;
     Users usersdb;
+    Inventory inventorydb;
     inventory_movement stockMovedb;
     Orders ordersdb;
     int successState=0;
@@ -42,6 +45,7 @@ public class InventoryMovementSync{
         controller=new Controller(context, defaults.database_name,null,1);
         stockMovedb=new inventory_movement(context, defaults.database_name,null,1);
         usersdb=new Users(context, defaults.database_name,null,1);
+        inventorydb=new Inventory(context, defaults.database_name,null,1);
         salesdb=new Sales(context, defaults.database_name,null,1);
         new DataLoad().execute();
     }
@@ -81,6 +85,53 @@ public class InventoryMovementSync{
 
                 }
 
+            }
+
+            List params=new ArrayList();
+            params.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+
+            JSONObject stock_in_object=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                            SyncDefaults.sync_stock_in_movement,
+                    "GET",params);
+            try{
+                int success=stock_in_object.getInt("success");
+                JSONArray updateArray=stock_in_object.getJSONArray("data");
+                if(success==1){
+
+                    if(updateArray.length()>0){
+                        for (int i=0;i<updateArray.length();i++){
+                            JSONObject updateObject=updateArray.getJSONObject(i);
+                            String inventory_count=inventorydb.getOpeningStock(updateObject.getString("product_id"));
+                            String inventory_update=updateObject.getString("quantity");
+                            String count=String.valueOf(Integer.parseInt(inventory_count)+Integer.parseInt(inventory_update));
+
+                            if(!inventorydb.updateStock(updateObject.getString("product_id"),count)){
+                                Log.d("inventory stock in","update failed for "+updateObject.getString("product_id"));
+                            }else{
+                                List par=new ArrayList();
+                                par.add(new BasicNameValuePair("movement_id",updateObject.getString("movement_id")));
+
+                                JSONObject serverUpdateObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                                SyncDefaults.sync_stock_in_server_update,
+                                        "GET",par);
+
+                                try {
+                                    int successSt=serverUpdateObject.getInt("success");
+                                    if(successSt==1){
+                                        Log.d("server message",serverUpdateObject.getString("message"));
+                                    }
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    }
+
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
             return null;
         }
