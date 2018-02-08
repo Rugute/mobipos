@@ -91,6 +91,7 @@ public class AdminInventory extends Fragment {
                 }else if(pos==5){
                     Fragment fragment;
                     fragment = StockAlertFragment.newInstance();
+
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
