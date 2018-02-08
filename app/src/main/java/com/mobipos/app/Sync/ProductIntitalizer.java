@@ -91,6 +91,7 @@ public class ProductIntitalizer {
                 PackageConfig.price_id=new String[dataitems.length()];
                 PackageConfig.price=new String[dataitems.length()];
                 PackageConfig.stockData=new String[dataitems.length()];
+                PackageConfig.lowStockData=new String[dataitems.length()];
                 PackageConfig.tax_margin=new String[dataitems.length()];
 
                 for(int i=0;i<dataitems.length();i++){
@@ -103,6 +104,7 @@ public class ProductIntitalizer {
                     PackageConfig.price_id[i]=jObj.getString("price_id");
                     PackageConfig.price[i]=jObj.getString("price");
                     PackageConfig.stockData[i]=jObj.getString("opening_stock");
+                    PackageConfig.lowStockData[i]=jObj.getString("low_stock_count");
                     PackageConfig.tax_margin[i]=jObj.getString("tax_mode");
 
                     List params=new ArrayList();
@@ -148,7 +150,8 @@ public class ProductIntitalizer {
                                     PackageConfig.price[i])){
                                 Log.d("err inserting price","not inserted");
                             }else{
-                                if(!inventorydb.insertStock(PackageConfig.itemArrayId[i],PackageConfig.stockData[i])){
+                                if(!inventorydb.insertStock(PackageConfig.itemArrayId[i],PackageConfig.stockData[i],
+                                        PackageConfig.lowStockData[i])){
                                     Log.d("err inserting stocks","not inserted");
                                 }
                             }
@@ -168,7 +171,8 @@ public class ProductIntitalizer {
                                         PackageConfig.price[i])){
                                     Log.d("err inserting prices","not inserted");
                                 }else{
-                                    if(!inventorydb.insertStock(PackageConfig.itemArrayId[i],PackageConfig.stockData[i])){
+                                    if(!inventorydb.insertStock(PackageConfig.itemArrayId[i],PackageConfig.stockData[i],
+                                            PackageConfig.lowStockData[i])){
                                         Log.d("err inserting stocks","not inserted");
                                     }
                                 }

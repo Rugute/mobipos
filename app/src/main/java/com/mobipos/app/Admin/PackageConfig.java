@@ -8,6 +8,7 @@ public class PackageConfig {
     public static String get_admin_categories="admin-get-branch-data.php";
     public static String add_category="admin-add-category.php";
     public static String get_admin_items="admin-get-products.php";
+    public static String get_low_stock="admin-get-stock-alert.php";
 
     public static String[] branches;
     public static String[] branchesId;

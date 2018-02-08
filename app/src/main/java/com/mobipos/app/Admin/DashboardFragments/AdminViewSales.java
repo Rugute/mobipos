@@ -132,7 +132,7 @@ public class AdminViewSales extends Fragment {
             super.onPostExecute(s);
 
             if(success==1){
-               spinnerUpdate();
+                spinnerUpdate();
             }else{
                 Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
             }

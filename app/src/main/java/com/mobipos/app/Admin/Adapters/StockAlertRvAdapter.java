@@ -1,11 +1,14 @@
 package com.mobipos.app.Admin.Adapters;
 
+import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobipos.app.Admin.AdminStockAlertData;
@@ -22,14 +25,16 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView scv;
-        TextView p_name,p_categ,stock_alert;
-
+        TextView p_name,p_categ,stock_alert,remainder;
+        ImageView imageView;
         public ItemViewHolder(View itemView) {
             super(itemView);
 
             scv=(CardView)itemView.findViewById(R.id.alertcv);
             p_categ=(TextView)itemView.findViewById(R.id.category_name);
             p_name=(TextView)itemView.findViewById(R.id.product_name);
+            remainder=(TextView)itemView.findViewById(R.id.remainder);
+            imageView=itemView.findViewById(R.id.andro);
             stock_alert=(TextView)itemView.findViewById(R.id.trans_alert);
         }
     }
@@ -57,7 +62,12 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
         holder.p_name.setText(stockAlertData.get(j).productname);
         holder.p_categ.setText(stockAlertData.get(j).productcategory);
         holder.stock_alert.setText(stockAlertData.get(j).productalert);
+        holder.remainder.setText(stockAlertData.get(j).remainder);
 
+        if(stockAlertData.get(j).alert_type.equals("1")){
+            holder.imageView.setImageResource(R.drawable.ic_warning_orange_24dp);
+            holder.stock_alert.setTextColor(Color.parseColor("#f2b525"));
+        }
     }
 
     @Override

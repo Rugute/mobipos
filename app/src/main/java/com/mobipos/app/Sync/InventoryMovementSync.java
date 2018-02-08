@@ -80,6 +80,36 @@ public class InventoryMovementSync{
                         successState=1;
 
                         Log.d("movement id:",stock_out.get(i).id);
+                        String stock_count=inventorydb.getOpeningStock(stock_out.get(i).product_id);
+                        String low_count=inventorydb.LowStockValue(stock_out.get(i).product_id);
+
+
+
+                        if(Integer.parseInt(low_count)>=Integer.parseInt(stock_count)){
+                            List alert_parameters=new ArrayList();
+                            alert_parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                            alert_parameters.add(new BasicNameValuePair("product_id",stock_out.get(i).product_id));
+
+                            if(Integer.parseInt(stock_count)>0){
+                                alert_parameters.add(new BasicNameValuePair("message","PRODUCT STOCK IS LOW"));
+                                alert_parameters.add(new BasicNameValuePair("alert_type","1"));
+                            }else{
+                                alert_parameters.add(new BasicNameValuePair("alert_type","2"));
+                                alert_parameters.add(new BasicNameValuePair("message","PRODUCT OUT OF STOCK"));
+                            }
+
+                            JSONObject alertObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                            SyncDefaults.sync_alert_message,
+                                    "GET",alert_parameters);
+                          try{
+                              int alert_response_success=alertObject.getInt("success");
+                              if(alert_response_success==1){
+                                  Log.d("alert response",alertObject.getString("message"));
+                              }
+                          }catch (Exception e){
+
+                          }
+                        }
                     }
                 }catch (Exception e){
 

@@ -20,6 +20,7 @@ public class Inventory extends Controller {
  //   public static String col_1="tb_inventory_id";
     public static String col_2="product_id";
     public static String col_3="inventory_count";
+    public static String col_6="low_stock_count";
     public static String col_4="sync_status";
     public static String col_5="active_status";
 
@@ -30,6 +31,7 @@ public class Inventory extends Controller {
             col_2+" INT(11),"+
             col_3+" INT(11),"+
             col_4+" INT(11),"+
+            col_6+" INT(11),"+
             col_5+" INT(11))";
 
 
@@ -46,7 +48,7 @@ public class Inventory extends Controller {
         }
     }
 
-    public boolean insertStock(String product_id,String stock_count){
+    public boolean insertStock(String product_id,String stock_count,String low_stock){
         SQLiteDatabase db=this.getWritableDatabase();
         //  String sql="DELETE from "+tb_name;
 
@@ -57,6 +59,7 @@ public class Inventory extends Controller {
             values.put(col_3,stock_count);
             values.put(col_4,"1");
             values.put(col_5,"1");
+            values.put(col_6,low_stock);
 
 
 
@@ -80,6 +83,25 @@ public class Inventory extends Controller {
         try {
             if(cursor.moveToFirst()){
                 count=cursor.getString(cursor.getColumnIndex(col_3));
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public String LowStockValue(String product_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT low_stock_count FROM "+tb_name+ " WHERE "+col_2+"="+product_id;
+        Cursor cursor=null;
+        String count=null;
+        cursor=db.rawQuery(sql,null);
+
+        try {
+            if(cursor.moveToFirst()){
+                count=cursor.getString(cursor.getColumnIndex(col_6));
 
             }
         }catch (Exception e){

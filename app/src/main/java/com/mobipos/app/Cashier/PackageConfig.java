@@ -34,6 +34,7 @@ public class PackageConfig {
     public static String[] price_id;
     public static String[] price;
     public static String[] stockData;
+    public static String[] lowStockData;
     public static String[] tax_margin;
 
 
