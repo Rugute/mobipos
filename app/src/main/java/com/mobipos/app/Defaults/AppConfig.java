@@ -16,6 +16,7 @@ public class AppConfig {
     public static String admin_select_branches="admin-get-branches.php";
     public static String get_items="admin-get-products-to-sale.php";
     public static String get_categories="admin-get-categories.php";
+    public static String add_outlet="admin-add-outlet.php";
 
     public static boolean firstRefresh=false;
 

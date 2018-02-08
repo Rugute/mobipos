@@ -21,8 +21,8 @@ public class PackageConfig {
     //public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp};
    // public static String[] inventory_title={"Category","Products","Stock Alert","Reports"};
 
-    public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp};
-    public static String[] inventory_title={"Category","Products","Stock Alert","Reports"};
+    public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp,R.drawable.ic_shop,R.drawable.ic_set_stuff};
+    public static String[] inventory_title={"Category","Products","Stock Alert","Reports","Branches","Settings"};
 
 
     public static String[] categoryArrayId;
