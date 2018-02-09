@@ -103,9 +103,9 @@ public class DashboardCashier extends AppCompatActivity{
            if(internet.isNetworkConnected()){
 
                new Synchronizer(getApplicationContext());
-                if(usersdb.clearUserData()<=0){
-                    startActivity(new Intent(DashboardCashier.this, SplashPage.class));
-                }
+               
+               finish();
+               System.exit(0);
            }else{
                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(this).
                        setTitle("Cannot Logout").

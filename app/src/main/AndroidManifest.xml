@@ -32,6 +32,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:noHistory="true"/>
         <activity android:name=".login.CashierLogin"
+            android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".login.PinLogin"

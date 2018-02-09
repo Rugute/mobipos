@@ -383,12 +383,17 @@ public class MakeSale extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 get_item_count=edit_count.getText().toString();
 
-                if(orderItemsdb.update_count(product_id,order_id,get_item_count)){
-                    dataChange=true;
+                if(Integer.parseInt(inventorydb.getOpeningStock(product_id))>=Integer.parseInt(get_item_count)){
+                    if(orderItemsdb.update_count(product_id,order_id,get_item_count)){
+                        dataChange=true;
+                    }
+
+                    total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+                    initializeListAdapter(new_order_no.getText().toString());
                 }
 
-                total_value.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
-                initializeListAdapter(new_order_no.getText().toString());
+              Toast.makeText(getActivity(),"Update Too Large. Items in store are: "+
+                      inventorydb.getOpeningStock(product_id),Toast.LENGTH_SHORT).show();
                // initializeListAdapter(PackageConfig.order_no);
 
 

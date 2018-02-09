@@ -3,6 +3,7 @@ package com.mobipos.app.login;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
@@ -82,10 +83,14 @@ public class CashierLogin extends Activity {
         String serverMessage;
         JSONArray data,tax_data;
 
+      ProgressDialog pdialog=new ProgressDialog(CashierLogin.this);
+
         protected void onPreExecute() {
             super.onPreExecute();
-            //dialog(true);
-
+        //    dialog(true);
+            pdialog.setMessage("Authenticating.please wait...");
+            pdialog.setCancelable(false);
+            pdialog.show();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -162,7 +167,7 @@ public class CashierLogin extends Activity {
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            //dialog(false);
+            pdialog.cancel();
             if(success==1){
 
                 taxesdb.getTaxes();
