@@ -12,6 +12,7 @@ import android.widget.GridView;
 import com.mobipos.app.Admin.AccountFragment;
 import com.mobipos.app.Admin.BranchFragment;
 import com.mobipos.app.Admin.DashboardAdmin;
+import com.mobipos.app.Admin.DashboardFragments.AdminSettings;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminItems;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.StockAlert.StockAlertFragment;
@@ -90,7 +91,7 @@ public class AdminInventory extends Fragment {
                     transaction.commit();
                 }else if(pos==5){
                     Fragment fragment;
-                    fragment = StockAlertFragment.newInstance();
+                    fragment = AdminSettings.newInstance();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
