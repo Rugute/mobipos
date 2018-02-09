@@ -17,8 +17,14 @@ public class AppConfig {
     public static String get_items="admin-get-products-to-sale.php";
     public static String get_categories="admin-get-categories.php";
     public static String add_outlet="admin-add-outlet.php";
-    public static String admin_get_measurements="admin-get-measurements.php";
+    public static String add_product="admin-add-product.php";
+    public static String add_taxes="admin-add-tax.php";
+    public static String get_taxes="admin-get-taxes.php";
     public static String admin_add_measurements="admin-add-measurement.php";
+    public static String admin_get_measurements="admin-get-measurements.php";
+
+
+
 
     public static boolean firstRefresh=false;
 
@@ -26,7 +32,6 @@ public class AppConfig {
 
     public static String[] branchNames;
     public static String[] branchIds;
-
     public static String[] measureMents;
     public static String[] measureValue;
 

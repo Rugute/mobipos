@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.mobipos.app.Admin.Adapters.AdminProdRvAdapter;
 import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategoryData;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.StockAlert.StockAlertFragment;
 import com.mobipos.app.Admin.PackageConfig;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
@@ -65,6 +68,7 @@ public class AdminItems extends Fragment {
     RecyclerView rv;
     ProgressBar bar;
 
+    FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +90,18 @@ public class AdminItems extends Fragment {
         branchspinner=view.findViewById(R.id.item_branch_spinner);
         categoryspinner=view.findViewById(R.id.item_category_spinner);
 
+        fab=view.findViewById(R.id.fab_add_items);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment;
+                fragment = AdminAddItem.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }
+        });
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);

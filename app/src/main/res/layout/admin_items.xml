@@ -98,7 +98,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:gravity="bottom"
-        app:backgroundTint="@color/colorpic6"
+        app:backgroundTint="#32ca2c"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 </RelativeLayout>

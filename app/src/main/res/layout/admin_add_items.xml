@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_layout"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/bar_loader"/>
+        <LinearLayout
+            android:id="@+id/items_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:background="@drawable/edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_list_branches"
+                    android:textColor="#fff"
+                    android:text="select branch"/>
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/selected_branch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textColor="#fff"
+                    android:editable="false"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:background="@drawable/edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_categories"
+                    android:textColor="#fff"
+                    android:text="select Category"/>
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/selected_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textColor="#fff"
+                    android:editable="false"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:background="@drawable/edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_measurement"
+                    android:textColor="#fff"
+                    android:text="select Measurement"/>
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/selected_measurement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textColor="#fff"
+                    android:editable="false"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/add_product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textColorHint="#fff"
+                    android:hint="Enter Product Name"
+                    android:textColor="#fff"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/add_initial_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textColorHint="#fff"
+                    android:inputType="number"
+                    android:hint="Enter Initial Stock"
+                    android:textColor="#fff"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/add_buying_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textColorHint="#fff"
+                    android:inputType="number"
+                    android:hint="Enter Product Buying Price"
+                    android:textColor="#fff"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/add_selling_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textColorHint="#fff"
+                    android:inputType="number"
+                    android:hint="Enter Product Selling Price"
+                    android:textColor="#fff"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/add_low_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textAlignment="textStart"
+                    android:textColorHint="#fff"
+                    android:inputType="number"
+                    android:hint="Enter Low Stock Alert Value"
+                    android:textColor="#fff"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:background="@drawable/edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_tax_margins"
+                    android:textColor="#fff"
+                    android:text="select Tax Margin"/>
+                <EditText
+                    android:backgroundTint="#fff"
+                    android:id="@+id/selected_tax_margins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textColor="#fff"
+                    android:editable="false"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:background="@drawable/edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_add_product"
+                    android:textColor="#fff"
+                    android:text="Add Product"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</ScrollView>
