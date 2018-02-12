@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="2dp"
+    android:background="@drawable/chatroom">
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignBottom="@+id/sta">
+        <ImageView
+            android:id="@+id/pic"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:contentDescription="desc"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/r1"
+        android:paddingBottom="10dp"
+        android:text="Cashier_name"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/user_unicode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_name"
+        android:layout_below="@+id/user_name"
+        android:text="user_code"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/user_branch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/user_name"
+        android:layout_alignBottom="@+id/user_name"
+        android:layout_alignParentRight="true"
+        android:text="branch"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+</RelativeLayout>

@@ -20,6 +20,7 @@ import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCatego
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminItems;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.StockAlert.StockAlertFragment;
 import com.mobipos.app.Admin.DashboardFragments.Settings.TaxesFragment;
+import com.mobipos.app.Admin.EmployeesFragment;
 import com.mobipos.app.Dashboard.ReportFragment;
 import com.mobipos.app.R;
 
@@ -62,11 +63,11 @@ public class AdminSettings extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int pos= (int) adapterView.getItemIdAtPosition(i);
                 if (pos==0){
-//                    Fragment fragment;
-//                    fragment = AdminCategories.newInstance();
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-//                    transaction.replace(R.id.frame_layout, fragment);
-//                    transaction.commit();
+                  Fragment fragment;
+                  fragment = EmployeesFragment.newInstance();
+                   FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                   transaction.replace(R.id.frame_layout, fragment);
+                    transaction.commit();
                 }else if(pos==1){
                     Fragment fragment;
                     fragment = AdminMeasurements.newInstance();

@@ -142,10 +142,8 @@ public class ReportFragment extends Fragment{
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     int pos= (int) adapterView.getItemIdAtPosition(i);
                     AppConfig.selected_branch_id=AppConfig.branchIds[pos];
-
-
-
-
+                    branchselect.setText(AppConfig.branchNames[pos]);
+                    dialog.cancel();
 
                 }
             });

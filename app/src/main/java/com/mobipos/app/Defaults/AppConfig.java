@@ -6,10 +6,10 @@ package com.mobipos.app.Defaults;
 
 public class AppConfig {
 
-    public static String protocol="http://mauzoafrica.mutengeneresort.com";
+   // public static String protocol="http://mauzoafrica.mutengeneresort.com";
     public static String hostname ="/app/";
     public static String hostname_admin="/admin/custom/data/apis/log/";
- //   public static String protocol="http://192.168.173.1/mobipos.com";
+    public static String protocol="http://192.168.173.1/mobipos.com";
 
     public static String url_register="register.php";
     public static String get_today_sales="admin-get-todays-sales.php";
@@ -22,6 +22,9 @@ public class AppConfig {
     public static String get_taxes="admin-get-taxes.php";
     public static String admin_add_measurements="admin-add-measurement.php";
     public static String admin_get_measurements="admin-get-measurements.php";
+    public static String admin_get_employees="admin-get-employees.php";
+    public static String admin_add_employees="admin-add-employee.php";
+
 
 
 
@@ -34,6 +37,8 @@ public class AppConfig {
     public static String[] branchIds;
     public static String[] measureMents;
     public static String[] measureValue;
+
+
 
 
 
