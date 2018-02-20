@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.mobipos.app.R;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +38,9 @@ public class EmployeesFragment extends Fragment {
     Users users;
     private List<EmployeeData> employeeData;
     FloatingActionButton fadduser;
+    ImageView del_user;
+
+
 
     public static EmployeesFragment newInstance(){
         EmployeesFragment fragment= new EmployeesFragment();
@@ -55,6 +60,9 @@ public class EmployeesFragment extends Fragment {
         users = new Users(getContext(), defaults.database_name, null, 1);
         listView=view.findViewById(R.id.list_users);
         fadduser=view.findViewById(R.id.fab_add_users);
+        del_user=view.findViewById(R.id.del);
+
+
 
         fadduser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +76,9 @@ public class EmployeesFragment extends Fragment {
         });
 
         new ViewEmployees().execute();
+
+
+
 
 
     }
@@ -131,5 +142,7 @@ public class EmployeesFragment extends Fragment {
             }
         }
     }
+
+
 
 }

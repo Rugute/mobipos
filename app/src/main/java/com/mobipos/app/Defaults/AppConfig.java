@@ -25,22 +25,16 @@ public class AppConfig {
     public static String admin_get_employees="admin-get-employees.php";
     public static String admin_add_employees="admin-add-employee.php";
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";
-
+    public static String admin_delete_user="/app/delete-fxn.php";
 
 
 
 
     public static boolean firstRefresh=false;
-
     public static String selected_branch_id;
-
     public static String[] branchNames;
     public static String[] branchIds;
     public static String[] measureMents;
     public static String[] measureValue;
-
-
-
-
 
 }

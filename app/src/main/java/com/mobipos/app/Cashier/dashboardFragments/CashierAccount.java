@@ -41,6 +41,9 @@ public class CashierAccount extends Fragment {
         cash_id=(TextView) view.findViewById(R.id.user_id);
 
 
+
+
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,10 +51,26 @@ public class CashierAccount extends Fragment {
             }
         });
 
+        updateinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InfoUpdate();
+            }
+        });
+
     }
     public void Pinset (){
         final AlertDialog dialog= new AlertDialog.Builder(getContext()).create();
         View view=LayoutInflater.from(getContext()).inflate(R.layout.reset_pin_popup,null);
+
+
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    public void InfoUpdate (){
+        final AlertDialog dialog= new AlertDialog.Builder(getContext()).create();
+        View view=LayoutInflater.from(getContext()).inflate(R.layout.cashier_update_info,null);
 
 
         dialog.setView(view);

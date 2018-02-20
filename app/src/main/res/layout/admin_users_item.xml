@@ -55,4 +55,17 @@
         android:textColor="#000"
         android:textSize="16sp" />
 
+    <ImageView
+        android:id="@+id/del"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignBottom="@+id/user_unicode"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="desc"
+        android:fitsSystemWindows="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:srcCompat="@drawable/ic_del_user" />
+
 </RelativeLayout>
