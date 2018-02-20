@@ -204,8 +204,12 @@ public class PaymentActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if(cash.isChecked()){
                    cashPaymentPopup();
-                   alertDialog.dismiss();
+                }else if (mpesa.isChecked()){
+                    MpesaPaymentPopup();
+
                 }
+
+                alertDialog.dismiss();
             }
         });
 
@@ -324,6 +328,52 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+    }
+
+    public void MpesaPaymentPopup(){
+
+        View view= LayoutInflater.from(this).inflate(R.layout.cashier_make_mpesa_payment,null);
+        final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
+        alertDialog.setView(view);
+
+        final EditText tender;
+        tender=view.findViewById(R.id.mpesa_tendered);
+        String total=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "CONFIRM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                List<PushSaleData> data=new ArrayList<>();
+                String total=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+                data.add(new PushSaleData(PackageConfig.order_no,
+                       total,
+                       total,
+                        "MPESA",
+                        tender.getText().toString()
+                ));
+
+                if(!salesdb.addSaleData(data)){
+                    salesdb.getSalesData("loadLocal","NO NEED");
+                    showPrinterPopUp();
+                    alertDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"PAYMENT SUCCESSFUL",Toast.LENGTH_SHORT).show();
+                }else{
+
+                    Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();
+               }
+            }
+        });
+
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+
     }
 
 }

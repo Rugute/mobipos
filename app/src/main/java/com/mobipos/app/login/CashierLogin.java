@@ -115,13 +115,14 @@ public class CashierLogin extends Activity {
 
                     JSONObject jobj=data.getJSONObject(0);
 
-                    PackageConfig.login_data=new String[6];
+                    PackageConfig.login_data=new String[7];
                     PackageConfig.login_data[0]=jobj.getString("user_id");
                     PackageConfig.login_data[1]=jobj.getString("username");
                     PackageConfig.login_data[2]=jobj.getString("email");
                     PackageConfig.login_data[3]=jobj.getString("employee_id");
                     PackageConfig.login_data[4]="1";
                     PackageConfig.login_data[5]="cashier";
+                    PackageConfig.login_data[6]=jobj.getString("phoneNumber");
 
                     List params=new ArrayList();
                     params.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));

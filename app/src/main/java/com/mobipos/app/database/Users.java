@@ -7,11 +7,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.mobipos.app.Cashier.dashboardFragments.Account.CashierData;
+
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -31,6 +36,7 @@ public class Users extends Controller {
     private static String col_4="password";
     private static String col_5="active_status";
     private static String col_6="account_type";
+    private static String col_7="phone_number";
 
 
     private static String tb_pin="tb_pin";
@@ -51,6 +57,7 @@ public class Users extends Controller {
             col_3+" VARCHAR(50),"+
             col_4+" VARCHAR(50),"+
             col_5+" INT(11),"+
+            col_7+" VARCHAR(50),"+
             col_6+" VARCHAR(50))";
 
     public static String CREATE_PIN_TABLE="CREATE TABLE IF NOT EXISTS "+tb_pin+" ("+
@@ -181,6 +188,7 @@ public class Users extends Controller {
             values.put(col_4,data[3]);
             values.put(col_5,data[4]);
             values.put(col_6,data[5]);
+            values.put(col_7,data[6]);
 
             db.insert(tb_name,null,values);
             db.close();
@@ -275,5 +283,22 @@ public class Users extends Controller {
         db.execSQL(sql_pin);
 
         return CheckUserOrPin(tb_name);
+    }
+
+    public List<CashierData> getCashierData(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_name + " LIMIT 1";
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+        List<CashierData> data=new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            data.add(new CashierData(cursor.getString(cursor.getColumnIndex(col_3)),
+                    cursor.getString(cursor.getColumnIndex(col_7)),
+                    cursor.getString(cursor.getColumnIndex(col_4)),
+                    cursor.getString(cursor.getColumnIndex(col_2))));
+        }
+        db.close();
+
+        return data;
     }
 }

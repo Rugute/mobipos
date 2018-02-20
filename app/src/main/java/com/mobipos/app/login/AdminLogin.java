@@ -144,6 +144,7 @@ public class AdminLogin extends Activity {
                     PackageConfig.login_data[3]=jobj.getString("password");
                     PackageConfig.login_data[4]="1";
                     PackageConfig.login_data[5]="admin";
+                    PackageConfig.login_data[6]="n/a";
 
 
                 }
