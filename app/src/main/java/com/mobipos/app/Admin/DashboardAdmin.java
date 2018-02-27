@@ -107,4 +107,29 @@ public class DashboardAdmin extends AppCompatActivity {
 
         return  true;
     }
+
+    public void onBackPressed(){
+
+    //    FragmentManager manager=getSupportFragmentManager();
+    //    manager.popBackStack();
+        {
+            android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+
+            alertDialog.setMessage((CharSequence) "Are you sure you want to Logout?");
+            alertDialog.setPositiveButton((CharSequence) "Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    finish();
+                }
+            });
+            alertDialog.setNegativeButton((CharSequence) "No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            alertDialog.show();
+        }
+
+
+    }
 }

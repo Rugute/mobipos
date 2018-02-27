@@ -2,6 +2,8 @@ package com.mobipos.app.Cashier.dashboardFragments.MakeSales;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +64,7 @@ public class MakeSale extends Fragment {
         return fragment;
     }
 
+    SearchView searchView;
     ExpandableListView expandableListView;
     Categories categoriesdb;
     Products productsdb;
@@ -74,6 +78,8 @@ public class MakeSale extends Fragment {
     TextView new_order_no;
 
     ListView listView;
+
+    MakeSalesAdapter adapter;
     ImageView refresh;
 
     RelativeLayout view_cart;
@@ -128,7 +134,39 @@ public class MakeSale extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+        adapter=new MakeSalesAdapter(getActivity(),cartData());
+        searchView=view.findViewById(R.id.search);
 
+
+        SearchManager searchManager=(SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+     //   searchView.setSearchableInfo(searchManager.getSearchableInfo();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                dataFilter(s);
+                return false;
+
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                dataFilter(s);
+                return false;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                MakeSalesAdapter adapter=new MakeSalesAdapter(getContext(),cartData());
+                adapter.notifyDataSetChanged();
+                expandableListView.setAdapter(adapter);
+                return false;
+            }
+        });
 
 
 
@@ -171,11 +209,11 @@ public class MakeSale extends Fragment {
                 alertBuilder.show();
             }else{
                 refresh.setVisibility(View.GONE);
-                expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+                expandableListView.setAdapter(adapter);
 
             }
         }
-        expandableListView.setAdapter(new MakeSalesAdapter(getActivity(),cartData()));
+        expandableListView.setAdapter(adapter);
 
         if(AppConfig.firstRefresh){
             refresh.setVisibility(View.GONE);
@@ -289,17 +327,34 @@ public class MakeSale extends Fragment {
         Log.d("list of data",orderItemsdb.getCartData(order_id).toString());
 
 
-        ListViewCartAdapter adapter = new ListViewCartAdapter(getActivity(),
+        final ListViewCartAdapter adapter = new ListViewCartAdapter(getActivity(),
                 orderItemsdb.getCartData(order_id),
                 new_order_no.getText().toString(),
                 total_value);
 
 
+
+
         adapter.notifyDataSetChanged();
         adapter.notifyDataSetInvalidated();
         listView.setAdapter(adapter);
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+
+                return false;
+            }
+        });
         //  rv.refreshDrawableState();
 
+    }
+
+    private void expandAll() {
+        int count = adapter.getGroupCount();
+        for (int i = 0; i < count; i++){
+            expandableListView.expandGroup(i);
+        }
     }
 
     public void showBackButton(Boolean state,String title) {
@@ -411,8 +466,11 @@ public class MakeSale extends Fragment {
 
     }
 
-    public void itemListeners(){
+    public void dataFilter(String s){
 
+        MakeSalesAdapter adapter=new MakeSalesAdapter(getContext(),productsdb.search(s));
+        adapter.notifyDataSetChanged();
+        expandableListView.setAdapter(adapter);
     }
 
 }

@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleInterfaceData;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleProductData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSaleProductInfo;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -58,8 +60,10 @@ public class Products extends Controller {
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 
+        int i=cursor.getCount();
+        cursor.close();
       //  Log.d("product count in loop:",String.valueOf(cursor.getCount()));
-        return cursor.getCount();
+        return i;
     }
 
     public boolean ProductExists(String id){
@@ -217,5 +221,120 @@ public class Products extends Controller {
         return i;
     }
 
+    public List<MakeSaleInterfaceData> search(String s){
+        SQLiteDatabase db=getReadableDatabase();
+
+        String cat_sql="SELECT * FROM "+Categories.tb_name;
+
+        List<MakeSaleInterfaceData> data_list=new ArrayList<>();
+
+        Cursor product_cursor=null;
+        Cursor category_cursor=null;
+
+
+        category_cursor=db.rawQuery(cat_sql,null);
+
+        try{
+
+            if(category_cursor.moveToFirst()){
+                do{
+                    MakeSaleInterfaceData list_data=new MakeSaleInterfaceData();
+                    String category_id=category_cursor.getString(category_cursor.getColumnIndex(Categories.col_1));
+
+                    String sql="SELECT * FROM "+tb_name+" WHERE "+col_2+" LIKE '%"+s+"%' AND category_id="+category_id;
+                    product_cursor=db.rawQuery(sql,null);
+
+                    List<MakeSaleProductInfo> new_product=new ArrayList<>();
+                    try {
+                        if(product_cursor.getCount()==0){
+                            continue;
+                        }else{
+                            if(product_cursor.moveToFirst()){
+
+                                int serial=0;
+                                do{
+
+
+                                    MakeSaleProductInfo productInfo=new MakeSaleProductInfo();
+                                    String product_id=product_cursor.getString(product_cursor.getColumnIndex(col_1));
+                                    productInfo.setProduct_id(product_id);
+                                    productInfo.setProduct_name(product_cursor.getString(product_cursor.getColumnIndex(col_2)));
+                                    productInfo.setId(serial);
+                                    productInfo.setProduct_price(get_product_price(product_id));
+
+                                    new_product.add(productInfo);
+
+                                    Log.d("return search",product_cursor.getString(product_cursor.getColumnIndex(col_2)));
+                                    Log.d("return search cat name",get_category_name(category_id));
+
+                                    list_data.setProduct(new_product);
+
+
+
+                                    serial++;
+                                }while (product_cursor.moveToNext());
+                            }
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    product_cursor.close();
+                    list_data.setCategory_id(category_id);
+                    list_data.setCategory_name(get_category_name(category_id));
+
+                    data_list.add(list_data);
+                }while (category_cursor.moveToNext());
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        category_cursor.close();
+
+        return data_list;
+    }
+
+    public String get_product_price(String product_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql="SELECT price FROM "+Product_Prices.tb_name+" WHERE "+Product_Prices.col_2+"="+product_id+" LIMIT 1";
+
+        String s=null;
+
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        if (cursor.moveToFirst()){
+            s=cursor.getString(cursor.getColumnIndex("price"));
+        }
+
+        cursor.close();
+
+        return s;
+    }
+
+    public String get_category_name(String category_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql="SELECT category_name FROM "+Categories.tb_name+" WHERE "+Categories.col_1+"="+category_id+" LIMIT 1";
+
+        String s=null;
+
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        if (cursor.moveToFirst()){
+            s=cursor.getString(cursor.getColumnIndex("category_name"));
+        }
+
+        cursor.close();
+
+        return s;
+    }
 
 }

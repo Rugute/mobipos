@@ -111,10 +111,12 @@ public class AdminLogin extends Activity {
         int success;
         String serverMessage;
         JSONArray data;
-
+        ProgressDialog pdialog=new ProgressDialog(AdminLogin.this);
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog(true);
+            pdialog.setMessage("Authenticating.please wait...");
+            pdialog.setCancelable(false);
+            pdialog.show();
 
         }
         @Override
@@ -137,7 +139,7 @@ public class AdminLogin extends Activity {
 
                     JSONObject jobj=data.getJSONObject(0);
 
-                    PackageConfig.login_data=new String[6];
+                    PackageConfig.login_data=new String[7];
                     PackageConfig.login_data[0]=jobj.getString("user_id");
                     PackageConfig.login_data[1]=jobj.getString("username");
                     PackageConfig.login_data[2]=jobj.getString("email");
@@ -145,6 +147,7 @@ public class AdminLogin extends Activity {
                     PackageConfig.login_data[4]="1";
                     PackageConfig.login_data[5]="admin";
                     PackageConfig.login_data[6]="n/a";
+
 
 
                 }
@@ -158,7 +161,7 @@ public class AdminLogin extends Activity {
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            dialog(false);
+            pdialog.cancel();
             if(success==1){
 
                 try{

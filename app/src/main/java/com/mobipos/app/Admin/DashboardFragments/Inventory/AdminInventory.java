@@ -59,44 +59,32 @@ public class AdminInventory extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int pos= (int) adapterView.getItemIdAtPosition(i);
+                Fragment fragment=null;
                 if (pos==0){
-                    Fragment fragment;
+
                     fragment = AdminCategories.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
                 }else if(pos==1){
-                    Fragment fragment;
                     fragment = AdminItems.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
+
                 }else if(pos==2){
-                    Fragment fragment;
+
                     fragment = StockAlertFragment.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
+
                 }else if(pos==3){
-                    Fragment fragment;
+
                     fragment = ReportFragment.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
+
                     }else if(pos==4){
-                    Fragment fragment;
+
                     fragment = BranchFragment.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
+
                 }else if(pos==5){
-                    Fragment fragment;
                     fragment = AdminSettings.newInstance();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                    transaction.replace(R.id.frame_layout, fragment);
-                    transaction.commit();
                 }
 
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
             }
         });
 

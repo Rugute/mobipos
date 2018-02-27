@@ -34,6 +34,7 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<MakeSaleInterfaceData> data;
+    private List<MakeSaleInterfaceData> original;
     public static LayoutInflater inflater=null;
     Products productsdb;
 
@@ -41,6 +42,8 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
     public MakeSalesAdapter(Context context, List<MakeSaleInterfaceData> data) {
         this.context = context;
         this.data = data;
+        original=new ArrayList<>();
+        original.addAll(data);
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -137,5 +140,37 @@ public class MakeSalesAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
+    }
+
+    public void filterData(String query){
+
+        query = query.toLowerCase();
+        Log.v("MyListAdapter", String.valueOf(data.size()));
+        data.clear();
+
+        if(query.isEmpty()){
+            data.addAll(original);
+        }
+        else {
+
+            for(MakeSaleInterfaceData continent: original){
+
+                List<MakeSaleProductInfo> productList = continent.getProduct();
+                List<MakeSaleProductInfo> newList = new ArrayList<MakeSaleProductInfo>();
+                for(MakeSaleProductInfo country: productList){
+                    if(country.getProduct_name().toLowerCase().contains(query)){
+                        newList.add(country);
+                    }
+                }
+                if(newList.size() > 0){
+                    MakeSaleInterfaceData nContinent = new MakeSaleInterfaceData();
+                    data.add(nContinent);
+                }
+            }
+        }
+
+        Log.v("MyListAdapter", String.valueOf(data.size()));
+        notifyDataSetChanged();
+
     }
 }
