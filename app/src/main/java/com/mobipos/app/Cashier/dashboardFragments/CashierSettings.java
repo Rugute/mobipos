@@ -2,11 +2,13 @@ package com.mobipos.app.Cashier.dashboardFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobipos.app.Defaults.PrinterFragment;
 import com.mobipos.app.R;
 
 
@@ -32,6 +34,18 @@ public class CashierSettings extends Fragment {
 
         printer_settings=view.findViewById(R.id.printer_set_card);
         discount_set=view.findViewById(R.id.sales_discount_card);
+
+
+        printer_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment;
+                fragment = PrinterFragment.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }
+        });
 
 
     }

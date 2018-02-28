@@ -22,6 +22,7 @@ import com.mobipos.app.Admin.DashboardFragments.Inventory.StockAlert.StockAlertF
 import com.mobipos.app.Admin.DashboardFragments.Settings.TaxesFragment;
 import com.mobipos.app.Admin.EmployeesFragment;
 import com.mobipos.app.Dashboard.ReportFragment;
+import com.mobipos.app.Defaults.PrinterFragment;
 import com.mobipos.app.R;
 
 import java.util.ArrayList;
@@ -81,11 +82,11 @@ public class AdminSettings extends Fragment {
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
                 }else if(pos==3){
-//                    Fragment fragment;
-//                    fragment = ReportFragment.newInstance();
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-//                    transaction.replace(R.id.frame_layout, fragment);
-//                    transaction.commit();
+                    Fragment fragment;
+                    fragment = PrinterFragment.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout, fragment);
+                    transaction.commit();
                 }else if(pos==4){
 //                    Fragment fragment;
 //                    fragment = BranchFragment.newInstance();

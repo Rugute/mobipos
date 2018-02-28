@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="2dp"
+    android:background="@drawable/chatroom">
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignBottom="@+id/sta">
+        <ImageView
+            android:id="@+id/pic"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:contentDescription="desc"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:fitsSystemWindows="true"
+            app:srcCompat="@drawable/ic_print_black_24dp"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/printer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/r1"
+        android:paddingBottom="10dp"
+        android:text="Printer"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/printer_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/printer_name"
+        android:layout_below="@+id/printer_name"
+        android:text="mac_address"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/delete_printer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/name"
+        android:layout_alignBottom="@+id/name"
+        android:layout_alignParentRight="true"
+        android:text="online"
+        android:textColor="#000"
+        android:textSize="16sp"
+        app:srcCompat="@drawable/ic_clear_black_24dp"/>
+
+</RelativeLayout>
