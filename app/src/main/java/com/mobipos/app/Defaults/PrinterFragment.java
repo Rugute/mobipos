@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,8 +39,6 @@ public class PrinterFragment extends Fragment {
     Users users;
     FloatingActionButton faddprinter;
 
-    public static String newprinter="";
-    public static String newprintermac="";
 
     public static PrinterFragment newInstance(){
         PrinterFragment fragment=new PrinterFragment();
@@ -63,7 +62,11 @@ public class PrinterFragment extends Fragment {
         faddprinter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPrinter();
+                Fragment fragment;
+                fragment= AddPrinterFragment.newInstance();
+                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout,fragment);
+                transaction.commit();
 
             }
         });
@@ -130,93 +133,32 @@ public class PrinterFragment extends Fragment {
         }
     }
 
-    public void AddPrinter() {
-        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.printer_add_popup, null);
-        Button addme=view.findViewById(R.id.add_printer);
-        final EditText newprinteritem=view.findViewById(R.id.new_printer_name);
-        final EditText newprintermacitem=view.findViewById(R.id.new_printer_mac);
-
-        addme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                newprinter=newprinteritem.getText().toString();
-                newprintermac=newprintermacitem.getText().toString();
-                if(!TextUtils.isEmpty(newprinteritem.getText())&&!TextUtils.isEmpty(newprintermacitem.getText())){
-                    new PrinterAddition().execute();
-                    dialog.cancel();
-                }else {
-                    Toast.makeText(getContext(),"Please input all details",Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
-        dialog.setView(view);
-        dialog.show();
-    }
-
-    public class  PrinterAddition extends AsyncTask<String, String, String> {
-        int successState = 0;
-        String serverMessage;
-        JSONArray branch;
-        String outlet = null;
-
-        String TAG_MESSAGE="message";
-        String TAG_SUCCESS="success";
-        String USER_ID=null;
+//    public void AddPrinter() {
+//        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+//        View view = LayoutInflater.from(getContext()).inflate(R.layout.printer_add_popup, null);
+//        Button addme=view.findViewById(R.id.add_printer);
+//        final EditText newprinteritem=view.findViewById(R.id.new_printer_name);
+//        final EditText newprintermacitem=view.findViewById(R.id.new_printer_mac);
+//
+//        addme.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                newprinter=newprinteritem.getText().toString();
+//                newprintermac=newprintermacitem.getText().toString();
+//                if(!TextUtils.isEmpty(newprinteritem.getText())&&!TextUtils.isEmpty(newprintermacitem.getText())){
+//                    new PrinterAddition().execute();
+//                    dialog.cancel();
+//                }else {
+//                    Toast.makeText(getContext(),"Please input all details",Toast.LENGTH_SHORT).show();
+//
+//                }
+//            }
+//        });
+//
+//        dialog.setView(view);
+//        dialog.show();
+//    }
 
 
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            JSONParser jsonParser = new JSONParser();
-            List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
-            jsonObjectData.add(new BasicNameValuePair("name",newprinter));
-            jsonObjectData.add(new BasicNameValuePair("single_unit",newprintermac));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
-
-            JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
-                            AppConfig.add_printer,
-                    "GET", jsonObjectData);
-
-            Log.d("result",jsonObjectResponse.toString());
-
-            try {
-
-
-
-                int success=jsonObjectResponse.getInt(TAG_SUCCESS);
-                serverMessage=jsonObjectResponse.getString(TAG_MESSAGE);
-
-
-                if(success==1){
-                    successState=1;
-
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-
-            return null;
-        }
-
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if(successState==1){
-                Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getActivity(),"server error",Toast.LENGTH_SHORT).show();
-            }
-
-
-            new PrinterSelection().execute();
-        }
-    }
 
 }

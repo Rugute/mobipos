@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.R;
+import com.mobipos.app.database.Sales;
+import com.mobipos.app.database.defaults;
 
 /**
  * Created by root on 1/31/18.
@@ -19,6 +22,7 @@ import com.mobipos.app.R;
 public class CashierAccount extends Fragment {
     CardView updateinfo,reset;
     TextView name,phone,email,cash_id;
+    Sales salesdb;
 
     public static CashierAccount newInstance(){
         CashierAccount fragment= new CashierAccount();
@@ -39,6 +43,12 @@ public class CashierAccount extends Fragment {
         phone=(TextView) view.findViewById(R.id.cashier_phone);
         email=(TextView) view.findViewById(R.id.cashier_email);
         cash_id=(TextView) view.findViewById(R.id.user_id);
+
+        name.setText("");
+        email.setText("");
+        phone.setText("");
+        cash_id.setText("");
+
 
 
 

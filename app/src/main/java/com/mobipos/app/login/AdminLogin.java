@@ -70,7 +70,7 @@ public class AdminLogin extends Activity {
                 strpassword=password.getText().toString();
 
                 if (stremail == null || strpassword == null){
-                    Toast.makeText(getApplicationContext(),"fill all boxes",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"fill all details",Toast.LENGTH_SHORT).show();
                 }else{
                     new loginProcessor().execute();
                 }
