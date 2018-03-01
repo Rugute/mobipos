@@ -1,5 +1,6 @@
 package com.mobipos.app.Admin;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -88,9 +89,12 @@ public class EmployeesFragment extends Fragment {
         JSONArray user_name,user_code,user_branch;
         String outlet = null;
 
-
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -140,6 +144,8 @@ public class EmployeesFragment extends Fragment {
                 }
 
             }
+
+            dialog.cancel();
         }
     }
 

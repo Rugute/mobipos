@@ -152,9 +152,14 @@ public class AdminAddEmployees extends Fragment {
         String TAG_SUCCESS="success";
         String USER_ID=null;
 
+        ProgressDialog dialog=new ProgressDialog(getContext());
 
         protected void onPreExecute() {
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -206,6 +211,8 @@ public class AdminAddEmployees extends Fragment {
             transaction.replace(R.id.frame_layout, fragment);
             transaction.commit();
 
+            dialog.cancel();
+
         }
     }
     public class SelectBranch extends AsyncTask<String,String,String> {
@@ -214,10 +221,14 @@ public class AdminAddEmployees extends Fragment {
         JSONArray branch ;
         String outlet=null;
 
-
+        ProgressDialog dialog=new ProgressDialog(getContext());
 
         protected  void onPreExecute(){
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -252,6 +263,7 @@ public class AdminAddEmployees extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+
             if(success==1){
                 if(AppConfig.branchIds.length>0){
                     SelectOutletPop(1);
@@ -260,6 +272,8 @@ public class AdminAddEmployees extends Fragment {
                 }
 
             }
+
+            dialog.cancel();
         }
     }
 

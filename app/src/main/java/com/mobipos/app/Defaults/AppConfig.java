@@ -28,6 +28,7 @@ public class AppConfig {
     public static String view_printers="";
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";
     public static String admin_delete_user="/app/delete-fxn.php";
+    public static String admin_add_printer="admin-add-printer.php";
 
 
 

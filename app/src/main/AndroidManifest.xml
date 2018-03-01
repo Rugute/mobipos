@@ -64,6 +64,12 @@
             android:noHistory="true">
 
         </activity>
+        <activity android:name=".Defaults.PrinterActivity"
+            android:theme="@style/AppTheme"
+            android:noHistory="true">
+
+        </activity>
+
     </application>
 
 </manifest>

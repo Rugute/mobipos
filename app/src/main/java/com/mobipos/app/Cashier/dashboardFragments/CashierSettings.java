@@ -36,16 +36,6 @@ public class CashierSettings extends Fragment {
         discount_set=view.findViewById(R.id.sales_discount_card);
 
 
-        printer_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment;
-                fragment = PrinterFragment.newInstance();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-                transaction.replace(R.id.frame_layout, fragment);
-                transaction.commit();
-            }
-        });
 
 
     }

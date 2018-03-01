@@ -64,6 +64,7 @@ public class Printers extends Controller {
     }
 
     public List<PrinterInterface> getPrintes(){
+  //  public void getPrinters(){
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
 
@@ -81,6 +82,10 @@ public class Printers extends Controller {
                     data.add(new PrinterInterface(cursor.getString(cursor.getColumnIndex(col_1)),
                             cursor.getString(cursor.getColumnIndex(col_2)),
                             cursor.getColumnName(cursor.getColumnIndex(col_3))));
+
+                    Log.d("printer id:",cursor.getString(cursor.getColumnIndex(col_1)));
+                    Log.d("printer name:",cursor.getString(cursor.getColumnIndex(col_2)));
+                    Log.d("printer mac:",cursor.getString(cursor.getColumnIndex(col_3)));
                 }while (cursor.moveToNext());
 
             }

@@ -224,6 +224,7 @@ public class MakeSale extends Fragment {
             public void onClick(View view) {
                 view_cart_seen=false;
                 expandableListView.setVisibility(View.VISIBLE);
+                searchView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
                  navigator.setText("Click to Proceed");
@@ -245,6 +246,7 @@ public class MakeSale extends Fragment {
                     total_card.setCardBackgroundColor(Color.parseColor("#605398"));
                         expandableListView.setVisibility(View.GONE);
                         view_cart.setVisibility(View.VISIBLE);
+                    searchView.setVisibility(View.GONE);
                     initializeListAdapter(PackageConfig.order_no);
                     navigator.setText("Click to Cash out");
 

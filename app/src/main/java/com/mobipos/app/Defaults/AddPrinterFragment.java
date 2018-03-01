@@ -1,5 +1,6 @@
 package com.mobipos.app.Defaults;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,8 +36,10 @@ import java.util.List;
 
 public class AddPrinterFragment extends Fragment {
     Users users;
-    Button pickbranch;
+    Button pickbranch,add_printer_in;
     EditText newPrinterName,newPrinterMac;
+
+    static String printer_name,st_branch_id,str_printer_mac;
 
     public static String newprinter="";
     public static String newprintermac="";
@@ -58,11 +61,21 @@ public class AddPrinterFragment extends Fragment {
         newPrinterName=(EditText) view.findViewById(R.id.new_printer_name);
         newPrinterMac=(EditText) view.findViewById(R.id.new_printer_mac);
         pickbranch=(Button) view.findViewById(R.id.branch_picker);
+        add_printer_in=view.findViewById(R.id.add_printer);
 
+        add_printer_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                str_printer_mac=newPrinterMac.getText().toString();
+                printer_name=newPrinterName.getText().toString();
+                new PrinterAddition().execute();
+            }
+        });
 
         pickbranch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 new SelectBranch().execute();
             }
         });
@@ -101,18 +114,23 @@ public class AddPrinterFragment extends Fragment {
         JSONArray branch ;
         String outlet=null;
 
-
+        ProgressDialog dialog=new ProgressDialog(getContext());
 
         protected  void onPreExecute(){
+
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
         @Override
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
 
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
                             AppConfig.admin_select_branches,
                     "GET",paramters);
@@ -139,6 +157,7 @@ public class AddPrinterFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+            dialog.cancel();
             if(success==1){
                 if(AppConfig.branchIds.length>0){
                     SelectOutletPop(1);
@@ -166,22 +185,27 @@ public class AddPrinterFragment extends Fragment {
         String TAG_SUCCESS="success";
         String USER_ID=null;
 
+        ProgressDialog dialog=new ProgressDialog(getContext());
 
         protected void onPreExecute() {
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
             super.onPreExecute();
         }
 
         @Override
         protected String doInBackground(String... strings) {
             JSONParser jsonParser = new JSONParser();
-            List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
-            jsonObjectData.add(new BasicNameValuePair("name",newprinter));
-            jsonObjectData.add(new BasicNameValuePair("single_unit",newprintermac));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            List<NameValuePair> parameters=new ArrayList<NameValuePair>();
+            parameters.add(new BasicNameValuePair("branch_id",AppConfig.selected_branch_id));
+            parameters.add(new BasicNameValuePair("name",printer_name));
+            parameters.add(new BasicNameValuePair("mac_address",str_printer_mac));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
-                            AppConfig.add_printer,
-                    "GET", jsonObjectData);
+                            AppConfig.admin_add_printer,
+                    "GET", parameters);
 
             Log.d("result",jsonObjectResponse.toString());
 
@@ -214,6 +238,7 @@ public class AddPrinterFragment extends Fragment {
                 Toast.makeText(getActivity(),"server error",Toast.LENGTH_SHORT).show();
             }
 
+            dialog.cancel();
 
             Fragment fragment;
             fragment= PrinterFragment.newInstance();

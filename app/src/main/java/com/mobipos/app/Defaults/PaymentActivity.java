@@ -315,14 +315,22 @@ public class PaymentActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if(print.isChecked()||mail.isChecked()||no_rec.isChecked()){
 
-                    CheckInternetSettings internetSettings=new CheckInternetSettings(PaymentActivity.this);
+                CheckInternetSettings internetSettings=new CheckInternetSettings(PaymentActivity.this);
+                if(mail.isChecked()||no_rec.isChecked()){
+
+
                     if (internetSettings.isNetworkConnected()){
                         new Synchronizer(getApplicationContext());
                     }
 
                     startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
+                }else if(print.isChecked()){
+                    if (internetSettings.isNetworkConnected()){
+                        new Synchronizer(getApplicationContext());
+                    }
+
+                    startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
                 }
             }
         });

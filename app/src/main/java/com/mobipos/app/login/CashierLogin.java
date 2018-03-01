@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
+import com.mobipos.app.database.Printers;
 import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
@@ -52,6 +53,7 @@ public class CashierLogin extends Activity {
     TextView check_login;
     Users users_db;
     Taxes taxesdb;
+    Printers printersdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,7 @@ public class CashierLogin extends Activity {
 
         users_db=new Users(getApplicationContext(),defaults.database_name,null,1);
         taxesdb=new Taxes(getApplicationContext(),defaults.database_name,null,1);
+        printersdb=new Printers(getApplicationContext(),defaults.database_name,null,1);
         ed_check_id=findViewById(R.id.emp_id);
         check_login=findViewById(R.id.check_login);
 
@@ -81,7 +84,8 @@ public class CashierLogin extends Activity {
 
         int success,tax_success;
         String serverMessage;
-        JSONArray data,tax_data;
+        JSONArray data,tax_data,printerArray;
+
 
       ProgressDialog pdialog=new ProgressDialog(CashierLogin.this);
 
@@ -122,7 +126,8 @@ public class CashierLogin extends Activity {
                     PackageConfig.login_data[3]=jobj.getString("employee_id");
                     PackageConfig.login_data[4]="1";
                     PackageConfig.login_data[5]="cashier";
-                    PackageConfig.login_data[6]=jobj.getString("phoneNumber");
+                    PackageConfig.login_data[6]="12345";
+                  //  PackageConfig.login_data[6]=jobj.getString("phoneNumber");
 
                     List params=new ArrayList();
                     params.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));
@@ -147,7 +152,39 @@ public class CashierLogin extends Activity {
                                 }
                             }
 
+                            List printerParameters=new ArrayList();
+                            printerParameters.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));
 
+                            JSONObject printerObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                    PackageConfig.printer_load,"GET",params);
+
+                            try {
+
+                                int printer_success=printerObject.getInt("success");
+                                printerArray=printerObject.getJSONArray("data");
+
+                                if(printer_success==1){
+
+                                    Log.d("printer success",String.valueOf(printer_success));
+                                    Log.d("printer data",printerArray.toString());
+                                    for(int i=0;i<printerArray.length();i++){
+                                        JSONObject jprinterObj=printerArray.getJSONObject(i);
+
+                                        Log.d("printer id",jprinterObj.getString("id"));
+                                        Log.d("printer name",jprinterObj.getString("printer_name"));
+                                        Log.d("printer mac",jprinterObj.getString("printer_mac"));
+
+                                        if(!printersdb.InsertPrinter(jprinterObj.getString("id"),
+                                                jprinterObj.getString("printer_name"),
+                                                jprinterObj.getString("printer_mac"))){
+                                            Toast.makeText(getApplicationContext(),"Error inserting printer",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                            }catch (Exception e){
+
+                            }
 
                         }
 
@@ -172,6 +209,7 @@ public class CashierLogin extends Activity {
             if(success==1){
 
                 taxesdb.getTaxes();
+
 
                 try{
                     Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
@@ -249,4 +287,6 @@ public class CashierLogin extends Activity {
         alertDialog.show();
 
     }
+
+
 }

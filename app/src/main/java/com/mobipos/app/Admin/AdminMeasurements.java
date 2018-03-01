@@ -1,6 +1,7 @@
 package com.mobipos.app.Admin;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -79,8 +80,12 @@ public class AdminMeasurements extends Fragment {
         String outlet = null;
 
 
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -129,6 +134,7 @@ public class AdminMeasurements extends Fragment {
                 }
 
             }
+            dialog.cancel();
         }
     }
 
@@ -169,8 +175,13 @@ public class AdminMeasurements extends Fragment {
         String USER_ID=null;
 
 
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -216,7 +227,7 @@ public class AdminMeasurements extends Fragment {
                 Toast.makeText(getActivity(),"server error",Toast.LENGTH_SHORT).show();
             }
 
-
+            dialog.cancel();
             new MeasureSelection().execute();
         }
     }
