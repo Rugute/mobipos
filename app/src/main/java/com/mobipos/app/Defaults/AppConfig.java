@@ -24,6 +24,8 @@ public class AppConfig {
     public static String admin_get_measurements="admin-get-measurements.php";
     public static String admin_get_employees="admin-get-employees.php";
     public static String admin_add_employees="admin-add-employee.php";
+    public static String admin_add_discounts="";
+    public static String admin_get_discounts="";
     public static String add_printer="";
     public static String view_printers="";
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";
@@ -41,5 +43,7 @@ public class AppConfig {
     public static String[] measureValue;
     public static String[] printerName;
     public static String[] printerMac;
+    public static String[] discountName;
+    public static String[] discountValue;
 
 }

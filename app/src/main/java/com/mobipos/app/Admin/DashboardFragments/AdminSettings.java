@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.mobipos.app.Admin.Adapters.AdminSettingsAdapter;
 import com.mobipos.app.Admin.Adapters.SettingsData;
 
+import com.mobipos.app.Admin.AdminDiscounts;
 import com.mobipos.app.Admin.AdminMeasurements;
 import com.mobipos.app.Admin.BranchFragment;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
@@ -88,11 +89,11 @@ public class AdminSettings extends Fragment {
                     transaction.replace(R.id.frame_layout, fragment);
                     transaction.commit();
                 }else if(pos==4){
-//                    Fragment fragment;
-//                    fragment = BranchFragment.newInstance();
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
-//                    transaction.replace(R.id.frame_layout, fragment);
-//                    transaction.commit();
+                    Fragment fragment;
+                    fragment = AdminDiscounts.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout, fragment);
+                    transaction.commit();
                 }
 
             }
