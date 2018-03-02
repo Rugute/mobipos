@@ -138,6 +138,14 @@ public class MakeSale extends Fragment {
         searchView=view.findViewById(R.id.search);
 
 
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setEnabled(true);
+                searchView.requestFocus();
+            }
+        });
+
         SearchManager searchManager=(SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
      //   searchView.setSearchableInfo(searchManager.getSearchableInfo();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -396,7 +404,7 @@ public class MakeSale extends Fragment {
 
             int serial=0;
             for(int j=0;j<prods.size();j++){
-                if(productsdb.getProductCount(String.valueOf(prods.get(i).categoryId))==0){
+                if(productsdb.getProductCount(String.valueOf(prods.get(j).categoryId))==0){
                     Log.d("category without items",String.valueOf(i));
                     continue;
                 }

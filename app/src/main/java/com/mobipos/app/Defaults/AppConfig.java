@@ -24,8 +24,8 @@ public class AppConfig {
     public static String admin_get_measurements="admin-get-measurements.php";
     public static String admin_get_employees="admin-get-employees.php";
     public static String admin_add_employees="admin-add-employee.php";
-    public static String admin_add_discounts="";
-    public static String admin_get_discounts="";
+    public static String admin_add_discounts="admin-add-discounts.php";
+    public static String admin_get_discounts="admin-get-discounts.php";
     public static String add_printer="";
     public static String view_printers="";
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";
@@ -45,5 +45,18 @@ public class AppConfig {
     public static String[] printerMac;
     public static String[] discountName;
     public static String[] discountValue;
+
+    public static String printMac = "";
+    public static String[] formattedData;
+
+
+    public static String tendered_amount;
+    public static String cash_sale;
+    public static String taxable_amount;
+    public static String discount;
+    public static String change;
+    public static String grand;
+
+
 
 }

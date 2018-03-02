@@ -27,6 +27,7 @@ import com.mobipos.app.Cashier.Adapters.ViewCartAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.PushSaleData;
+import com.mobipos.app.Cashier.dashboardFragments.MakeSales.viewCartData;
 import com.mobipos.app.R;
 import com.mobipos.app.Sync.SalesSync;
 import com.mobipos.app.Sync.Synchronizer;
@@ -45,6 +46,7 @@ import butterknife.OnClick;
 public class PaymentActivity extends AppCompatActivity {
 
     Sales salesdb;
+
     private static final String TAG = PaymentActivity.class.getSimpleName();
 
     @BindView(R.id.receipt_order_no)
@@ -188,7 +190,7 @@ public class PaymentActivity extends AppCompatActivity {
         View view= LayoutInflater.from(this).inflate(R.layout.cashier_select_payment,null);
         final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
         alertDialog.setView(view);
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
         alertDialog.show();
 
         final RadioButton cash,mpesa,visa,mastercard;
@@ -265,6 +267,11 @@ public class PaymentActivity extends AppCompatActivity {
                                 "N/A"
                         ));
 
+                        AppConfig.tendered_amount=tender.getText().toString();
+                        AppConfig.cash_sale=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
+                        AppConfig.change=change.getText().toString();
+                        AppConfig.grand=grand.getText().toString();
+
                         if(!salesdb.addSaleData(data)){
                             salesdb.getSalesData("loadLocal","NO NEED");
                             showPrinterPopUp();
@@ -330,6 +337,18 @@ public class PaymentActivity extends AppCompatActivity {
                         new Synchronizer(getApplicationContext());
                     }
 
+                    List<viewCartData> data=new ArrayList<>();
+                    data=orderItemsdb.getCartData(PackageConfig.order_no);
+                    AppConfig.formattedData=new String[data.size()];
+
+                    for(int j=0;j<data.size();j++){
+                        AppConfig.formattedData[j] = data.get(j).product_name + "\n" +
+                                data.get(i).count + "     " + "     \u0002" +
+                                data.get(i).price + ".00/=  " +
+                                String.valueOf(Integer.parseInt(data.get(i).count)+Integer.parseInt( data.get(i).price)) + ".00/=";
+                    }
+
+
                     startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
                 }
             }
@@ -360,6 +379,12 @@ public class PaymentActivity extends AppCompatActivity {
                         tender.getText().toString()
                 ));
 
+                AppConfig.tendered_amount=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
+                AppConfig.cash_sale=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
+                AppConfig.change="0";
+                AppConfig.grand=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+
+
                 if(!salesdb.addSaleData(data)){
                     salesdb.getSalesData("loadLocal","NO NEED");
                     showPrinterPopUp();
@@ -381,6 +406,24 @@ public class PaymentActivity extends AppCompatActivity {
         alertDialog.setCancelable(false);
         alertDialog.show();
 
+
+    }
+
+    public void onBackPressed(){
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+
+        alertDialog.setMessage((CharSequence) "Are you sure you want terminate this transcation");
+        alertDialog.setPositiveButton((CharSequence) "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(PaymentActivity.this,DashboardCashier.class));
+            }
+        });
+        alertDialog.setNegativeButton((CharSequence) "No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.show();
 
     }
 

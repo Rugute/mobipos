@@ -46,6 +46,7 @@ public class Users extends Controller {
     private static String tb_branch="tb_branch";
     private static String col_branch_id="branch_id";
     private static String col_branch_name="branch_name";
+    private static String col_business_name="business_name";
 
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
     public static String DROP_TABLE_PIN="DROP TABLE IF NOT EXISTS "+ tb_pin;
@@ -63,7 +64,8 @@ public class Users extends Controller {
     public static String CREATE_PIN_TABLE="CREATE TABLE IF NOT EXISTS "+tb_pin+" ("+
             login_pin+" VARCHAR(250))";
     public static String CREATE_TABLE_BRANCH="CREATE TABLE IF NOT EXISTS "+tb_branch+" ("+
-            col_branch_id+" INT(11),"+col_branch_name+" VARCHAR(50))";
+            col_branch_id+" INT(11),"+col_branch_name+" VARCHAR(50)," +
+            col_business_name+" VARCHAR(50))";
 
 
 
@@ -110,27 +112,7 @@ public class Users extends Controller {
 
         return count;
     }
-    public String encryptPassword(String password,SecretKey secretKey) throws NoSuchPaddingException,
-            NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
-            BadPaddingException, IllegalBlockSizeException {
 
-
-
-        Cipher cipher;
-        cipher=Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE,secretKey);
-        byte[] cipherText=cipher.doFinal(password.getBytes("UTF-8"));
-
-        return cipherText.toString();
-    }
-
-    public static  SecretKey generateKey(String user_id) throws NoSuchAlgorithmException,InvalidKeyException{
-        SecureRandom random=new SecureRandom();
-        byte[] salt=new byte[16];
-        random.nextBytes(salt);
-        SecretKey secret= new SecretKeySpec(salt,"AES");
-        return secret;
-    }
 
     public String[] get_login_details(){
         String sql="SELECT * from "+tb_name +" LIMIT 1";
@@ -243,6 +225,23 @@ public class Users extends Controller {
         return user_id;
     }
 
+    public String get_user_name(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_name + " LIMIT 1";
+        String user_name=null;
+
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+
+
+        if(cursor.moveToFirst()){
+            user_name=cursor.getString(cursor.getColumnIndex(col_2));
+            Log.d("User name:",cursor.getString(cursor.getColumnIndex(col_2)));
+        }
+        db.close();
+
+        return user_name;
+    }
+
     public boolean check_branch(String id){
         SQLiteDatabase db=getReadableDatabase();
         String sql="SELECT * FROM "+tb_branch+ " WHERE "+col_branch_id+"= "+id;
@@ -256,7 +255,7 @@ public class Users extends Controller {
         }
     }
 
-    public boolean insert_branch(String id,String name){
+    public boolean insert_branch(String id,String name,String business_name){
         String sql="DELETE from "+tb_branch;
         SQLiteDatabase db=this.getWritableDatabase();
         try{
@@ -264,6 +263,7 @@ public class Users extends Controller {
             ContentValues values=new ContentValues();
             values.put(col_branch_id,id);
             values.put(col_branch_name,name);
+            values.put(col_business_name,business_name);
 
             db.insert(tb_branch,null,values);
             Log.d("insert branch name:",name);
@@ -296,6 +296,23 @@ public class Users extends Controller {
                     cursor.getString(cursor.getColumnIndex(col_7)),
                     cursor.getString(cursor.getColumnIndex(col_4)),
                     cursor.getString(cursor.getColumnIndex(col_2))));
+        }
+        db.close();
+
+        return data;
+    }
+
+    public String[] printer_header(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_branch + " LIMIT 1";
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+        String[] data=new String[2];
+
+        if(cursor.moveToFirst()){
+
+                data[0]=cursor.getString(cursor.getColumnIndex(col_branch_name));
+                data[1]=cursor.getString(cursor.getColumnIndex(col_business_name));
+
         }
         db.close();
 

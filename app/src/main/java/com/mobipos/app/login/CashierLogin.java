@@ -20,9 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Cashier.DashboardCashier;
+import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
+import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Printers;
+import com.mobipos.app.database.Product_Prices;
+import com.mobipos.app.database.Products;
 import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
@@ -53,15 +58,25 @@ public class CashierLogin extends Activity {
     TextView check_login;
     Users users_db;
     Taxes taxesdb;
+    Categories categoriesdb;
     Printers printersdb;
+
+    Inventory inventorydb;
+    Product_Prices pricesdb;
+
+    Products productsdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emlog);
 
         users_db=new Users(getApplicationContext(),defaults.database_name,null,1);
+        categoriesdb=new Categories(getApplicationContext(),defaults.database_name,null,1);
+        productsdb=new Products(getApplicationContext(),defaults.database_name,null,1);
         taxesdb=new Taxes(getApplicationContext(),defaults.database_name,null,1);
         printersdb=new Printers(getApplicationContext(),defaults.database_name,null,1);
+        inventorydb=new Inventory(getApplicationContext(),defaults.database_name,null,1);
+        pricesdb=new Product_Prices(getApplicationContext(),defaults.database_name,null,1);
         ed_check_id=findViewById(R.id.emp_id);
         check_login=findViewById(R.id.check_login);
 
@@ -86,6 +101,7 @@ public class CashierLogin extends Activity {
         String serverMessage;
         JSONArray data,tax_data,printerArray;
 
+        String business_name;
 
       ProgressDialog pdialog=new ProgressDialog(CashierLogin.this);
 
@@ -128,6 +144,7 @@ public class CashierLogin extends Activity {
                     PackageConfig.login_data[5]="cashier";
                     PackageConfig.login_data[6]="12345";
                   //  PackageConfig.login_data[6]=jobj.getString("phoneNumber");
+                     business_name=jobj.getString("business_name");
 
                     List params=new ArrayList();
                     params.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));
@@ -216,7 +233,7 @@ public class CashierLogin extends Activity {
                     if(!user_db.insertUserData(PackageConfig.login_data)){
                         Toast.makeText(getApplicationContext(),"data not inserted",Toast.LENGTH_SHORT).show();
                     }else{
-                        if(!user_db.insert_branch(PackageConfig.branch_id,PackageConfig.branch_name)){
+                        if(!user_db.insert_branch(PackageConfig.branch_id,PackageConfig.branch_name,business_name)){
                             Toast.makeText(getApplicationContext(),"branch data not inserted",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -254,8 +271,9 @@ public class CashierLogin extends Activity {
                    // Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
                     try {
                         if(users_db.insertPin(new_pin.getText().toString(),PackageConfig.login_data[3])){
-                            startActivity(new Intent(CashierLogin.this,DashboardCashier.class));
+
                             Toast.makeText(getApplicationContext(),"pin set successfully",Toast.LENGTH_SHORT).show();
+                            new firstDataLoad().execute();
                         }else{
                             Toast.makeText(getApplicationContext(),"error in setting pin",Toast.LENGTH_SHORT).show();
                         }
@@ -289,4 +307,137 @@ public class CashierLogin extends Activity {
     }
 
 
+    public class firstDataLoad extends AsyncTask<String,String,String>{
+
+        ProgressDialog dialog=new ProgressDialog(CashierLogin.this);
+
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+            dialog.setMessage("Synchronizing data from server. Please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser=new JSONParser();
+            List paramters=new ArrayList();
+            paramters.add(new BasicNameValuePair("user_id",users_db.get_user_id()));
+
+          JSONObject  jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ com.mobipos.app.Cashier.PackageConfig.get_categories,
+                    "GET",paramters);
+
+            try {
+               int success=jsonObject.getInt("success");
+               String serverMessage=jsonObject.getString("message");
+
+                JSONArray categoryArray=jsonObject.getJSONArray("data");
+
+                if(success==1){
+                    for(int i=0;i<categoryArray.length();i++){
+                        JSONObject jObj=categoryArray.getJSONObject(i);
+                        if(!categoriesdb.insertCategory(jObj.getString("cat_id"),jObj.getString("cat_name"))) {
+                            Log.d("error inserting data","data not inserted");
+                        }
+
+                    }
+
+                    List params=new ArrayList();
+                    params.add(new BasicNameValuePair("user_id",users_db.get_user_id()));
+                    jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ com.mobipos.app.Cashier.PackageConfig.get_items,
+                            "GET",params);
+
+                    try{
+                       int  success_state=jsonObject.getInt("success");
+                        serverMessage=jsonObject.getString("message");
+                       JSONArray dataitems=jsonObject.getJSONArray("data");
+
+                        com.mobipos.app.Cashier.PackageConfig.itemArrayId=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.itemArrayName=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.categoryArrayId=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.price_id=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.price=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.stockData=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.lowStockData=new String[dataitems.length()];
+                        com.mobipos.app.Cashier.PackageConfig.tax_margin=new String[dataitems.length()];
+
+                        for(int i=0;i<dataitems.length();i++){
+                            JSONObject jObj=dataitems.getJSONObject(i);
+
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayId[i]=jObj.getString("product_id");
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayName[i]=jObj.getString("product_name");
+                            com.mobipos.app.Cashier.PackageConfig.categoryArrayId[i]=jObj.getString("category_id");
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement[i]=jObj.getString("measurement_name");
+                            com.mobipos.app.Cashier.PackageConfig.price_id[i]=jObj.getString("price_id");
+                            com.mobipos.app.Cashier.PackageConfig.price[i]=jObj.getString("price");
+                            com.mobipos.app.Cashier.PackageConfig.stockData[i]=jObj.getString("opening_stock");
+                            com.mobipos.app.Cashier.PackageConfig.lowStockData[i]=jObj.getString("low_stock_count");
+                            com.mobipos.app.Cashier.PackageConfig.tax_margin[i]=jObj.getString("tax_mode");
+
+                            for(int j=0;j<dataitems.length();j++){
+
+                                if(!productsdb.ProductExists(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j])){
+                                    if(!productsdb.insertProduct(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
+                                            com.mobipos.app.Cashier.PackageConfig.itemArrayName[j],
+                                            com.mobipos.app.Cashier.PackageConfig.categoryArrayId[j],
+                                            com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement[j],
+                                            com.mobipos.app.Cashier.PackageConfig.tax_margin[j])){
+                                        Log.d("err inserting products","not inserted");
+                                    }else{
+                                        if(!pricesdb.insertPrices(com.mobipos.app.Cashier.PackageConfig.price_id[j],
+                                                com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
+                                                com.mobipos.app.Cashier.PackageConfig.price[j])){
+                                            Log.d("err inserting prices","not inserted");
+                                        }else{
+                                            if(!inventorydb.insertStock(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
+                                                    com.mobipos.app.Cashier.PackageConfig.stockData[j],
+                                                    com.mobipos.app.Cashier.PackageConfig.lowStockData[j])){
+                                                Log.d("err inserting stocks","not inserted");
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            List params_a=new ArrayList();
+                            params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
+                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
+                                    "GET",params_a);
+
+                            try {
+                                int state=UpdateSyncStatus.getInt("success");
+                                if(state==1){
+                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+                                }
+                            }catch (Exception e){
+                                //e.printStackTrace();
+                            }
+
+
+                        }
+
+                    }catch (Exception e){
+                       // e.printStackTrace();
+                    }
+                }
+
+
+
+
+            }catch (Exception e){
+
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String s){
+            super.onPostExecute(s);
+            startActivity(new Intent(CashierLogin.this,DashboardCashier.class));
+            dialog.cancel();
+        }
+    }
 }

@@ -104,8 +104,8 @@ public class AdminDiscounts extends Fragment {
                 AppConfig.discountValue = new String[dvalue.length()];
                 for (int i = 0; i <discount.length(); i++) {
                     JSONObject jobj = discount.getJSONObject(i);
-                    AppConfig.discountName[i] = jobj.getString("measurement_name");
-                    AppConfig.discountValue[i] = jobj.getString("single_unit")+" Per Unit";
+                    AppConfig.discountName[i] = jobj.getString("discount_name");
+                    AppConfig.discountValue[i] = jobj.getString("discount_value")+"%";
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -119,7 +119,7 @@ public class AdminDiscounts extends Fragment {
             super.onPostExecute(s);
 
             if (success == 1) {
-                if (AppConfig.measureMents.length > 0) {
+                if (AppConfig.discountName.length > 0) {
                     DiscountsAdapter adapter=new DiscountsAdapter(getContext(),AppConfig.discountName,AppConfig.discountValue);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
@@ -178,7 +178,7 @@ public class AdminDiscounts extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
             jsonObjectData.add(new BasicNameValuePair("name",newdiscount));
-            jsonObjectData.add(new BasicNameValuePair("single_unit",newdiscountvalue));
+            jsonObjectData.add(new BasicNameValuePair("value",newdiscountvalue));
             jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +

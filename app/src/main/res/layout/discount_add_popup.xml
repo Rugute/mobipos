@@ -27,7 +27,7 @@
             android:textSize="23dp"
             android:textAlignment="center"
             android:textColor="#0d0c0c"
-            android:hint="Enter New Discount"
+            android:hint="Discount Name eg. Jumia"
 
             android:id="@+id/new_discount"
             android:paddingBottom="20dp"
@@ -40,7 +40,7 @@
             android:textSize="23dp"
             android:textAlignment="center"
             android:textColor="#0d0c0c"
-            android:hint="Enter Discount Unit"
+            android:hint=" Discount Value. eg. 20"
 
             android:id="@+id/new_discount_unit"
             android:paddingBottom="20dp"

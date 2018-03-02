@@ -24,6 +24,7 @@ public class Printers extends Controller {
     public static String col_2="printer_name";
     public static String col_3="printer_mac";
 
+
     public static  String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_PRINTERS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
@@ -81,7 +82,7 @@ public class Printers extends Controller {
                 do{
                     data.add(new PrinterInterface(cursor.getString(cursor.getColumnIndex(col_1)),
                             cursor.getString(cursor.getColumnIndex(col_2)),
-                            cursor.getColumnName(cursor.getColumnIndex(col_3))));
+                            cursor.getString(cursor.getColumnIndex(col_3))));
 
                     Log.d("printer id:",cursor.getString(cursor.getColumnIndex(col_1)));
                     Log.d("printer name:",cursor.getString(cursor.getColumnIndex(col_2)));

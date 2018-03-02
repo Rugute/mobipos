@@ -50,6 +50,7 @@ public class PrinterAdapter extends BaseAdapter {
         TextView printer_name=view.findViewById(R.id.branch);
 
         printer_name.setText(data.get(i).name);
+
         return view;
     }
 }
