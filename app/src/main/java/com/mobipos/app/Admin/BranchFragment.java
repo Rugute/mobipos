@@ -1,5 +1,6 @@
 package com.mobipos.app.Admin;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -84,8 +85,12 @@ public class BranchFragment extends Fragment {
         String outlet = null;
 
 
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -131,6 +136,7 @@ public class BranchFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "No Branches Available", Toast.LENGTH_SHORT).show();
                 }
+                dialog.cancel();
 
             }
         }

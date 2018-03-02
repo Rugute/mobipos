@@ -69,8 +69,12 @@ public class StockAlertFragment extends Fragment {
     public class loadData extends AsyncTask<String,String,String>{
 
         int success;
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute(){
             super.onPreExecute();
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
 
          //   dialog(true);
         }
@@ -115,7 +119,7 @@ public class StockAlertFragment extends Fragment {
             }else{
                 Toast.makeText(getActivity(),"error while loading data",Toast.LENGTH_SHORT).show();
             }
-        //    dialog(false);
+        dialog.cancel();
         }
     }
     public void dialog(boolean state){
