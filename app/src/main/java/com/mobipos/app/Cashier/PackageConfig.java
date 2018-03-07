@@ -18,8 +18,8 @@ public class PackageConfig {
     public static String get_items="cashier-get-items.php";
     public static String sync_product_movement="cashier-sync-product-movement.php";
 
-    //public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp};
-   // public static String[] inventory_title={"Category","Products","Stock Alert","Reports"};
+    public static int[] images2={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp};
+    public static String[] inventory_title2={"Category","Products","Stock Alert","Reports"};
 
     public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp,R.drawable.ic_shop,R.drawable.ic_set_stuff};
     public static String[] inventory_title={"Category","Products","Stock Alert","Reports","Branches","Settings"};

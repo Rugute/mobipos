@@ -45,6 +45,7 @@ public class AppConfig {
     public static String[] printerMac;
     public static String[] discountName;
     public static String[] discountValue;
+    public static String[] discountId;
 
     public static String printMac = "";
     public static String[] formattedData;

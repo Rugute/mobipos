@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="63dp">
@@ -28,6 +29,25 @@
                 android:layout_below="@+id/unit_mode"
                 android:textColor="#448641"
                 android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/measure_id"/>
+
+            <ImageView
+                android:id="@+id/del"
+                android:layout_width="35dp"
+                android:layout_centerVertical="true"
+                android:layout_height="35dp"
+                android:layout_alignBottom="@+id/user_unicode"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:contentDescription="desc"
+                android:fitsSystemWindows="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                app:srcCompat="@drawable/ic_del_user" />
         </RelativeLayout>
 
 

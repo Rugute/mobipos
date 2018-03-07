@@ -45,7 +45,7 @@ public class CashierInventory extends Fragment {
     public void onViewCreated(View view,Bundle savedInstanceState){
 
         gridView=view.findViewById(R.id.grid_view);
-        gridView.setAdapter(new CashierInventoryAdapter(getActivity(), PackageConfig.images,PackageConfig.inventory_title));
+        gridView.setAdapter(new CashierInventoryAdapter(getActivity(), PackageConfig.images2,PackageConfig.inventory_title2));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

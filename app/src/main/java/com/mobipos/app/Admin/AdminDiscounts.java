@@ -16,7 +16,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.DiscountData;
 import com.mobipos.app.Admin.Adapters.DiscountsAdapter;
+import com.mobipos.app.Admin.Adapters.MeasureData;
+import com.mobipos.app.Admin.Adapters.MeasurementAdapter;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -40,6 +43,7 @@ public class AdminDiscounts extends Fragment {
     ListView listView;
     Users users;
     FloatingActionButton fabdiscount;
+    List<DiscountData> discountDataList;
 
     public static String newdiscount="";
     public static String newdiscountvalue="";
@@ -76,14 +80,13 @@ public class AdminDiscounts extends Fragment {
     public class DiscountSelection extends AsyncTask<String, String, String> {
         int success = 0;
         String serverMessage;
-        JSONArray discount,dvalue;
+        JSONArray discountArray;
         String outlet = null;
+        ProgressDialog dialog=new ProgressDialog(getActivity());
 
-
-
-        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+
             dialog.setMessage("Loading data.please wait...");
             dialog.setCancelable(false);
             dialog.show();
@@ -91,6 +94,7 @@ public class AdminDiscounts extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
+            discountDataList=new ArrayList<>();
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
@@ -103,16 +107,13 @@ public class AdminDiscounts extends Fragment {
 
             try {
                 success = jsonObject.getInt("success");
-                discount = jsonObject.getJSONArray("data");
-                dvalue=jsonObject.getJSONArray("data");
-
-                AppConfig.discountName = new String[discount.length()];
-                AppConfig.discountValue = new String[dvalue.length()];
-                for (int i = 0; i <discount.length(); i++) {
-                    JSONObject jobj = discount.getJSONObject(i);
-                    AppConfig.discountName[i] = jobj.getString("discount_name");
-                    AppConfig.discountValue[i] = jobj.getString("discount_value")+"%";
+                discountArray=jsonObject.getJSONArray("data");
+                for(int i=0;i<discountArray.length();i++) {
+                    JSONObject jObj = discountArray.getJSONObject(i);
+                    discountDataList.add(new DiscountData(jObj.getString("id"), jObj.getString("discount_name"),
+                            jObj.getString("discount_value")+"%"));
                 }
+                //discountDataList.add(new DiscountData("", "",""+"%" ));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -125,17 +126,14 @@ public class AdminDiscounts extends Fragment {
             super.onPostExecute(s);
 
             if (success == 1) {
-                if (AppConfig.discountName.length > 0) {
-                    DiscountsAdapter adapter=new DiscountsAdapter(getContext(),AppConfig.discountName,AppConfig.discountValue);
-                    adapter.notifyDataSetChanged();
-                    listView.setAdapter(adapter);
-
+                if (discountDataList.size() > 0) {
+                    listView.setAdapter(new DiscountsAdapter(getContext(),discountDataList));
                 } else {
                     Toast.makeText(getActivity(), "No Discount Available", Toast.LENGTH_SHORT).show();
                 }
-                dialog.cancel();
 
             }
+            dialog.cancel();
         }
     }
 
