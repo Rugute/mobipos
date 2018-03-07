@@ -80,7 +80,7 @@ public class MakeSale extends Fragment {
     ListView listView;
 
     MakeSalesAdapter adapter;
-    ImageView refresh;
+    ImageView refresh,src_img;
 
     RelativeLayout view_cart;
     RecyclerView rv;
@@ -123,6 +123,7 @@ public class MakeSale extends Fragment {
         listView=view.findViewById(R.id.view_cart_list);
         refresh=view.findViewById(R.id.refresh);
        navigator=view.findViewById(R.id.navigator);
+       src_img=view.findViewById(R.id.search_img);
         text_order_no=view.findViewById(R.id.txt_order_no);
         new_order_no=view.findViewById(R.id.new_order_no);
         total_value=view.findViewById(R.id.total_value);
@@ -136,6 +137,14 @@ public class MakeSale extends Fragment {
 
         adapter=new MakeSalesAdapter(getActivity(),cartData());
         searchView=view.findViewById(R.id.search);
+
+        src_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setVisibility(View.VISIBLE);
+                src_img.setVisibility(View.GONE);
+            }
+        });
 
 
         searchView.setOnClickListener(new View.OnClickListener() {

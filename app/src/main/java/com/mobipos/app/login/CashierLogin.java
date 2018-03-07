@@ -10,6 +10,7 @@ import android.inputmethodservice.KeyboardView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Discounts;
 import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Printers;
 import com.mobipos.app.database.Product_Prices;
@@ -58,6 +60,7 @@ public class CashierLogin extends Activity {
     TextView check_login;
     Users users_db;
     Taxes taxesdb;
+    Discounts discountsdb;
     Categories categoriesdb;
     Printers printersdb;
 
@@ -76,6 +79,7 @@ public class CashierLogin extends Activity {
         taxesdb=new Taxes(getApplicationContext(),defaults.database_name,null,1);
         printersdb=new Printers(getApplicationContext(),defaults.database_name,null,1);
         inventorydb=new Inventory(getApplicationContext(),defaults.database_name,null,1);
+        discountsdb=new Discounts(getApplicationContext(),defaults.database_name,null,1);
         pricesdb=new Product_Prices(getApplicationContext(),defaults.database_name,null,1);
         ed_check_id=findViewById(R.id.emp_id);
         check_login=findViewById(R.id.check_login);
@@ -197,6 +201,29 @@ public class CashierLogin extends Activity {
                                             Toast.makeText(getApplicationContext(),"Error inserting printer",Toast.LENGTH_SHORT).show();
                                         }
                                     }
+
+                                    List discounts_params=new ArrayList();
+                                    discounts_params.add(new BasicNameValuePair("user_id",jobj.getString("user_id")));
+                                    JSONObject discounts_object=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
+                                            PackageConfig.discounts_load,"GET",discounts_params);
+
+                                    try{
+                                        int discounts_success=discounts_object.getInt("success");
+                                        if(discounts_success==1){
+                                            JSONArray discounts_array=discounts_object.getJSONArray("data");
+                                            for(int k=0;k<discounts_array.length();k++){
+
+                                                JSONObject discounts_obj=discounts_array.getJSONObject(k);
+                                                if(!discountsdb.InsertDiscount(discounts_obj.getString("id"),
+                                                        discounts_obj.getString("discount_name"),
+                                                        discounts_obj.getString("discount_value"))){
+                                                    Toast.makeText(getApplicationContext(),"Error inserting discounts",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+                                    }catch (Exception e){
+
+                                    }
                                 }
 
                             }catch (Exception e){
@@ -226,6 +253,7 @@ public class CashierLogin extends Activity {
             if(success==1){
 
                 taxesdb.getTaxes();
+                discountsdb.getDiscounts();
 
 
                 try{
@@ -259,7 +287,7 @@ public class CashierLogin extends Activity {
         final Button btn_pin=view.findViewById(R.id.btn_pin);
         final RelativeLayout lin=view.findViewById(R.id.lin);
         textView.setText(PackageConfig.login_data[1]);
-        AlertDialog alertDialog=new AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
         alertDialog.setView(view);
         alertDialog.setCancelable(false);
 
@@ -267,33 +295,30 @@ public class CashierLogin extends Activity {
             @Override
             public void onClick(View view) {
 
-                if(new_pin.getText().toString().equals(confirm_pin.getText().toString())){
-                   // Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
-                    try {
-                        if(users_db.insertPin(new_pin.getText().toString(),PackageConfig.login_data[3])){
+                if(TextUtils.isEmpty(new_pin.getText())||TextUtils.isEmpty(confirm_pin.getText())){
+                    Toast.makeText(getApplicationContext(), "Missing pin information", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(new_pin.getText().toString().equals(confirm_pin.getText().toString())){
+                        // Toast.makeText(getApplicationContext(),"password macth",Toast.LENGTH_SHORT).show();
+                        try {
+                            if(users_db.insertPin(new_pin.getText().toString(),PackageConfig.login_data[3])){
 
-                            Toast.makeText(getApplicationContext(),"pin set successfully",Toast.LENGTH_SHORT).show();
-                            new firstDataLoad().execute();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"error in setting pin",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"pin set successfully",Toast.LENGTH_SHORT).show();
+                                alertDialog.cancel();
+                                new firstDataLoad().execute();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"error in setting pin",Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (IllegalBlockSizeException e) {
-                        e.printStackTrace();
-                    } catch (BadPaddingException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                    }else {
+                        //     lin.setBackgroundColor();
+                        wrong_pin.setText("PINS DONT MATCH!!");
                     }
-                }else {
-               //     lin.setBackgroundColor();
-                    wrong_pin.setText("PINS DONT MATCH!!");
                 }
+
+
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
@@ -344,7 +369,8 @@ public class CashierLogin extends Activity {
 
                     List params=new ArrayList();
                     params.add(new BasicNameValuePair("user_id",users_db.get_user_id()));
-                    jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ com.mobipos.app.Cashier.PackageConfig.get_items,
+                    jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+                                    com.mobipos.app.Cashier.PackageConfig.get_items,
                             "GET",params);
 
                     try{
@@ -362,43 +388,40 @@ public class CashierLogin extends Activity {
                         com.mobipos.app.Cashier.PackageConfig.lowStockData=new String[dataitems.length()];
                         com.mobipos.app.Cashier.PackageConfig.tax_margin=new String[dataitems.length()];
 
-                        for(int i=0;i<dataitems.length();i++){
-                            JSONObject jObj=dataitems.getJSONObject(i);
+                        for(int l=0;l<dataitems.length();l++){
+                            JSONObject jObj=dataitems.getJSONObject(l);
 
-                            com.mobipos.app.Cashier.PackageConfig.itemArrayId[i]=jObj.getString("product_id");
-                            com.mobipos.app.Cashier.PackageConfig.itemArrayName[i]=jObj.getString("product_name");
-                            com.mobipos.app.Cashier.PackageConfig.categoryArrayId[i]=jObj.getString("category_id");
-                            com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement[i]=jObj.getString("measurement_name");
-                            com.mobipos.app.Cashier.PackageConfig.price_id[i]=jObj.getString("price_id");
-                            com.mobipos.app.Cashier.PackageConfig.price[i]=jObj.getString("price");
-                            com.mobipos.app.Cashier.PackageConfig.stockData[i]=jObj.getString("opening_stock");
-                            com.mobipos.app.Cashier.PackageConfig.lowStockData[i]=jObj.getString("low_stock_count");
-                            com.mobipos.app.Cashier.PackageConfig.tax_margin[i]=jObj.getString("tax_mode");
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayId[l]=jObj.getString("product_id");
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayName[l]=jObj.getString("product_name");
+                            com.mobipos.app.Cashier.PackageConfig.categoryArrayId[l]=jObj.getString("category_id");
+                            com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement[l]=jObj.getString("measurement_name");
+                            com.mobipos.app.Cashier.PackageConfig.price_id[l]=jObj.getString("price_id");
+                            com.mobipos.app.Cashier.PackageConfig.price[l]=jObj.getString("price");
+                            com.mobipos.app.Cashier.PackageConfig.stockData[l]=jObj.getString("opening_stock");
+                            com.mobipos.app.Cashier.PackageConfig.lowStockData[l]=jObj.getString("low_stock_count");
+                            com.mobipos.app.Cashier.PackageConfig.tax_margin[l]=jObj.getString("tax_mode");
 
-                            for(int j=0;j<dataitems.length();j++){
 
-                                if(!productsdb.ProductExists(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j])){
-                                    if(!productsdb.insertProduct(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
-                                            com.mobipos.app.Cashier.PackageConfig.itemArrayName[j],
-                                            com.mobipos.app.Cashier.PackageConfig.categoryArrayId[j],
-                                            com.mobipos.app.Cashier.PackageConfig.itemArrayMeasurement[j],
-                                            com.mobipos.app.Cashier.PackageConfig.tax_margin[j])){
-                                        Log.d("err inserting products","not inserted");
+                            if(!productsdb.ProductExists(jObj.getString("product_id"))){
+                                if(!productsdb.insertProduct(jObj.getString("product_id"),
+                                        jObj.getString("product_name"),
+                                        jObj.getString("category_id"),
+                                        jObj.getString("measurement_name"),
+                                        jObj.getString("tax_mode"))){
+                                    Log.d("err inserting products","not inserted");
+                                }else{
+                                    if(!pricesdb.insertPrices(jObj.getString("price_id"),
+                                            jObj.getString("product_id"),
+                                            jObj.getString("price"))){
+                                        Log.d("err inserting prices","not inserted");
                                     }else{
-                                        if(!pricesdb.insertPrices(com.mobipos.app.Cashier.PackageConfig.price_id[j],
-                                                com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
-                                                com.mobipos.app.Cashier.PackageConfig.price[j])){
-                                            Log.d("err inserting prices","not inserted");
-                                        }else{
-                                            if(!inventorydb.insertStock(com.mobipos.app.Cashier.PackageConfig.itemArrayId[j],
-                                                    com.mobipos.app.Cashier.PackageConfig.stockData[j],
-                                                    com.mobipos.app.Cashier.PackageConfig.lowStockData[j])){
-                                                Log.d("err inserting stocks","not inserted");
-                                            }
+                                        if(!inventorydb.insertStock(jObj.getString("product_id"),
+                                                jObj.getString("opening_stock"),
+                                                jObj.getString("low_stock_count"))){
+                                            Log.d("err inserting stocks","not inserted");
                                         }
                                     }
                                 }
-
                             }
 
                             List params_a=new ArrayList();
@@ -413,14 +436,14 @@ public class CashierLogin extends Activity {
                                     Log.d("product sync meso",UpdateSyncStatus.getString("message"));
                                 }
                             }catch (Exception e){
-                                //e.printStackTrace();
+                                e.printStackTrace();
                             }
 
 
                         }
 
                     }catch (Exception e){
-                       // e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
 
@@ -440,4 +463,8 @@ public class CashierLogin extends Activity {
             dialog.cancel();
         }
     }
+
+
+
+
 }

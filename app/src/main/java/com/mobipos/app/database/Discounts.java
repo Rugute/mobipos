@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,8 @@ public class Discounts extends Controller {
         return DiscountsExists(id);
     }
 
-    public List<DiscountInterface> getDiscounts(){
+    public void getDiscounts(){
+  //  public List<DiscountInterface> getDiscounts(){
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
 
@@ -79,6 +81,9 @@ public class Discounts extends Controller {
                     data.add(new DiscountInterface(cursor.getString(cursor.getColumnIndex(col_1)),
                             cursor.getString(cursor.getColumnIndex(col_2)),
                             cursor.getColumnName(cursor.getColumnIndex(col_3))));
+                    Log.d("discount id",cursor.getString(cursor.getColumnIndex(col_1)));
+                    Log.d("discount name",cursor.getString(cursor.getColumnIndex(col_2)));
+                    Log.d("discount value",cursor.getString(cursor.getColumnIndex(col_3)));
                 }while (cursor.moveToNext());
 
             }
@@ -88,7 +93,7 @@ public class Discounts extends Controller {
             e.printStackTrace();
         }
 
-        return data;
+     //   return data;
 
     }
 

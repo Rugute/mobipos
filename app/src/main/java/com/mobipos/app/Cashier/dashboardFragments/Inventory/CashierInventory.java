@@ -14,6 +14,7 @@ import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategories;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItems;
+import com.mobipos.app.Cashier.dashboardFragments.Inventory.StockAlert.CashierStockAlert;
 import com.mobipos.app.R;
 
 /**
@@ -61,6 +62,13 @@ public class CashierInventory extends Fragment {
                 }else if(pos==1){
                     Fragment fragment;
                     fragment = CashierItems.newInstance();
+
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                    transaction.replace(R.id.frame_layout_new, fragment);
+                    transaction.commit();
+                }else if(pos==2){
+                    Fragment fragment;
+                    fragment = CashierStockAlert.newInstance();
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                     transaction.replace(R.id.frame_layout_new, fragment);

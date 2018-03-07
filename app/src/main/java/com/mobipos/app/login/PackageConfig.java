@@ -13,6 +13,7 @@ public class PackageConfig {
     public static String employee_log="employee-processor.php";
     public static String tax_load="cashier-get-taxes.php";
     public static String printer_load="cashier-get-printers.php";
+    public static String discounts_load="cashier-get-discounts.php";
 
     public static String[] login_data;
     public static String branch_name;
