@@ -1,6 +1,5 @@
 package com.mobipos.app.Admin;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.MeasureData;
 import com.mobipos.app.Admin.Adapters.MeasurementAdapter;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
@@ -39,6 +39,7 @@ import java.util.List;
 public class AdminMeasurements extends Fragment {
     ListView listView;
     Users users;
+    List<MeasureData> measureDataList;
     FloatingActionButton fmeasure;
 
     public static String newmeasure="";
@@ -76,13 +77,13 @@ public class AdminMeasurements extends Fragment {
     public class MeasureSelection extends AsyncTask<String, String, String> {
         int success = 0;
         String serverMessage;
-        JSONArray measure,value;
+        JSONArray measureArray;
         String outlet = null;
+        ProgressDialog dialog=new ProgressDialog(getActivity());
 
-
-        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute() {
             super.onPreExecute();
+
             dialog.setMessage("Loading data.please wait...");
             dialog.setCancelable(false);
             dialog.show();
@@ -90,6 +91,7 @@ public class AdminMeasurements extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
+            measureDataList=new ArrayList<>();
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
@@ -102,16 +104,13 @@ public class AdminMeasurements extends Fragment {
 
             try {
                 success = jsonObject.getInt("success");
-                measure = jsonObject.getJSONArray("data");
-                value=jsonObject.getJSONArray("data");
-
-                AppConfig.measureMents = new String[measure.length()];
-                AppConfig.measureValue = new String[value.length()];
-                for (int i = 0; i <measure.length(); i++) {
-                    JSONObject jobj = measure.getJSONObject(i);
-                    AppConfig.measureMents[i] = jobj.getString("measurement_name");
-                    AppConfig.measureValue[i] = jobj.getString("single_unit")+" Per Unit";
+                measureArray=jsonObject.getJSONArray("data");
+                for(int i=0;i<measureArray.length();i++) {
+                    JSONObject jObj = measureArray.getJSONObject(i);
+                    measureDataList.add(new MeasureData(jObj.getString("measurement_id"), jObj.getString("measurement_name"),
+                            jObj.getString("single_unit")+"per unit"));
                 }
+                //measureDataList.add(new MeasureData("measurement_id", "","" ));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,13 +123,10 @@ public class AdminMeasurements extends Fragment {
             super.onPostExecute(s);
 
             if (success == 1) {
-                if (AppConfig.measureMents.length > 0) {
-                    MeasurementAdapter adapter=new MeasurementAdapter(getContext(),AppConfig.measureMents,AppConfig.measureValue);
-                    adapter.notifyDataSetChanged();
-                    listView.setAdapter(adapter);
-
+                if (measureDataList.size() > 0) {
+                    listView.setAdapter(new MeasurementAdapter(getContext(),measureDataList));
                 } else {
-                    Toast.makeText(getActivity(), "No Measurements Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No Measurement Available", Toast.LENGTH_SHORT).show();
                 }
 
             }

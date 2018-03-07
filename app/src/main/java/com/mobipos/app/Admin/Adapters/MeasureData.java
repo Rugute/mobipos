@@ -6,11 +6,13 @@ package com.mobipos.app.Admin.Adapters;
 
 public class MeasureData {
 
-    public String measure,value;
+    public String measurement_id, measure,value,mode;
 
-    public MeasureData(String measure,String value) {
+    public MeasureData(String measurement_id, String measure, String value) {
+        this.measurement_id=measurement_id;
         this.measure= measure;
         this.value=value;
+
 
     }
 }
