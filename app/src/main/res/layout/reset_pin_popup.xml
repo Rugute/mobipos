@@ -28,6 +28,7 @@
         android:textColor='#fff'
         android:textColorHint="#fff"
         android:inputType="numberPassword"
+        android:maxLength="4"
         android:gravity="left|center" />
     <EditText
         android:id="@+id/new_pin_reset"
@@ -40,6 +41,7 @@
         android:singleLine="true"
         android:textColor='#fff'
         android:textColorHint='#fff'
+        android:maxLength="4"
         android:inputType="numberPassword"
         android:gravity="left|center" />
     <EditText
@@ -54,6 +56,7 @@
         android:textColor='#fff'
         android:textColorHint='#fff'
         android:inputType="numberPassword"
+        android:maxLength="4"
         android:gravity="left|center" />
 
         <Button

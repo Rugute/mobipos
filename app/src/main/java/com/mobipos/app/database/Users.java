@@ -138,15 +138,15 @@ public class Users extends Controller {
 
     }
 
-    public boolean insertPin(String pin,String user_id) throws InvalidKeyException, NoSuchAlgorithmException,
-            IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
-     //   String encrypt_pin= encryptPassword(pin, generateKey(user_id));
+    public boolean insertPin(String pin,String user_id){
 
+        String sql="DELETE * FROM "+tb_pin;
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(login_pin,pin);
 
         try{
+            db.execSQL(sql);
             db.insert(tb_pin,null,values);
             db.close();
           //  SQLiteDatabase db_read=this.getReadableDatabase();
@@ -185,7 +185,7 @@ public class Users extends Controller {
         return CheckUserOrPin(tb_name) > 0;
     }
 
-    public boolean password_match(String pin) throws InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnsupportedEncodingException {
+    public boolean password_match(String pin) {
         SQLiteDatabase db=this.getReadableDatabase();
      //   String sql="SELECT password from "+tb_name ;
         String sql_pin="SELECT * from "+tb_pin + " LIMIT 1";
