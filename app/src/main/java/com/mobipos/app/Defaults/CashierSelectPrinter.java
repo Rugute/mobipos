@@ -245,7 +245,7 @@ public class CashierSelectPrinter extends Fragment {
 
    String Amounts = "Tendered Amount:     \u0002" + AppConfig.tendered_amount + ".00/=\n" +
            "Cash Sale:           \u0002" +AppConfig.cash_sale + ".00/=\n"+
-            "Discount("+"0"+"%):          \u0002" + "0" + ".00/=\n\n\n" +
+            "Discount("+PackageConfig.DISCOUNT_VALUE+"%):          \u0002" + AppConfig.discount + ".00/=\n\n\n" +
             "Grand Total:          \u0002" + AppConfig.grand + ".00/=\n" +
             "Change:                \u0002" + AppConfig.change + ".00/=\n\n" +
            "Served by:\u0002" + usersdb.get_user_name() + "\n\nTHANK YOU\n\n\n\n\n";

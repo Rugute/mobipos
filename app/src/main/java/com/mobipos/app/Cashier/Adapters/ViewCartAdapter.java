@@ -21,6 +21,7 @@ import com.mobipos.app.Cashier.dashboardFragments.Inventory.CashDummy;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Items.CashierItemsData;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.viewCartData;
+import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Products;
@@ -72,10 +73,10 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
     public static String get_item_count="1";
     public static boolean dataChanged=false;
 
-    TextView inclusive,exclusive,grand_total;
+    TextView inclusive,exclusive,grand_total,discount_name,discount_amount;
 
     public ViewCartAdapter(Context context, List<viewCartData> itemsData,String str_order_id,TextView inclusive,
-                           TextView exclusive,TextView grand_total)
+                           TextView exclusive,TextView grand_total,TextView discount_name,TextView discount_amount)
     {
         this.itemsData = itemsData;
         this.context=context;
@@ -87,6 +88,8 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
         this.inclusive=inclusive;
         this.exclusive=exclusive;
         this.grand_total=grand_total;
+        this.discount_amount=discount_amount;
+        this.discount_name=discount_name;
     }
 
     @Override
@@ -121,6 +124,8 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
 
         Log.d("total tax for item",String.valueOf(tax_value));
 
+
+
         if(taxesdb.taxMode(productsdb.taxMode(itemsData.get(i).product_id))==1){
             PackageConfig.INCLUSIVE_TAX=PackageConfig.INCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
             inclusive.setText(String.valueOf(PackageConfig.INCLUSIVE_TAX));
@@ -128,7 +133,12 @@ public class ViewCartAdapter extends RecyclerView.Adapter<ViewCartAdapter.ItemLi
             PackageConfig.EXCLUSIVE_TAX=PackageConfig.EXCLUSIVE_TAX+Integer.parseInt(String.valueOf(tax_value));
             exclusive.setText(String.valueOf(PackageConfig.EXCLUSIVE_TAX));
             int total=orderitemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
-            grand_total.setText(String.valueOf(total));
+
+            AppConfig.discount_amnt=Integer.parseInt(PackageConfig.DISCOUNT_VALUE)*total/100;
+
+            discount_name.setText("DISCOUNT: "+PackageConfig.DISCOUNT_VALUE+"%");
+            discount_amount.setText("-"+String.valueOf( AppConfig.discount_amnt));
+            grand_total.setText(String.valueOf(total- AppConfig.discount_amnt));
         }
 
 

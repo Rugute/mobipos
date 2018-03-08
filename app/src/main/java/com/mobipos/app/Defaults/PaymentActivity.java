@@ -52,6 +52,12 @@ public class PaymentActivity extends AppCompatActivity {
     @BindView(R.id.receipt_order_no)
     TextView receipt_order_no;
 
+    @BindView(R.id.discount_receipt)
+    TextView txt_discount_name;
+
+    @BindView(R.id.discount_amount)
+    TextView txt_discount_amount;
+
     @BindView(R.id.reciept_order_date)
     TextView reciept_order_date;
 
@@ -107,7 +113,14 @@ public class PaymentActivity extends AppCompatActivity {
         reciept_order_date.setText(ordersdb.getOrderDate(PackageConfig.order_no));
         receipt_order_no.setText(PackageConfig.order_no);
         receipt_total.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
-        grand_total.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)));
+
+
+        AppConfig.discount_amnt=Integer.parseInt(PackageConfig.DISCOUNT_VALUE)*orderItemsdb.getCartTotal(PackageConfig.order_no)/100;
+
+        txt_discount_name.setText("DISCOUNT: "+PackageConfig.DISCOUNT_VALUE+"%");
+        txt_discount_amount.setText("-"+String.valueOf(AppConfig.discount_amnt));
+        grand_total.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)-AppConfig.discount_amnt));
+
 
      // btnClick();
 
@@ -176,7 +189,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void initializeAdapter(){
         ViewCartAdapter adapter = new ViewCartAdapter(this,orderItemsdb.getCartData(PackageConfig.order_no),
-                PackageConfig.order_no,inclusive,exclusive,grand_total);
+                PackageConfig.order_no,inclusive,exclusive,grand_total,txt_discount_name,txt_discount_amount);
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
 
@@ -190,8 +203,9 @@ public class PaymentActivity extends AppCompatActivity {
         View view= LayoutInflater.from(this).inflate(R.layout.cashier_select_payment,null);
         final AlertDialog alertDialog=new AlertDialog.Builder(this).create();
         alertDialog.setView(view);
-        alertDialog.setCancelable(true);
+        alertDialog.setCancelable(false);
         alertDialog.show();
+
 
         final RadioButton cash,mpesa,visa,mastercard;
         RadioGroup radioGroup=view.findViewById(R.id.payment_radio_group);
@@ -215,6 +229,8 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     public void cashPaymentPopup(){
@@ -228,7 +244,10 @@ public class PaymentActivity extends AppCompatActivity {
         grand=view.findViewById(R.id.amount_grand_total);
         change=view.findViewById(R.id.change_due);
 
-        grand.setText(String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX));
+        int total=orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
+        int disc=total*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
+
+        grand.setText(String.valueOf(total-disc));
         grand.setEnabled(false);
 
         tender.addTextChangedListener(new TextWatcher() {
@@ -271,6 +290,8 @@ public class PaymentActivity extends AppCompatActivity {
                         AppConfig.cash_sale=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
                         AppConfig.change=change.getText().toString();
                         AppConfig.grand=grand.getText().toString();
+                        AppConfig.discount=txt_discount_amount.getText().toString();
+
 
                         if(!salesdb.addSaleData(data)){
                             salesdb.getSalesData("loadLocal","NO NEED");
@@ -382,7 +403,10 @@ public class PaymentActivity extends AppCompatActivity {
                 AppConfig.tendered_amount=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
                 AppConfig.cash_sale=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
                 AppConfig.change="0";
-                AppConfig.grand=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+                int total_amount=orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
+                int disc=total_amount*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
+
+                AppConfig.grand=String.valueOf(total_amount-disc);
 
 
                 if(!salesdb.addSaleData(data)){

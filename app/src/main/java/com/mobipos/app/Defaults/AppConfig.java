@@ -57,6 +57,7 @@ public class AppConfig {
     public static String discount;
     public static String change;
     public static String grand;
+    public static int discount_amnt;
 
 
 

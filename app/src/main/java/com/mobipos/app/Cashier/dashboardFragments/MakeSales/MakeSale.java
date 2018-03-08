@@ -19,15 +19,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItemData;
+import com.mobipos.app.Cashier.Adapters.DiscountAdapter;
 import com.mobipos.app.Cashier.Adapters.ListViewCartAdapter;
 import com.mobipos.app.Cashier.Adapters.MakeSalesAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
@@ -39,6 +44,7 @@ import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Discounts;
 import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
@@ -75,6 +81,7 @@ public class MakeSale extends Fragment {
     CardView total_card;
     FloatingActionButton fab_back;
     TextView text_order_no;
+    LinearLayout src_layout;
     TextView new_order_no;
 
     ListView listView;
@@ -90,6 +97,7 @@ public class MakeSale extends Fragment {
     Orders ordersdb;
     Users users;
     Inventory inventorydb;
+    Discounts discountdb;
 
     public boolean view_cart_seen;
 
@@ -118,6 +126,7 @@ public class MakeSale extends Fragment {
         orderItemsdb=new Order_Items(getActivity(), defaults.database_name,null,1);
         users=new Users(getActivity(), defaults.database_name,null,1);
         inventorydb=new Inventory(getActivity(), defaults.database_name,null,1);
+        discountdb=new Discounts(getActivity(), defaults.database_name,null,1);
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
@@ -137,6 +146,7 @@ public class MakeSale extends Fragment {
 
         adapter=new MakeSalesAdapter(getActivity(),cartData());
         searchView=view.findViewById(R.id.search);
+        src_layout=view.findViewById(R.id.search_layout);
 
         src_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +253,7 @@ public class MakeSale extends Fragment {
                 expandableListView.setVisibility(View.VISIBLE);
                 searchView.setVisibility(View.VISIBLE);
                 view_cart.setVisibility(View.GONE);
+                src_layout.setVisibility(View.VISIBLE);
                 total_card.setCardBackgroundColor(Color.parseColor("#34a12f"));
                  navigator.setText("Click to Proceed");
             }
@@ -253,7 +264,7 @@ public class MakeSale extends Fragment {
             public void onClick(View view) {
 
                 if(view_cart_seen){
-                    startActivity(new Intent(getActivity(), PaymentActivity.class));
+                    discountPopup();
                 }
 
                 if(total_value.getText().toString().equals("0")){
@@ -263,6 +274,7 @@ public class MakeSale extends Fragment {
                     total_card.setCardBackgroundColor(Color.parseColor("#605398"));
                         expandableListView.setVisibility(View.GONE);
                         view_cart.setVisibility(View.VISIBLE);
+                        src_layout.setVisibility(View.GONE);
                     searchView.setVisibility(View.GONE);
                     initializeListAdapter(PackageConfig.order_no);
                     navigator.setText("Click to Cash out");
@@ -492,4 +504,31 @@ public class MakeSale extends Fragment {
         expandableListView.setAdapter(adapter);
     }
 
+    public void discountPopup(){
+
+        final android.support.v7.app.AlertDialog dialog= new android.support.v7.app.AlertDialog.Builder(getContext()).create();
+        View view=LayoutInflater.from(getContext()).inflate(R.layout.admin_list_branches,null);
+        ListView listView=view.findViewById(R.id.view_outlet);
+        Button title=view.findViewById(R.id.btn_title);
+        title.setText("SELECT DISCOUNT");
+
+        listView.setAdapter(new DiscountAdapter(getContext(),discountdb.getDiscounts()));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int pos= (int) adapterView.getItemIdAtPosition(i);
+                PackageConfig.DISCOUNT_NAME=discountdb.getDiscounts().get(pos).name;
+                PackageConfig.DISCOUNT_VALUE=discountdb.getDiscounts().get(pos).value;
+
+                startActivity(new Intent(getActivity(), PaymentActivity.class));
+
+                dialog.cancel();
+            }
+        });
+        dialog.setView(view);
+        dialog.show();
+    }
+
 }
+

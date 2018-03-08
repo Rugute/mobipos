@@ -45,6 +45,8 @@ public class PackageConfig {
     public static int INCLUSIVE_TAX=0;
     public static int EXCLUSIVE_TAX=0;
 
+    public static String DISCOUNT_NAME;
+    public static String DISCOUNT_VALUE;
 
 
 
