@@ -65,7 +65,7 @@ public class MeasureMarginAdapter extends BaseAdapter {
         ImageView delet=view.findViewById(R.id.del);
         final TextView meas=view.findViewById(R.id.measure_id);
 
-        meas.setText(data.get(i).id);
+         meas.setText(data.get(i).id);
         name.setText(data.get(i).name);
         description.setText(data.get(i).description);
 
