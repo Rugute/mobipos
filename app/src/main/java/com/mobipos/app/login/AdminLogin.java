@@ -14,6 +14,7 @@ import android.support.graphics.drawable.VectorDrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,8 @@ import java.util.List;
 
 public class AdminLogin extends Activity {
 
-    TextView textLink,login;
+    TextView textLink;
+    Button btn_login;
     EditText email,password;
     static String stremail,strpassword;
 
@@ -47,7 +49,7 @@ public class AdminLogin extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        login=findViewById(R.id.login);
+        btn_login=findViewById(R.id.login);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
 
@@ -63,7 +65,7 @@ public class AdminLogin extends Activity {
             password.setText(user_db.get_login_details()[1]);
         }
 
-        login.setOnClickListener(new View.OnClickListener() {
+        btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 stremail=email.getText().toString();

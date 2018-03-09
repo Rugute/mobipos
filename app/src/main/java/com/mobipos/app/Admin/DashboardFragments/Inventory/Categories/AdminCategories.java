@@ -2,6 +2,7 @@ package com.mobipos.app.Admin.DashboardFragments.Inventory.Categories;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -310,10 +312,12 @@ public class AdminCategories extends Fragment {
     public class addCategory extends AsyncTask<String,String,String>{
         int success=0;
         String serverMessage;
-
+        ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute(){
             super.onPreExecute();
-            showAddBar(true);
+          dialog.setMessage("Adding Category.Please wait...");
+          dialog.setCancelable(false);
+          dialog.show();
         }
 
         @Override
@@ -347,7 +351,14 @@ public class AdminCategories extends Fragment {
 
             if (success==1){
                 showAddBar(false);
-                new loadCategories().execute();
+                dialog.cancel();
+
+                Fragment fragment;
+                fragment = AdminCategories.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();

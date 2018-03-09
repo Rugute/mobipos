@@ -23,14 +23,16 @@ public class Printers extends Controller {
     public static String col_1="printer_id";
     public static String col_2="printer_name";
     public static String col_3="printer_mac";
+    public static String col_4="default_printer";
 
 
     public static  String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_PRINTERS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11),"+
-            col_2+" VARCHAR(11),"+
-            col_3+" VARCHAR(11))";
+            col_2+" VARCHAR(50),"+
+            col_4+" INT(11),"+
+            col_3+" VARCHAR(50))";
 
     public boolean PrinterExists(String id){
         SQLiteDatabase db=getReadableDatabase();
@@ -97,6 +99,21 @@ public class Printers extends Controller {
         }
 
         return data;
+
+    }
+
+    public void set_default_printer(String printer_id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        try{
+            ContentValues values=new ContentValues();
+            values.put(col_4,"1");
+            db.update(tb_name,values,col_1+"="+printer_id,null);
+
+            db.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

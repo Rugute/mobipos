@@ -67,6 +67,7 @@ public class RegisterAdmin extends Activity {
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+        pDialog.setMessage("Registering. Please wait...");
 
         loginPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,13 +159,14 @@ public class RegisterAdmin extends Activity {
             super.onPostExecute(s);
             if(successState==1){
 
-                PackageConfig.login_data=new String[6];
+                PackageConfig.login_data=new String[7];
                 PackageConfig.login_data[0]=USER_ID;
                 PackageConfig.login_data[1]=name;
                 PackageConfig.login_data[2]=email;
                 PackageConfig.login_data[3]=pin;
                 PackageConfig.login_data[4]="1";
                 PackageConfig.login_data[5]="admin";
+                PackageConfig.login_data[6]="n/a";
 
                 Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
                 if(!user_db.insertUserData(PackageConfig.login_data)){

@@ -3,6 +3,7 @@ package com.mobipos.app.Admin.DashboardFragments.Inventory.Items;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,10 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.MeasureMarginAdapter;
 import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
+import com.mobipos.app.Admin.AdminMeasurements;
+import com.mobipos.app.Admin.BranchFragment;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
+import com.mobipos.app.Admin.DashboardFragments.Settings.TaxesFragment;
 import com.mobipos.app.Admin.PackageConfig;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
@@ -144,6 +149,7 @@ public class AdminAddItem extends Fragment {
     public class loadData extends AsyncTask<String,String,String>{
 
         int success=0;
+        String message;
         JSONArray branchArray,categoryArray,measureArray,taxArray;
         protected void onPreExecute(){
             super.onPreExecute();
@@ -166,42 +172,49 @@ public class AdminAddItem extends Fragment {
 
             try {
                  success=jsonObject.getInt("success");
+                 message=jsonObject.getString("message");
 
                  branchArray=jsonObject.getJSONArray("branch_data");
                  AdminAddItemData.branchIds=new String[branchArray.length()];
                  AdminAddItemData.branchNames=new String[branchArray.length()];
 
-                 for(int i=0;i<branchArray.length();i++){
-                     JSONObject jObj=branchArray.getJSONObject(i);
-                     AdminAddItemData.branchNames[i]=jObj.getString("shop_name");
-                     AdminAddItemData.branchIds[i]=jObj.getString("shop_id");
+                 if(success==1){
+                     for(int i=0;i<branchArray.length();i++){
+                         JSONObject jObj=branchArray.getJSONObject(i);
+                         AdminAddItemData.branchNames[i]=jObj.getString("shop_name");
+                         AdminAddItemData.branchIds[i]=jObj.getString("shop_id");
 
-                     categoryArray=jObj.getJSONArray("categories");
-                     for(int j=0;j<categoryArray.length();j++){
-                         JSONObject catObj=categoryArray.getJSONObject(j);
-                         categoryData.add(new addItemCatData(jObj.getString("shop_id"),
-                                 catObj.getString("category_id"),
-                                 catObj.getString("category_name")));
+                         categoryArray=jObj.getJSONArray("categories");
+                         for(int j=0;j<categoryArray.length();j++){
+                             JSONObject catObj=categoryArray.getJSONObject(j);
+                             categoryData.add(new addItemCatData(jObj.getString("shop_id"),
+                                     catObj.getString("category_id"),
+                                     catObj.getString("category_name")));
+                         }
+
                      }
+                     measureArray=jsonObject.getJSONArray("measurement_data");
+                     for(int i=0;i<measureArray.length();i++) {
+                         JSONObject jObj = measureArray.getJSONObject(i);
+                         measure.add(new MeasureMarginData(jObj.getString("measurement_id"),
+                                 jObj.getString("meaurement_name"),
+                                 jObj.getString("single_unit")+" Per Unit"));
+                     }
+                     taxArray=jsonObject.getJSONArray("tax_margins");
+                     for(int i=0;i<taxArray.length();i++) {
+                         JSONObject jObj = taxArray.getJSONObject(i);
+                         tax_margins.add(new MeasureMarginData(jObj.getString("tax_margin_id"),
+                                 jObj.getString("tax")+"%",
+                                 jObj.getString("margin_mode")));
+                     }
+                     tax_margins.add(new MeasureMarginData("0","0%","No Tax"));
 
                  }
 
-                measureArray=jsonObject.getJSONArray("measurement_data");
-                for(int i=0;i<measureArray.length();i++) {
-                    JSONObject jObj = measureArray.getJSONObject(i);
-                    measure.add(new MeasureMarginData(jObj.getString("measurement_id"),
-                            jObj.getString("meaurement_name"),
-                            jObj.getString("single_unit")+" Per Unit"));
-                }
 
-                taxArray=jsonObject.getJSONArray("tax_margins");
-                for(int i=0;i<taxArray.length();i++) {
-                    JSONObject jObj = taxArray.getJSONObject(i);
-                    tax_margins.add(new MeasureMarginData(jObj.getString("tax_margin_id"),
-                            jObj.getString("tax")+"%",
-                            jObj.getString("margin_mode")));
-                }
-                tax_margins.add(new MeasureMarginData("0","0%","No Tax"));
+
+
+
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -210,6 +223,34 @@ public class AdminAddItem extends Fragment {
         }
         protected void onPostExecute(String s){
             super.onPostExecute(s);
+
+            if(success==100){
+                Fragment fragment=null;
+                fragment= BranchFragment.newInstance();
+                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout,fragment);
+                transaction.commit();
+            }else if(success==200){
+                Fragment fragment;
+                fragment = AdminMeasurements.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }else if(success==300){
+                Fragment fragment;
+                fragment = TaxesFragment.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }else if(success==400){
+                Fragment fragment;
+                fragment = AdminCategories.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }
+
+            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
 
             showbar(false);
         }

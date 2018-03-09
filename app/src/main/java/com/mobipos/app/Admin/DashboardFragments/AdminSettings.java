@@ -55,7 +55,7 @@ public class AdminSettings extends Fragment {
         settingsData.add(new SettingsData("Measurements"));
         settingsData.add(new SettingsData("Taxes"));
         settingsData.add(new SettingsData("Printers"));
-        settingsData.add(new SettingsData("Discounts"));
+        settingsData.add(new SettingsData("CashierDiscounts"));
         AdminSettingsAdapter adapter= new AdminSettingsAdapter(getActivity(),settingsData);
          listView=view.findViewById(R.id.setting_list);
          listView.setAdapter(adapter);

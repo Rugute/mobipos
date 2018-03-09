@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobipos.app.Cashier.dashboardFragments.Settings.CashierDiscounts;
+import com.mobipos.app.Cashier.dashboardFragments.Settings.CashierPrinter;
 import com.mobipos.app.Defaults.PrinterFragment;
 import com.mobipos.app.R;
 
@@ -36,7 +38,27 @@ public class CashierSettings extends Fragment {
         discount_set=view.findViewById(R.id.sales_discount_card);
 
 
+        printer_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment selectedFragment = null;
+                selectedFragment = CashierPrinter.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout_new, selectedFragment);
+                transaction.commit();
+            }
+        });
 
+        discount_set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment selectedFragment = null;
+                selectedFragment = CashierDiscounts.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout_new, selectedFragment);
+                transaction.commit();
+            }
+        });
 
     }
 

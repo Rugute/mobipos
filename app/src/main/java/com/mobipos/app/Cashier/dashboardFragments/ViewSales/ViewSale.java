@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.mobipos.app.Cashier.Adapters.ViewSalesAdapter;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
@@ -50,7 +51,11 @@ public class ViewSale extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+        RelativeLayout rela=view.findViewById(R.id.no_sale_layout);
 
+        if(salesdb.getSalesData("loadLocal","no need").size()==0){
+            rela.setVisibility(View.VISIBLE);
+        }
         initializeAdapter();
     }
 

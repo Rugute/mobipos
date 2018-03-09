@@ -35,8 +35,8 @@
             android:gravity="center"
             android:layout_centerVertical="true"
             android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
 
             <!--<ImageView-->
@@ -79,15 +79,14 @@
                 android:textColorHint="#000" />
 
             <!-- Login Button -->
-            <TextView
+            <Button
                 android:id="@+id/login"
-                android:layout_width="wrap_content"
+                android:background="@drawable/edit_text"
+                android:layout_width="283dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="Login"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#ffffff" />
+                android:textColor="#fff"/>
+
 
             <TextView
                 android:id="@+id/link"

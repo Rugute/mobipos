@@ -140,10 +140,12 @@ public class Users extends Controller {
 
     public boolean insertPin(String pin,String user_id){
 
-        String sql="DELETE * FROM "+tb_pin;
+
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
+        String sql="DELETE FROM "+tb_pin;
         values.put(login_pin,pin);
+
 
         try{
             db.execSQL(sql);
@@ -318,6 +320,8 @@ public class Users extends Controller {
 
         return data;
     }
+
+
 
 
 }
