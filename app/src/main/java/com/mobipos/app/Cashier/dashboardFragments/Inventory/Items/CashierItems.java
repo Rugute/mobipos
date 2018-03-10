@@ -317,7 +317,7 @@ public class CashierItems extends Fragment {
             List params=new ArrayList();
             params.add(new BasicNameValuePair("user_id",users.get_user_id()));
 
-            JSONObject stock_in_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+              JSONObject stock_in_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
                             SyncDefaults.sync_stock_in_movement,
                     "GET",params);
             try{
