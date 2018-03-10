@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
 import com.mobipos.app.Defaults.AppConfig;
@@ -53,6 +55,7 @@ public class ReportFragment extends Fragment{
     Users users;
     Categories categoriesdb;
     Calendar calendar=Calendar.getInstance();
+    int flag_click=0;
 
     DatePickerDialog fromPicker,toPicker;
     public static ReportFragment newInstance(){
@@ -119,7 +122,7 @@ public class ReportFragment extends Fragment{
         branchselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                flag_click=1;
                 new SelectBranch().execute();
 
             }
@@ -129,42 +132,50 @@ public class ReportFragment extends Fragment{
             @Override
             public void onClick(View view) {
 
-                File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
-                if(!rootDirectory.exists()){
-                    rootDirectory.mkdirs();
+                if(TextUtils.isEmpty(date1.getText())||TextUtils.isEmpty(date2.getText())||flag_click==0){
+                    Toast.makeText(getContext(), "Missing some information", Toast.LENGTH_SHORT).show();
+                }else{
+                    downloader();
                 }
-
-                String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString();
-                String variables="from="+date1.getText().toString()+"&to="+
-                        date2.getText().toString()+"&client_id="+users.get_user_id();
-                String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
-
-                String nameOfFile=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
-                File file = new File(rootDirectory,fileName);
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setTitle("Mauzo Africa Reports");
-                request.setDescription("File is being Downloaded...");
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName);
-
-                DownloadManager manager = (DownloadManager)getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                manager.enqueue(request);
 
             }
         });
 
 
 
+    }
+
+    public void downloader(){
+        File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
+        if(!rootDirectory.exists()){
+            rootDirectory.mkdirs();
+        }
+
+        String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString();
+        String variables="from="+date1.getText().toString()+"&to="+
+                date2.getText().toString()+"&client_id="+users.get_user_id();
+        String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
+
+        String nameOfFile=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
+        File file = new File(rootDirectory,fileName);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle("Mauzo Africa Reports");
+        request.setDescription("File is being Downloaded...");
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName);
+
+        DownloadManager manager = (DownloadManager)getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.enqueue(request);
     }
 
     public void updateDate(EditText editText){
