@@ -1,5 +1,6 @@
 package com.mobipos.app.Defaults;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.MeasureData;
 import com.mobipos.app.Admin.Adapters.MeasurementAdapter;
 import com.mobipos.app.Admin.AdminMeasurements;
 import com.mobipos.app.R;
@@ -38,6 +40,7 @@ public class PrinterFragment extends Fragment {
     ListView listView;
     Users users;
     FloatingActionButton faddprinter;
+    List<PrinterData> printerDataList;
 
 
     public static PrinterFragment newInstance(){
@@ -57,7 +60,7 @@ public class PrinterFragment extends Fragment {
         faddprinter=view.findViewById(R.id.fab_add_printer);
         listView=view.findViewById(R.id.printer_listview);
 
-    //    new PrinterSelection().execute();
+       new PrinterSelection().execute();
 
         faddprinter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,16 +79,21 @@ public class PrinterFragment extends Fragment {
     public class PrinterSelection extends AsyncTask<String, String, String> {
         int success = 0;
         String serverMessage;
-        JSONArray printer,printermac;
+        JSONArray printerArray;
         String outlet = null;
-
+        ProgressDialog dialog=new ProgressDialog(getActivity());
 
         protected void onPreExecute() {
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
         protected String doInBackground(String... strings) {
+            printerDataList=new ArrayList<>();
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
@@ -98,16 +106,21 @@ public class PrinterFragment extends Fragment {
 
             try {
                 success = jsonObject.getInt("success");
-                printer = jsonObject.getJSONArray("data");
-                printermac=jsonObject.getJSONArray("data");
+               JSONArray branches=jsonObject.getJSONArray("data");
 
-                AppConfig.printerName = new String[printer.length()];
-                AppConfig.printerMac = new String[printermac.length()];
-                for (int i = 0; i <printer.length(); i++) {
-                    JSONObject jobj = printer.getJSONObject(i);
-                    AppConfig.printerName[i] = jobj.getString("measurement_name");
-                    AppConfig.printerMac[i] = jobj.getString("single_unit")+" Per Unit";
-                }
+               for(int j=0;j<branches.length();j++){
+                   JSONObject jobj_printer=branches.getJSONObject(j);
+                   String branch_name=jobj_printer.getString("branch_name");
+
+                   JSONArray printerArray=jobj_printer.getJSONArray("branch_printers");
+                   for(int i=0;i<printerArray.length();i++) {
+                       JSONObject jObj = printerArray.getJSONObject(i);
+                       printerDataList.add(new PrinterData(jObj.getString("id"), jObj.getString("printer_name"),
+                               jObj.getString("printer_mac"),branch_name));
+                   }
+               }
+
+                //measureDataList.add(new MeasureData("measurement_id", "","" ));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -120,19 +133,16 @@ public class PrinterFragment extends Fragment {
             super.onPostExecute(s);
 
             if (success == 1) {
-                if (AppConfig.printerName.length > 0) {
-                    PrinterSetAdapter adapter=new PrinterSetAdapter(getContext(),AppConfig.printerName,AppConfig.printerMac);
-                    adapter.notifyDataSetChanged();
-                    listView.setAdapter(adapter);
-
+                if (printerDataList.size() > 0) {
+                    listView.setAdapter(new PrinterSetAdapter(getContext(),printerDataList));
                 } else {
-                    Toast.makeText(getActivity(), "No Printer Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No Printers Available", Toast.LENGTH_SHORT).show();
                 }
 
             }
+            dialog.cancel();
         }
     }
-
 //    public void AddPrinter() {
 //        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
 //        View view = LayoutInflater.from(getContext()).inflate(R.layout.printer_add_popup, null);
