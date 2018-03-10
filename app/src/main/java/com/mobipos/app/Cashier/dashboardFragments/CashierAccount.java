@@ -97,17 +97,22 @@ public class CashierAccount extends Fragment {
         reset_pin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.equals(new_pin.getText(),confirm_pin.getText())){
-                    if(!users.insertPin(new_pin.getText().toString(),users.get_user_id())){
-                        Toast.makeText(getContext(),"Error while resetting pin!!",Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getContext(),"Pin reset successful",Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
+                if(TextUtils.isEmpty(new_pin.getText())||TextUtils.isEmpty(confirm_pin.getText())){
+                    if(TextUtils.equals(new_pin.getText(),confirm_pin.getText())){
+                        if(!users.insertPin(new_pin.getText().toString(),users.get_user_id())){
+                            Toast.makeText(getContext(),"Error while resetting pin!!",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(),"Pin reset successful",Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
 
+                    }else{
+                        Toast.makeText(getContext(),"Pins dont match!!",Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(getContext(),"Pins dont match!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"missing some information",Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

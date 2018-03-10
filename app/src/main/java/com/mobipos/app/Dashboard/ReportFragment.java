@@ -130,7 +130,7 @@ public class ReportFragment extends Fragment{
             public void onClick(View view) {
 
                 File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOCUMENTS),"MAUZO REPORTS");
+                        Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
                 if(!rootDirectory.exists()){
                     rootDirectory.mkdirs();
                 }

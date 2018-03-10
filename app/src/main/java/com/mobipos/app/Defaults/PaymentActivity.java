@@ -2,8 +2,10 @@ package com.mobipos.app.Defaults;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -35,6 +37,9 @@ import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Sales;
 import com.mobipos.app.database.defaults;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -349,10 +354,11 @@ public class PaymentActivity extends AppCompatActivity {
 
 
                     if (internetSettings.isNetworkConnected()){
-                        new Synchronizer(getApplicationContext());
-                    }
+                        send_email_popup();
 
-                    startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
+                    }
+                    alertDialog.cancel();
+
                 }else if(print.isChecked()){
                     if (internetSettings.isNetworkConnected()){
                         new Synchronizer(getApplicationContext());
@@ -449,6 +455,79 @@ public class PaymentActivity extends AppCompatActivity {
         });
         alertDialog.show();
 
+    }
+
+    public static String ed_email;
+    public void send_email_popup(){
+        View view=LayoutInflater.from(this).inflate(R.layout.forgot_password,null);
+        TextView title=view.findViewById(R.id.reset_password);
+        final EditText email_address=view.findViewById(R.id.email_add);
+        title.setText("ENTER EMAIL ADDRESS");
+
+        AlertDialog alertDialog=new AlertDialog.Builder(this).create();
+        alertDialog.setView(view);
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE,"Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ed_email=email_address.getText().toString();
+                new sendEmail().execute();
+
+            }
+        });
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialog.show();
+
+    }
+
+    public class sendEmail extends AsyncTask<String,String,String>{
+
+        String server_message;
+        int success;
+
+        ProgressDialog dialog=new ProgressDialog(PaymentActivity.this);
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+            dialog.setMessage("Emailing Receipt. Please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+            new Synchronizer(getApplicationContext());
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser=new JSONParser();
+            List paramters=new ArrayList();
+            paramters.add(new BasicNameValuePair("email",ed_email));
+            paramters.add(new BasicNameValuePair("order_id",PackageConfig.order_no));
+
+            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+PackageConfig.email_receipt,
+                    "GET",paramters);
+            try{
+                success=jsonObject.getInt("success");
+                server_message=jsonObject.getString("message");
+            }catch (Exception e){
+
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String s){
+            super.onPostExecute(s);
+
+            if(success==1){
+                startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
+                Toast.makeText(getApplicationContext(),server_message,Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(),server_message,Toast.LENGTH_SHORT).show();
+            }
+            dialog.cancel();
+        }
     }
 
 }
