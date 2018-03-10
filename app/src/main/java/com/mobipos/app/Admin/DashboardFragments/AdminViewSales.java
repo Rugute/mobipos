@@ -1,6 +1,7 @@
 package com.mobipos.app.Admin.DashboardFragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -93,10 +94,15 @@ public class AdminViewSales extends Fragment {
         JSONArray sale;
         String total_sales_value=null;
         String total_inventory_value=null;
+        ProgressDialog dialog=new ProgressDialog(getActivity());
 
 
         protected  void onPreExecute(){
             super.onPreExecute();
+
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -132,6 +138,7 @@ public class AdminViewSales extends Fragment {
             super.onPostExecute(s);
 
             if(success==1){
+                dialog.cancel();
                 spinnerUpdate();
             }else{
                 Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();

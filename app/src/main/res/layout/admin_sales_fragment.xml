@@ -37,9 +37,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/edittext"
-                >
+                android:background="@drawable/edittext">
                 <Spinner
 
                     android:id="@+id/sales_spinner_admin"
@@ -47,8 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#fff"
-                    android:prompt="@string/spinner_title"
-                    />
+                    android:prompt="@string/spinner_title"/>
             </RelativeLayout>
 
 
