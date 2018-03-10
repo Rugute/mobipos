@@ -36,9 +36,11 @@ public class MeasureMarginAdapter extends BaseAdapter {
     List<MeasureMarginData> data;
     Context context;
     LayoutInflater inflater=null;
-    public MeasureMarginAdapter(Context context, List<MeasureMarginData> data){
+    int state;
+    public MeasureMarginAdapter(Context context, List<MeasureMarginData> data,int state){
         this.context=context;
         this.data=data;
+        this.state=state;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -69,7 +71,9 @@ public class MeasureMarginAdapter extends BaseAdapter {
         name.setText(data.get(i).name);
         description.setText(data.get(i).description);
 
-
+        if(state==0){
+            delet.setVisibility(View.GONE);
+        }
 
         delet.setOnClickListener(new View.OnClickListener() {
             @Override

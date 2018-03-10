@@ -147,7 +147,7 @@ public class TaxesFragment extends Fragment {
 
             if (success == 1) {
                 if (tax_margins.size() > 0) {
-                    listView.setAdapter(new MeasureMarginAdapter(getContext(), tax_margins));
+                    listView.setAdapter(new MeasureMarginAdapter(getContext(), tax_margins,1));
                 } else {
                     Toast.makeText(getActivity(), "No Taxes Available", Toast.LENGTH_SHORT).show();
                 }

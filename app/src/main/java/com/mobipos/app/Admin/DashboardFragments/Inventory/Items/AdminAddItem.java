@@ -322,7 +322,7 @@ public class AdminAddItem extends Fragment {
         ListView listView=view.findViewById(R.id.view_outlet);
         Button btn_title=view.findViewById(R.id.btn_title);
         btn_title.setText("Select Measurement");
-        listView.setAdapter(new MeasureMarginAdapter(getContext(), measure));
+        listView.setAdapter(new MeasureMarginAdapter(getContext(), measure,0));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -344,7 +344,7 @@ public class AdminAddItem extends Fragment {
         ListView listView=view.findViewById(R.id.view_outlet);
         Button btn_title=view.findViewById(R.id.btn_title);
         btn_title.setText("Select Tax Margin");
-        listView.setAdapter(new MeasureMarginAdapter(getContext(), tax_margins));
+        listView.setAdapter(new MeasureMarginAdapter(getContext(), tax_margins,0));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

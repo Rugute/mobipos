@@ -278,6 +278,7 @@ public class AdminCategories extends Fragment {
 
         initializeAdapter(filterData);
     }
+    AlertDialog alertDialog;
 
     public void addCategory(){
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.custom_pop_up_add_category,null);
@@ -285,7 +286,7 @@ public class AdminCategories extends Fragment {
         Button btn_add=view.findViewById(R.id.btn_add_category);
         final EditText cat_name=view.findViewById(R.id.ed_add_category);
 
-        AlertDialog alertDialog=new AlertDialog.Builder(getActivity()).create();
+        alertDialog=new AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(view);
         alertDialog.setCancelable(false);
 
@@ -296,6 +297,7 @@ public class AdminCategories extends Fragment {
             public void onClick(View view) {
                 catname=cat_name.getText().toString();
                 new addCategory().execute();
+                alertDialog.cancel();
             }
         });
 

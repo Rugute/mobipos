@@ -76,6 +76,8 @@ public class MeasurementAdapter extends BaseAdapter {
         TextView measure1=view.findViewById(R.id.measure_id1);
         ImageView delet=(ImageView)view.findViewById(R.id.del);
 
+
+
         unit1.setText(measureData.get(i).measure);
         unit_v.setText(measureData.get(i).value);
         measure1.setText(measureData.get(i).measurement_id);
