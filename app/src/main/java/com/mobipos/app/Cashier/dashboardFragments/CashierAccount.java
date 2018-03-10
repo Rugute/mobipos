@@ -138,7 +138,7 @@ public class CashierAccount extends Fragment {
                 string_pin=current_pin.getText().toString();
                 if(string_pin.length()==4){
 
-                    try {
+                     try {
                         if(users.password_match(string_pin)){
 
                             new_pin.setEnabled(true);
