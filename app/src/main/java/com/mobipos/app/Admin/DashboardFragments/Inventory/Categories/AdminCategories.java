@@ -165,10 +165,14 @@ public class AdminCategories extends Fragment {
         String serverMessage;
         JSONArray data;
 
-
+        ProgressDialog dialog=new ProgressDialog(getActivity());
         protected void onPreExecute(){
             super.onPreExecute();
             showBar(true);
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -218,6 +222,7 @@ public class AdminCategories extends Fragment {
 
 
             if (success==1){
+                dialog.cancel();
                 spinnerUpdate(branches,branchSpinner,0);
                 initializeAdapter(categoryData);
             }else{

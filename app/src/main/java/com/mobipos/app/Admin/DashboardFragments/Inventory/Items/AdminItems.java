@@ -1,6 +1,7 @@
 package com.mobipos.app.Admin.DashboardFragments.Inventory.Items;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -148,9 +149,13 @@ public class AdminItems extends Fragment {
         String serverMessage;
         JSONArray data;
 
+        ProgressDialog dialog=new ProgressDialog(getActivity());
         protected void onPreExecute(){
             super.onPreExecute();
             showBar(true);
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override
@@ -219,6 +224,7 @@ public class AdminItems extends Fragment {
 
 
             if (success==1){
+                dialog.cancel();
                 initializeBranchSpinner(branches);
             }else{
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();

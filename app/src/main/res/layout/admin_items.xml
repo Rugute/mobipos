@@ -37,7 +37,6 @@
                 >
                 <Spinner
                     android:id="@+id/item_branch_spinner"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -62,7 +61,6 @@
                 <Spinner
 
                     android:id="@+id/item_category_spinner"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
