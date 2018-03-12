@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import com.mobipos.app.Sync.Synchronizer;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
 import com.mobipos.app.database.Sales;
+import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -51,6 +53,7 @@ import butterknife.OnClick;
 public class PaymentActivity extends AppCompatActivity {
 
     Sales salesdb;
+    Users usersdb;
 
     private static final String TAG = PaymentActivity.class.getSimpleName();
 
@@ -114,6 +117,7 @@ public class PaymentActivity extends AppCompatActivity {
         exclusive=findViewById(R.id.txt_exclusive_tax);
 
         salesdb=new Sales(this,defaults.database_name,null,1);
+        usersdb=new Users(this,defaults.database_name,null,1);
         initializeAdapter();
         reciept_order_date.setText(ordersdb.getOrderDate(PackageConfig.order_no));
         receipt_order_no.setText(PackageConfig.order_no);
@@ -368,13 +372,16 @@ public class PaymentActivity extends AppCompatActivity {
                     data=orderItemsdb.getCartData(PackageConfig.order_no);
                     AppConfig.formattedData=new String[data.size()];
 
+                    Log.d("data size for print",String.valueOf(data.size()));
+
                     for(int j=0;j<data.size();j++){
                         AppConfig.formattedData[j] = data.get(j).product_name + "\n" +
-                                data.get(i).count + "     " + "     \u0002" +
-                                data.get(i).price + ".00/=  " +
-                                String.valueOf(Integer.parseInt(data.get(i).count)+Integer.parseInt( data.get(i).price)) + ".00/=";
+                                data.get(j).count + "     " + "     \u0002" +
+                                data.get(j).price + ".00/=  " +
+                                String.valueOf(Integer.parseInt(data.get(j).count)+Integer.parseInt( data.get(j).price)) + ".00/=";
                     }
-
+                    AppConfig.print_biz_name=usersdb.printer_header()[1];
+                    AppConfig.print_branch_name=usersdb.printer_header()[0];
 
                     startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
                 }

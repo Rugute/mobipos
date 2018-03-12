@@ -49,6 +49,8 @@ public class AppConfig {
 
     public static String printMac = "";
     public static String[] formattedData;
+    public static String print_branch_name;
+    public static String print_biz_name;
 
 
     public static String tendered_amount;

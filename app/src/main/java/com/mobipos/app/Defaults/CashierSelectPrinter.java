@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.AdminMeasurements;
 import com.mobipos.app.Cashier.Adapters.PrinterAdapter;
+import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.R;
 import com.mobipos.app.database.PrinterInterface;
@@ -47,7 +49,7 @@ public class CashierSelectPrinter extends Fragment {
     ListView listView;
     Printers printersdb;
     Users usersdb;
-
+    FloatingActionButton back_home;
 
 
     public static CashierSelectPrinter newInstance(){
@@ -70,7 +72,17 @@ public class CashierSelectPrinter extends Fragment {
 
         btn_title=view.findViewById(R.id.btn_title);
         listView=view.findViewById(R.id.view_outlet);
+        back_home=view.findViewById(R.id.fab_add_items);
 
+        back_home.setVisibility(View.VISIBLE);
+        back_home.setImageResource(android.R.drawable.ic_media_play);
+        back_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), DashboardCashier.class));
+                getActivity().finish();
+            }
+        });
         btn_title.setText("SELECT PRINTER");
 
 
@@ -153,9 +165,12 @@ public class CashierSelectPrinter extends Fragment {
     int readBufferPosition;
     volatile boolean stopWorker;
     Thread workerThread;
-    String  msg = "       \u0002"+usersdb.printer_header()[1]+" \n       \u0002Branch :\t\t" + usersdb.printer_header()[0] +
+    String printer_header_biz=usersdb.printer_header()[1];
+    String branch_name=usersdb.printer_header()[0];
+    String  msg = "       \u0002"+AppConfig.print_biz_name+" \n       \u0002Branch :\t\t" + AppConfig.print_branch_name +
             "\t\n" + "       \u0002Order id:" + PackageConfig.order_no + "\n       \u0002" + new Date().toLocaleString() + "\n\n\n";
-   public void beginListenForData() {
+
+    public void beginListenForData() {
 
 
         try {

@@ -306,15 +306,35 @@ public class Users extends Controller {
 
     public String[] printer_header(){
         SQLiteDatabase db=this.getReadableDatabase();
-        String sql_pin="SELECT * from "+tb_branch + " LIMIT 1";
+        String sql_pin="SELECT business_name,branch_name from "+tb_branch + " LIMIT 1";
         Cursor  cursor=db.rawQuery(sql_pin,null);
         String[] data=new String[2];
 
         if(cursor.moveToFirst()){
 
-                data[0]=cursor.getString(cursor.getColumnIndex(col_branch_name));
-                data[1]=cursor.getString(cursor.getColumnIndex(col_business_name));
+                data[0]=cursor.getString(cursor.getColumnIndex("business_name"));
+                data[1]=cursor.getString(cursor.getColumnIndex("branch_name"));
 
+                Log.d("business name",cursor.getString(cursor.getColumnIndex("business_name")));
+                Log.d("branch name",cursor.getString(cursor.getColumnIndex("branch_name")));
+        }
+        db.close();
+
+        return data;
+    }
+
+    public String branch_name(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT branch_name from "+tb_branch + " LIMIT 1";
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+        String data=null;
+
+        if(cursor.moveToFirst()){
+
+            data=cursor.getString(cursor.getColumnIndex("branch_name"));
+
+            Log.d("business name",cursor.getString(cursor.getColumnIndex("business_name")));
+            Log.d("branch name",cursor.getString(cursor.getColumnIndex("branch_name")));
         }
         db.close();
 

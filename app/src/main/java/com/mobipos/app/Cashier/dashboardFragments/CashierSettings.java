@@ -43,7 +43,7 @@ public class CashierSettings extends Fragment {
             public void onClick(View view) {
                 Fragment selectedFragment = null;
                 selectedFragment = CashierPrinter.newInstance();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                 transaction.replace(R.id.frame_layout_new, selectedFragment);
                 transaction.commit();
             }
@@ -54,7 +54,7 @@ public class CashierSettings extends Fragment {
             public void onClick(View view) {
                 Fragment selectedFragment = null;
                 selectedFragment = CashierDiscounts.newInstance();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
                 transaction.replace(R.id.frame_layout_new, selectedFragment);
                 transaction.commit();
             }
