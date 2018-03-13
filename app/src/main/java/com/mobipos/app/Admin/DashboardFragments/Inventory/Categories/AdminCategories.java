@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.AdminCategRvAdapter;
+import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
 import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Cashier.Adapters.CashierCategRvAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
@@ -106,7 +107,7 @@ public class AdminCategories extends Fragment {
         fab_add_cat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCategory();
+                 new BranchSelection().execute();
             }
         });
 
@@ -386,6 +387,59 @@ public class AdminCategories extends Fragment {
         }else{
             bar.setVisibility(View.GONE);
             layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public class BranchSelection extends AsyncTask<String, String, String> {
+        int success = 0;
+        String serverMessage;
+        JSONArray branch;
+        String outlet = null;
+
+
+        ProgressDialog dialog=new ProgressDialog(getContext());
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Loading data.please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser = new JSONParser();
+            List paramters = new ArrayList();
+
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+
+            JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
+                            AppConfig.admin_select_branches,
+                    "GET", paramters);
+            Log.d("data recieved", jsonObject.toString());
+
+            try {
+                success = jsonObject.getInt("success");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if (success == 1) {
+                addCategory();
+            }else{
+                Toast.makeText(getActivity(),"Create a Branch first",Toast.LENGTH_SHORT).show();
+                Fragment fragment;
+                fragment = AdminCategories.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+            }
         }
     }
 }

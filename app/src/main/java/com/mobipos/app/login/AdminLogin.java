@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Admin.DashboardAdmin;
+import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Users;
@@ -74,7 +75,22 @@ public class AdminLogin extends Activity {
                 if (stremail == null || strpassword == null){
                     Toast.makeText(getApplicationContext(),"fill all details",Toast.LENGTH_SHORT).show();
                 }else{
-                    new loginProcessor().execute();
+
+                    final CheckInternetSettings internetOn=new CheckInternetSettings(AdminLogin.this);
+                    if(internetOn.isNetworkConnected()){
+                        new loginProcessor().execute();
+                    }else{
+                        AlertDialog.Builder alertBuilder=new AlertDialog.Builder(AdminLogin.this).
+                                setTitle("Internet Connectivity is out").
+                                setMessage("Enable your internet to sync data from server").
+                                setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        internetOn.context.startActivity(new Intent("android.settings.DATA_ROAMING_SETTINGS"));
+                                    }
+                                });
+                        alertBuilder.show();
+                    }
+
                 }
             }
         });

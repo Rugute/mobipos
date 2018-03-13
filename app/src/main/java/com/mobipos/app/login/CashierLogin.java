@@ -20,8 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Defaults.AppConfig;
+import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
@@ -89,7 +91,22 @@ public class CashierLogin extends Activity {
             public void onClick(View view) {
                 check_id=ed_check_id.getText().toString();
                 try{
-                    new employeeProcessor().execute();
+
+                    final CheckInternetSettings internetOn=new CheckInternetSettings(CashierLogin.this);
+                    if(internetOn.isNetworkConnected()){
+                        new employeeProcessor().execute();
+                    }else{
+                        AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CashierLogin.this).
+                                setTitle("Internet Connectivity is out").
+                                setMessage("Enable your internet to sync data from server").
+                                setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        internetOn.context.startActivity(new Intent("android.settings.DATA_ROAMING_SETTINGS"));
+                                    }
+                                });
+                        alertBuilder.show();
+                    }
+
                 }catch (NullPointerException e){
                     e.printStackTrace();
                 }

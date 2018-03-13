@@ -67,7 +67,7 @@ public class PrinterFragment extends Fragment {
             public void onClick(View view) {
                 Fragment fragment;
                 fragment= AddPrinterFragment.newInstance();
-                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                FragmentTransaction transaction=getFragmentManager().beginTransaction().addToBackStack("Back");
                 transaction.replace(R.id.frame_layout,fragment);
                 transaction.commit();
 
