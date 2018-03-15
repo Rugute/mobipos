@@ -85,6 +85,29 @@
             android:id="@+id/admin_items_rv">
 
         </android.support.v7.widget.RecyclerView>
+        <RelativeLayout
+            android:id="@+id/no_product_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/alert_stuff"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_view_list_black_24dp"
+                />
+            <TextView
+                android:textColor="#fff"
+                android:layout_below="@+id/alert_stuff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Product Added at the Moment"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="15dp"/>
+        </RelativeLayout>
     </LinearLayout>
 
 
@@ -96,7 +119,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:gravity="bottom"
-        app:backgroundTint="#32ca2c"
+        app:backgroundTint="#f8faf8"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 </RelativeLayout>

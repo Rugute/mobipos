@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:orientation="vertical"
-    android:background="@drawable/gradient_color"
-    >
+    android:background="@drawable/gradient_color">
 
     <ProgressBar
         android:visibility="gone"
@@ -19,6 +20,30 @@
         >
 
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/no_cashier_category_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/catcash_stuff"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/ic_filter_list_black_24dp"
+            />
+        <TextView
+            android:textColor="#fff"
+            android:layout_below="@+id/catcash_stuff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Category added at the Moment"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="15dp"/>
+    </RelativeLayout>
 
 
 </LinearLayout>

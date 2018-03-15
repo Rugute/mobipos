@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Admin.DashboardFragments.Inventory.StockAlert.StockAlertFragment"
     android:background="@drawable/gradient_color">
 
@@ -13,5 +14,28 @@
         android:id="@+id/stock_alert_rv">
 
     </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:id="@+id/no_alert_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/alert_stuff"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/ic_alert_stuff"
+            />
+        <TextView
+            android:textColor="#fff"
+            android:layout_below="@+id/alert_stuff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Stock Alert at the Moment"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="15dp"/>
+    </RelativeLayout>
 
 </RelativeLayout>

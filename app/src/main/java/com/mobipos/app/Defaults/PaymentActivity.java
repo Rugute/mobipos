@@ -354,7 +354,7 @@ public class PaymentActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
                 CheckInternetSettings internetSettings=new CheckInternetSettings(PaymentActivity.this);
-                if(mail.isChecked()||no_rec.isChecked()){
+                if(mail.isChecked()){
 
 
                     if (internetSettings.isNetworkConnected()){
@@ -384,6 +384,8 @@ public class PaymentActivity extends AppCompatActivity {
                     AppConfig.print_branch_name=usersdb.printer_header()[0];
 
                     startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
+                }else {
+                    startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
                 }
             }
         });

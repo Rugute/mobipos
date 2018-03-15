@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/gradient_color"
-    >
+    android:background="@drawable/gradient_color">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -58,5 +58,28 @@
         android:id="@+id/cashier_items_rv">
 
     </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:id="@+id/no_products_cashier_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/cashitem_stuff"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/ic_view_list_black_24dp"
+            />
+        <TextView
+            android:textColor="#fff"
+            android:layout_below="@+id/cashitem_stuff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Product added at the Moment"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="15dp"/>
+    </RelativeLayout>
 </LinearLayout>
 

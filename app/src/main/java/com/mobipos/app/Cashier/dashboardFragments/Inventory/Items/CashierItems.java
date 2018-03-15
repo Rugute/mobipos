@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class CashierItems extends Fragment {
    Product_Prices pricesdb;
    Categories categorydb;
    Inventory inventorydb;
+   RelativeLayout relativeLayout;
 
 
     public static CashierItems newInstance(){
@@ -92,7 +94,12 @@ public class CashierItems extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+        relativeLayout=(RelativeLayout)view.findViewById(R.id.no_products_cashier_layout);
+
+
         spinnerUpdate();
+
+
 
         showBackButton(true,"Products");
 
@@ -247,6 +254,10 @@ public class CashierItems extends Fragment {
                 }
                 CashierItemRvAdapter adapter=new CashierItemRvAdapter(productsdb.getProducts("all"));
                 rv.setAdapter(adapter);
+                if(productsdb.getProducts("all").size()==0){
+                    relativeLayout.setVisibility(View.VISIBLE);
+                }
+
 
 
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
