@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.mobipos.app.Admin.Adapters.StockAlertRvAdapter;
 import com.mobipos.app.Admin.AdminStockAlertData;
@@ -52,6 +53,12 @@ public class CashierStockAlert extends Fragment{
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        RelativeLayout rela=(RelativeLayout)view.findViewById(R.id.no_alert_layout);
+
+        if(inventorydb.getLowStockProducts().size()==0){
+            rela.setVisibility(View.VISIBLE);
+        }
 
         initializeAdapter(inventorydb.getLowStockProducts());
 

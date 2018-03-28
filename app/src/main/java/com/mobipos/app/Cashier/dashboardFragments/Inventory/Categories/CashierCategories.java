@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mobipos.app.Cashier.Adapters.CashierCategRvAdapter;
@@ -76,6 +77,12 @@ public class CashierCategories extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        RelativeLayout rela=(RelativeLayout)view.findViewById(R.id.no_cashier_category_layout);
+
+        if(categories.getCategories().size()==0){
+            rela.setVisibility(View.VISIBLE);
+        }
 
       //  initializeData();
         showBackButton(true,"Categories");

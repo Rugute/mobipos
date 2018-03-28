@@ -65,6 +65,30 @@
         android:id="@+id/admin_category_rv">
 
     </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/no_category_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/cat_stuff"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_alert_stuff"
+                />
+            <TextView
+                android:textColor="#fff"
+                android:layout_below="@+id/cat_stuff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Categories added at the Moment"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="15dp"/>
+        </RelativeLayout>
 </LinearLayout>
 
 

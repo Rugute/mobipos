@@ -68,6 +68,7 @@ public class AdminCategories extends Fragment {
     Categories categories;
     Users users;
     Context context;
+    RelativeLayout relativeLayout;
     Spinner branchSpinner;
     FloatingActionButton fab_add_cat;
 
@@ -103,6 +104,10 @@ public class AdminCategories extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
+
+        relativeLayout=(RelativeLayout)view.findViewById(R.id.no_category_layout);
+
+
 
         fab_add_cat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,8 +230,11 @@ public class AdminCategories extends Fragment {
             if (success==1){
                 dialog.cancel();
                 spinnerUpdate(branches,branchSpinner,0);
+
                 initializeAdapter(categoryData);
-            }else{
+
+               }
+            else{
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
             }
 
