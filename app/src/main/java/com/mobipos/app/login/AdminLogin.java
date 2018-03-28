@@ -84,7 +84,7 @@ public class AdminLogin extends Activity {
                                 setTitle("Internet Connectivity is out").
                                 setMessage("Enable your internet to sync data from server").
                                 setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         internetOn.context.startActivity(new Intent("android.settings.DATA_ROAMING_SETTINGS"));
                                     }
                                 });
