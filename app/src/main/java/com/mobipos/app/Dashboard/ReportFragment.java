@@ -149,7 +149,7 @@ public class ReportFragment extends Fragment{
         File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
         if(!rootDirectory.exists()){
-            rootDirectory.mkdirs();
+             rootDirectory.mkdirs();
         }
 
         String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString();
