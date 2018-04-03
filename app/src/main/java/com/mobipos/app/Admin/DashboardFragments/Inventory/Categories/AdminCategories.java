@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -310,15 +311,20 @@ public class AdminCategories extends Fragment {
             @Override
             public void onClick(View view) {
                 catname=cat_name.getText().toString();
-                new addCategory().execute();
-                alertDialog.cancel();
+                if(TextUtils.isEmpty(cat_name.getText())){
+                    Toast.makeText(getActivity(),"Please add a category",Toast.LENGTH_SHORT).show();
+                }else{
+                    new addCategory().execute();
+                    alertDialog.cancel();
+                }
+
             }
         });
 
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                alertDialog.cancel();
             }
         });
 
