@@ -65,6 +65,7 @@ public class DashboardAdmin extends AppCompatActivity {
                         break;
                 }
                 FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 transaction.replace(R.id.frame_layout,selectedFragment);
                 transaction.commit();
 
