@@ -35,6 +35,7 @@ public class AdminSubsRvAdapter extends RecyclerView.Adapter<AdminSubsRvAdapter.
         }
     }
     List<AdminSubscriptionData>SubscriptionData;
+
     public AdminSubsRvAdapter(List<AdminSubscriptionData>SubscriptionData){
 
         this.SubscriptionData = SubscriptionData;
