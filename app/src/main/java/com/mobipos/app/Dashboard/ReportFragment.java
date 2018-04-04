@@ -164,7 +164,9 @@ public class ReportFragment extends Fragment{
         String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString()+".xls";
         String variables="from="+date1.getText().toString()+"&to="+
                 date2.getText().toString()+"&client_id="+users.get_user_id();
-        String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
+      //  String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
+        String url="http://mauzoafrica.mutengeneresort.com/app/reciepts/Atfortech%20Dynamics-03-04-18-21-45-49.pdf";
+
 
         String nameOfFile=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
         File file = new File(rootDirectory,fileName);

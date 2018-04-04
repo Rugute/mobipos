@@ -59,7 +59,7 @@ public class AdminCategRvAdapter extends RecyclerView.Adapter<AdminCategRvAdapte
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
         itemViewHolder.Category.setText(categoryData.get(i).name);
         itemViewHolder.Item.setText(categoryData.get(i).id);
-        itemViewHolder.CatPic.setImageResource(categoryData.get(i).image);
+        itemViewHolder.CatPic.setImageResource(R.drawable.stack);
     }
 
     @Override

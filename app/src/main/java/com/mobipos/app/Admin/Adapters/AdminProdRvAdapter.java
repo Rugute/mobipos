@@ -59,7 +59,7 @@ public class AdminProdRvAdapter extends RecyclerView.Adapter<AdminProdRvAdapter.
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
         itemViewHolder.Category.setText(productData.get(i).name);
         itemViewHolder.Item.setText(productData.get(i).id);
-        itemViewHolder.CatPic.setImageResource(productData.get(i).image);
+        itemViewHolder.CatPic.setImageResource(R.mipmap.ic_tagheur);
     }
 
     @Override

@@ -86,7 +86,7 @@
                         android:layout_below="@+id/transaction_code"
                         android:layout_marginTop="23dp"
                         android:text="Expiry Date"
-                        android:textColor="#e90c0c"
+                        android:textColor="#f1e737"
                         android:textSize="20dp" />
                 </RelativeLayout>
 

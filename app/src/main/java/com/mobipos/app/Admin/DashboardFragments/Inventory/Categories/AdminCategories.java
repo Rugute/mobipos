@@ -303,7 +303,8 @@ public class AdminCategories extends Fragment {
 
         alertDialog=new AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(view);
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
+        alertDialog.show();
 
         spinnerUpdate(branches,spinner,1);
 
@@ -313,9 +314,10 @@ public class AdminCategories extends Fragment {
                 catname=cat_name.getText().toString();
                 if(TextUtils.isEmpty(cat_name.getText())){
                     Toast.makeText(getActivity(),"Please add a category",Toast.LENGTH_SHORT).show();
+                    alertDialog.cancel();
                 }else{
                     new addCategory().execute();
-                    alertDialog.cancel();
+                   // alertDialog.cancel();
                 }
 
             }
@@ -328,7 +330,7 @@ public class AdminCategories extends Fragment {
             }
         });
 
-        alertDialog.show();
+
     }
 
     public class addCategory extends AsyncTask<String,String,String>{

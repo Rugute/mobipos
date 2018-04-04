@@ -54,10 +54,10 @@ public class AdminSubsRvAdapter extends RecyclerView.Adapter<AdminSubsRvAdapter.
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int i) {
-        holder.sub_name.setText("Date of payment: "+SubscriptionData.get(i).name);
-        holder.validity_status.setText("Subscription time: "+SubscriptionData.get(i).valid);
+        holder.sub_name.setText("Date of Payment: "+SubscriptionData.get(i).name);
+        holder.validity_status.setText("Subscription Time: "+SubscriptionData.get(i).valid);
         holder.trans_code.setText(SubscriptionData.get(i).trans);
-        holder.andro.setImageResource(SubscriptionData.get(i).image);
+        holder.andro.setImageResource(R.drawable.ic_subscriptions_black_24dp);
 
     }
 
