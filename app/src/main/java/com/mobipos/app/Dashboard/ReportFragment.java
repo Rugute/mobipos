@@ -2,6 +2,7 @@ package com.mobipos.app.Dashboard;
 
 import android.app.DatePickerDialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,13 +37,21 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import static android.os.Environment.DIRECTORY_DOCUMENTS;
 
 /**
  * Created by root on 12/8/17.
@@ -147,12 +156,12 @@ public class ReportFragment extends Fragment{
 
     public void downloader(){
         File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
+                Environment.DIRECTORY_DOCUMENTS),"MAUZO REPORTS");
         if(!rootDirectory.exists()){
              rootDirectory.mkdirs();
         }
 
-        String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString();
+        String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString()+".xls";
         String variables="from="+date1.getText().toString()+"&to="+
                 date2.getText().toString()+"&client_id="+users.get_user_id();
         String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
@@ -169,13 +178,17 @@ public class ReportFragment extends Fragment{
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setTitle("Mauzo Africa Reports");
         request.setDescription("File is being Downloaded...");
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName);
 
         DownloadManager manager = (DownloadManager)getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+
         manager.enqueue(request);
+
+            new DownloadFileFromURL().execute(url);
+
     }
 
     public void updateDate(EditText editText){
@@ -263,6 +276,86 @@ public class ReportFragment extends Fragment{
 
             }
         }
+    }
+
+
+    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            System.out.println("Starting download");
+
+            pDialog = new ProgressDialog(getContext());
+            pDialog.setMessage("Loading... Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        /**
+         * Downloading file in background thread
+         * */
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+
+                Log.d("download url",f_url[0]);
+                String root = Environment.getExternalStorageDirectory().toString();
+
+                System.out.println("Downloading");
+                URL url = new URL(f_url[0]);
+
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // getting file length
+                int lenghtOfFile = conection.getContentLength();
+
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                // Output stream to write file
+
+                OutputStream output = new FileOutputStream(root+"/mauzo-data.xls");
+                byte data[] = new byte[1024];
+
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+
+                    // writing data to file
+                    output.write(data, 0, count);
+
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+        }
+
+
+
+        /**
+         * After completing background task
+         * **/
+        @Override
+        protected void onPostExecute(String file_url) {
+            System.out.println("Downloaded");
+
+            pDialog.dismiss();
+        }
+
     }
 
 }
