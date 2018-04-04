@@ -47,7 +47,32 @@
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:prompt="@string/spinner_title"/>
+
+
+
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/search_layout_cat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittext"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/search_img_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                app:srcCompat="@drawable/ic_search_black_24dp"/>
+            <SearchView android:id="@+id/search_cat"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="search category name"></SearchView>
+        </LinearLayout>
+
 
 
 

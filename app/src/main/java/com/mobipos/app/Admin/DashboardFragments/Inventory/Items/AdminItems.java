@@ -200,7 +200,7 @@ public class AdminItems extends Fragment {
                                     Integer.parseInt(catObj.getString("category_id")),
                                     prodObj.getString("product_id"),
                                     prodObj.getString("product_name"),
-                                    R.mipmap.ic_launcher,
+                                    R.drawable.price,
                                     prodObj.getString("buying_price"),
                                     prodObj.getString("selling_price"),
                                     prodObj.getString("measurement")
