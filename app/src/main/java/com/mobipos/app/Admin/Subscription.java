@@ -6,11 +6,12 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mobipos.app.Admin.Adapters.AdminSubsRvAdapter;
 import com.mobipos.app.Admin.Adapters.AdminSubscriptionData;
 import com.mobipos.app.Defaults.AppConfig;
@@ -39,6 +40,10 @@ public class Subscription extends Fragment{
     Users usersdb;
     List<AdminSubscriptionData> SubscriptionData;
     RecyclerView srv;
+
+    TextView name,paydate,trans_code,expiry,phone_number;
+    String str_paydate,str_transcode,str_expiring;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -57,12 +62,22 @@ public class Subscription extends Fragment{
         srv.setLayoutManager(llm);
         srv.setHasFixedSize(true);
 
+        name=view.findViewById(R.id.nameOfPerson);
+        paydate=view.findViewById(R.id.paydate);
+        trans_code=view.findViewById(R.id.transaction_code);
+        expiry=view.findViewById(R.id.expiry);
+        phone_number=view.findViewById(R.id.phoneOfPerson);
+
+        name.setText(usersdb.get_user_name());
+
+
+
        new  loadData().execute();
 
 
     }
-    private void initializeAdapter(List<AdminSubscriptionData> adminSubscriptionData){
-        AdminSubsRvAdapter adapter = new AdminSubsRvAdapter(adminSubscriptionData);
+    private void initializeAdapter(List<AdminSubscriptionData> data){
+        AdminSubsRvAdapter adapter = new AdminSubsRvAdapter(data);
         adapter.notifyDataSetChanged();
         srv.setAdapter(adapter);
     }
@@ -92,13 +107,34 @@ public class Subscription extends Fragment{
 
             try{
                 success=jsonObject.getInt("success");
+                Log.d("success state",String.valueOf(success));
                 JSONArray jsonArray=jsonObject.getJSONArray("data");
-                for(int i=0;i<jsonArray.length();i++){
-                    JSONObject jObj=jsonArray.getJSONObject(i);
-                    SubscriptionData.add(new AdminSubscriptionData(jObj.getString("date"),
-                            jObj.getString("months"),
-                            jObj.getString("trans"),
-                            jObj.getInt("")));
+
+                if(success==1){
+                    Log.d("subscription details",jsonArray.toString());
+                    str_expiring=jsonObject.getString("expiring_date");
+                    str_paydate=jsonObject.getString("date_of_payment");
+                    str_transcode=jsonObject.getString("transcation_code");
+                    int i=0;
+                    while (i<jsonArray.length()){
+                      JSONObject jsonObject1=jsonArray.getJSONObject(i);
+                      Log.d("jobj",jsonObject1.toString());
+
+                      AdminSubscriptionData data_new=new AdminSubscriptionData(
+                              jsonObject1.getString("subscriptions_id"),
+                              jsonObject1.getString("trans"),
+                              jsonObject1.getString("months"),
+                              jsonObject1.getString("date")
+                      );
+                      Log.d("new Data sub",data_new.subscriptionId);
+                      Log.d("new Data trans",data_new.trans);
+                      Log.d("new Data months",data_new.valid);
+                      Log.d("new Data date",data_new.name);
+
+                      SubscriptionData.add(data_new);
+                        i++;
+
+                    }
 
                 }
 
@@ -111,9 +147,13 @@ public class Subscription extends Fragment{
 
         protected void onPostExecute(String s){
             super.onPostExecute(s);
-
+            Log.d("subscription itself",SubscriptionData.toString());
             if(success==1){
+
                 initializeAdapter(SubscriptionData);
+                expiry.setText("Expiring date: "+str_expiring);
+                paydate.setText("Date of Payment: "+str_paydate);
+                trans_code.setText("Code: "+str_transcode);
             }else{
                 Toast.makeText(getActivity(),"error while loading data",Toast.LENGTH_SHORT).show();
             }

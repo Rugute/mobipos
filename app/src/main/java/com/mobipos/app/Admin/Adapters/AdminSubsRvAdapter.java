@@ -38,7 +38,7 @@ public class AdminSubsRvAdapter extends RecyclerView.Adapter<AdminSubsRvAdapter.
 
     public AdminSubsRvAdapter(List<AdminSubscriptionData>SubscriptionData){
 
-        this.SubscriptionData = SubscriptionData;
+        this.SubscriptionData =SubscriptionData;
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -54,8 +54,8 @@ public class AdminSubsRvAdapter extends RecyclerView.Adapter<AdminSubsRvAdapter.
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int i) {
-        holder.sub_name.setText(SubscriptionData.get(i).name);
-        holder.validity_status.setText(SubscriptionData.get(i).valid);
+        holder.sub_name.setText("Date of payment: "+SubscriptionData.get(i).name);
+        holder.validity_status.setText("Subscription time: "+SubscriptionData.get(i).valid);
         holder.trans_code.setText(SubscriptionData.get(i).trans);
         holder.andro.setImageResource(SubscriptionData.get(i).image);
 

@@ -5,16 +5,18 @@ package com.mobipos.app.Admin.Adapters;
  */
 
 public class AdminSubscriptionData {
+    public String subscriptionId;
     public String name;
     public String valid;
     public String trans;
     public int image;
 
-    public AdminSubscriptionData(String trans,String valid, String name, int image) {
+    public AdminSubscriptionData(String subscriptionId,String trans,String valid, String name) {
+        this.subscriptionId=subscriptionId;
         this.name = name;
         this.valid= valid;
         this.trans= trans;
-        this.image = image;
+
     }
 }
 
