@@ -119,14 +119,14 @@ public class Products extends Controller {
                     "tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
-                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id";
+                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id ORDER BY tb_products.product_name ASC";
 
         }else{
             sql="SELECT tb_products.product_id,tb_products.tax_margin,tb_products.product_name,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
                     Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id  WHERE " +
-                    "tb_products.category_id='"+category+"'";
+                    "tb_products.category_id='"+category+"' ORDER BY tb_products.product_name ASC";
         }
 
 
@@ -166,7 +166,7 @@ public class Products extends Controller {
             sql="SELECT tb_products.product_id,tb_products.product_name,tb_products.category_id,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
-                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id ";
+                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id ORDER BY tb_products.product_name ASC";
 
 
 

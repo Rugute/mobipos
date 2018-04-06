@@ -39,7 +39,7 @@ public class Categories extends Controller {
 
     public List<CashierCategoryData> getCategories(){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name;
+        String sql="SELECT * FROM "+tb_name+" ORDER BY category_name ASC";
 
         List<CashierCategoryData> data=new ArrayList();
         Cursor cursor=null;
