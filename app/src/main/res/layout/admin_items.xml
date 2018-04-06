@@ -69,11 +69,12 @@
                     />
             </RelativeLayout>
             <LinearLayout
-                android:visibility="gone"
+
                 android:id="@+id/search_layout_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:background="@drawable/edittext"
                 android:orientation="horizontal">
                 <ImageView
@@ -131,8 +132,9 @@
                 android:layout_centerVertical="true"
                 android:textSize="15dp"/>
         </RelativeLayout>
-    </LinearLayout>
 
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_items"
