@@ -13,7 +13,9 @@
         android:background="@drawable/gradient_color"
         >
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
+            
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:padding="10dip"
             android:id="@+id/linad2"
@@ -67,6 +69,7 @@
                     />
             </RelativeLayout>
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/search_layout_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +77,7 @@
                 android:background="@drawable/edittext"
                 android:orientation="horizontal">
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/search_img_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,7 +85,6 @@
                     android:layout_marginLeft="20dp"
                     app:srcCompat="@drawable/ic_search_black_24dp"/>
                 <SearchView android:id="@+id/search_items"
-                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:iconifiedByDefault="false"
@@ -141,5 +144,29 @@
         android:gravity="bottom"
         app:backgroundTint="#f8faf8"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_search_butoon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_add_items"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="bottom"
+        app:backgroundTint="#f8faf8"
+        app:srcCompat="@drawable/ic_search_black_24dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/close_search_button"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_add_items"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="bottom"
+        app:backgroundTint="#f8faf8"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
 
 </RelativeLayout>

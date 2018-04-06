@@ -17,8 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.AdminCategRvAdapter;
@@ -69,7 +72,12 @@ public class AdminItems extends Fragment {
     RecyclerView rv;
     ProgressBar bar;
 
-    FloatingActionButton fab;
+    LinearLayout search_layout,linear_with_branch;
+    TextView branch_text,category_text;
+
+
+    FloatingActionButton fab,search_button,close_search;
+    SearchView search_items;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +100,63 @@ public class AdminItems extends Fragment {
         categoryspinner=view.findViewById(R.id.item_category_spinner);
 
         fab=view.findViewById(R.id.fab_add_items);
+        search_button=view.findViewById(R.id.fab_search_butoon);
+        close_search=view.findViewById(R.id.close_search_button);
+        search_items=view.findViewById(R.id.search_items);
+
+        search_layout=view.findViewById(R.id.search_layout_items);
+        linear_with_branch=view.findViewById(R.id.linad2);
+        branch_text=view.findViewById(R.id.cattext1);
+        category_text=view.findViewById(R.id.cattext3);
+
+        search_items.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                List<AdminProductData> searchData=new ArrayList<>();
+                for(int i=0;i<productData.size();i++){
+                    if(productData.get(i).name.toLowerCase().contains(s)){
+                        searchData.add(productData.get(i));
+                    }
+                }
+
+                initializeAdapter(searchData);
+                return true;
+            }
+        });
+
+
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_layout.setVisibility(View.VISIBLE);
+                branchspinner.setVisibility(View.GONE);
+                categoryspinner.setVisibility(View.GONE);
+                branch_text.setVisibility(View.GONE);
+                category_text.setVisibility(View.GONE);
+                close_search.setVisibility(View.VISIBLE);
+                search_button.setVisibility(View.GONE);
+            }
+        });
+        close_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_layout.setVisibility(View.GONE);
+                branchspinner.setVisibility(View.VISIBLE);
+                categoryspinner.setVisibility(View.VISIBLE);
+                branch_text.setVisibility(View.VISIBLE);
+                category_text.setVisibility(View.VISIBLE);
+                close_search.setVisibility(View.GONE);
+                search_button.setVisibility(View.VISIBLE);
+
+                search_items.clearFocus();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,6 +315,8 @@ public class AdminItems extends Fragment {
         rv.setAdapter(adapter);
     }
 
+
+
     public void filterList(int category_id){
         List<AdminProductData> filterData=new ArrayList<>();
         for (int i=0;i<productData.size();i++){
@@ -338,4 +405,6 @@ public class AdminItems extends Fragment {
             }
         });
     }
+
+
 }

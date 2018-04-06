@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +80,10 @@ public class AdminCategories extends Fragment {
         return fragment;
     }
 
+    LinearLayout search_layout;
+    FloatingActionButton search_button,close_search;
+    SearchView search_items;
+    TextView branch_text;
 
 
     @Override
@@ -108,6 +113,56 @@ public class AdminCategories extends Fragment {
 
         relativeLayout=(RelativeLayout)view.findViewById(R.id.no_category_layout);
 
+        search_layout=view.findViewById(R.id.search_layout_category);
+        search_button=view.findViewById(R.id.fab_search_category);
+        close_search=view.findViewById(R.id.fab_close_search);
+        branch_text=view.findViewById(R.id.cattext1_branch);
+        search_items=view.findViewById(R.id.search_category);
+
+        search_items.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                List<AdminCategoryData> searchData=new ArrayList<>();
+                for(int i=0;i<categoryData.size();i++){
+
+                    if(categoryData.get(i).name.toLowerCase().contains(s)){
+                        searchData.add(categoryData.get(i));
+                    }
+                }
+
+                initializeAdapter(searchData);
+                return true;
+            }
+        });
+
+
+
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_layout.setVisibility(View.VISIBLE);
+                branchSpinner.setVisibility(View.GONE);
+                branch_text.setVisibility(View.GONE);
+                close_search.setVisibility(View.VISIBLE);
+                search_button.setVisibility(View.GONE);
+            }
+        });
+        close_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_layout.setVisibility(View.GONE);
+                branchSpinner.setVisibility(View.VISIBLE);
+                branch_text.setVisibility(View.VISIBLE);
+                close_search.setVisibility(View.GONE);
+                search_button.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         fab_add_cat.setOnClickListener(new View.OnClickListener() {
