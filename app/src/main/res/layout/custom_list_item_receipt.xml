@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:id="@+id/prodname_receipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="product"
+        android:textColor="#1d6287"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/prodqty_receipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="quantity"
+        android:textColor="#1d6287"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/prodamount_receipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="amount"
+        android:textColor="#1d6287"
+        android:textSize="16dp"
+        tools:layout_editor_absoluteX="294dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+
+
+
+</android.support.constraint.ConstraintLayout>

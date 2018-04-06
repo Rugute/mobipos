@@ -54,6 +54,11 @@ public class AccountFragment extends Fragment {
         payments_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Payments fragment;
+                fragment =Payments.newInstance();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().addToBackStack("Back");
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
 
             }
         });
