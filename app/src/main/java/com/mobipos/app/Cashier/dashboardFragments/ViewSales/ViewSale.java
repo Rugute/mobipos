@@ -2,18 +2,23 @@ package com.mobipos.app.Cashier.dashboardFragments.ViewSales;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mobipos.app.Cashier.Adapters.ViewSalesAdapter;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Sales;
 import com.mobipos.app.database.defaults;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -53,6 +58,8 @@ public class ViewSale extends Fragment {
         rv.setHasFixedSize(true);
         RelativeLayout rela=view.findViewById(R.id.no_sale_layout);
 
+
+
         if(salesdb.getSalesData("loadLocal","no need").size()==0){
             rela.setVisibility(View.VISIBLE);
         }
@@ -60,8 +67,10 @@ public class ViewSale extends Fragment {
     }
 
     public void initializeAdapter(){
-        ViewSalesAdapter adapter=new ViewSalesAdapter(salesdb.getSalesData("loadLocal","no need"));
+        ViewSalesAdapter adapter=new ViewSalesAdapter(getContext(),salesdb.getSalesData("loadLocal","no need"));
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }
+
+
 }
