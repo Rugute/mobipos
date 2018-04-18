@@ -37,6 +37,8 @@ public class Sales extends Controller {
     public static String col_6="active_status";
     public static String col_7="trans_type";
     public static String col_8="trans_code";
+    public static String col_9="discount";
+
 
 
     public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
@@ -47,6 +49,7 @@ public class Sales extends Controller {
             col_3+" INT(11),"+
             col_4+" INT(11),"+
             col_5+" INT(11),"+
+            col_9+" INT(11),"+
             col_7+" VARCHAR(50),"+
             col_8+" VARCHAR(50),"+
             col_6+" INT(11))";
@@ -86,6 +89,7 @@ public class Sales extends Controller {
         if(cursor.moveToFirst()){
             Log.d("transcation type",cursor.getString(cursor.getColumnIndex(col_7)));
             Log.d("order id",cursor.getString(cursor.getColumnIndex(col_2)));
+
             Log.d("total amount",cursor.getString(cursor.getColumnIndex(col_3)));
 
         }
@@ -117,6 +121,7 @@ public class Sales extends Controller {
             values.put(col_6,"1");
             values.put(col_7,data.get(0).transaction_type);
             values.put(col_8,data.get(0).transaction_code);
+            values.put(col_9,data.get(0).discount);
 
             db.insert(tb_name,null,values);
             Log.d("sales id: ",String.valueOf(salesId));
@@ -165,10 +170,13 @@ public class Sales extends Controller {
                             cursor.getString(cursor.getColumnIndex(col_2)),
                             cursor.getString(cursor.getColumnIndex(col_4)),
                             cursor.getString(cursor.getColumnIndex(col_7)),
-                            cursor.getString(cursor.getColumnIndex(col_8))
+                            cursor.getString(cursor.getColumnIndex(col_8)),
+                            cursor.getString(cursor.getColumnIndex(col_9))
                           ));
                     Log.d("order no:",cursor.getString(cursor.getColumnIndex(col_2)));
                     Log.d("sales id",cursor.getString(cursor.getColumnIndex(col_1)));
+                    Log.d("AMOUNT  TOTAL",cursor.getString(cursor.getColumnIndex(col_4)));
+                    Log.d("discount",cursor.getString(cursor.getColumnIndex(col_9)));
                     Log.d("amount tendered:",cursor.getString(cursor.getColumnIndex(col_3)));
                 }while (cursor.moveToNext());
 
@@ -331,5 +339,20 @@ public class Sales extends Controller {
 
         //    Log.d("product count in loop:",String.valueOf(cursor.getCount()));
         return date;
+    }
+
+    public int sales_total(String order_id){
+        List<PullSaleData> data=getSalesData("total",order_id);
+
+        int total=0;
+        for(int i=0;i<data.size();i++){
+            Log.d("sales total",data.get(i).amount_total);
+            total=total+Integer.parseInt(data.get(i).amount_total);
+
+        }
+
+        Log.d("total sale:",String.valueOf(total));
+
+        return total;
     }
 }

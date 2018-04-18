@@ -241,7 +241,7 @@ public class AdminCategories extends Fragment {
             categoryData=new ArrayList<>();
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_admin_categories,
                     "GET",paramters);
@@ -253,10 +253,13 @@ public class AdminCategories extends Fragment {
                 serverMessage=jsonObject.getString("message");
 
                 data=jsonObject.getJSONArray("data");
-                branches=new String[data.length()];
-                branchesId=new String[data.length()];
-                for(int i=0;i<data.length();i++){
-                    JSONObject jobj=data.getJSONObject(i);
+                branches=new String[data.length()+1];
+                branchesId=new String[data.length()+1];
+                branches[0]="All Branches";
+                branchesId[0]="0";
+
+                for(int i=1;i<data.length()+1;i++){
+                    JSONObject jobj=data.getJSONObject(i-1);
                     branches[i]=jobj.getString("shop_name");
                     branchesId[i]=jobj.getString("shop_id");
                     JSONArray category_data=jobj.getJSONArray("categories");
@@ -338,6 +341,12 @@ public class AdminCategories extends Fragment {
 
     public void filterList(int branch_id){
         List<AdminCategoryData> filterData=new ArrayList<>();
+
+        if(branch_id==0){
+            for(int i=0;i<categoryData.size();i++){
+                filterData.add(categoryData.get(i));
+            }
+        }
         for (int i=0;i<categoryData.size();i++){
             int branch=categoryData.get(i).branchId;
             if(branch==branch_id){
@@ -348,20 +357,34 @@ public class AdminCategories extends Fragment {
 
         initializeAdapter(filterData);
     }
-    AlertDialog alertDialog;
+
 
     public void addCategory(){
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.custom_pop_up_add_category,null);
         Spinner spinner=view.findViewById(R.id.admin_add_category_spinner);
         Button btn_add=view.findViewById(R.id.btn_add_category);
+        Button btn_cancel=view.findViewById(R.id.btn_cancel_dialog);
         final EditText cat_name=view.findViewById(R.id.ed_add_category);
+      final AlertDialog alertDialog;
 
         alertDialog=new AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(view);
         alertDialog.setCancelable(true);
-        alertDialog.show();
 
-        spinnerUpdate(branches,spinner,1);
+
+        String[] add_branch_array=new String[branches.length-1];
+        for(int i=1;i<branches.length;i++){
+            add_branch_array[i-1]=branches[i];
+        }
+
+        spinnerUpdate(add_branch_array,spinner,1);
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+            }
+        });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,31 +392,27 @@ public class AdminCategories extends Fragment {
                 catname=cat_name.getText().toString();
                 if(TextUtils.isEmpty(cat_name.getText())){
                     Toast.makeText(getActivity(),"Please add a category",Toast.LENGTH_SHORT).show();
-                    alertDialog.cancel();
+                    //alertDialog.cancel();
                 }else{
+
                     new addCategory().execute();
-                   // alertDialog.cancel();
                 }
 
             }
         });
 
-        alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                alertDialog.cancel();
-            }
-        });
-
-
+        alertDialog.show();
     }
 
     public class addCategory extends AsyncTask<String,String,String>{
+
+
         int success=0;
         String serverMessage;
         ProgressDialog dialog=new ProgressDialog(getContext());
         protected void onPreExecute(){
             super.onPreExecute();
+           // alertDialog.cancel();
           dialog.setMessage("Adding Category.Please wait...");
           dialog.setCancelable(false);
           dialog.show();
@@ -403,7 +422,7 @@ public class AdminCategories extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
             paramters.add(new BasicNameValuePair("branch_id",selectedBranchId));
             paramters.add(new BasicNameValuePair("category_name",catname));
 
@@ -481,7 +500,7 @@ public class AdminCategories extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_select_branches,
@@ -503,6 +522,8 @@ public class AdminCategories extends Fragment {
 
             if (success == 1) {
                 addCategory();
+                dialog.cancel();
+
             }else{
                 Toast.makeText(getActivity(),"Create a Branch first",Toast.LENGTH_SHORT).show();
                 Fragment fragment;

@@ -98,7 +98,7 @@ public class AdminDiscounts extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_get_discounts,
@@ -184,7 +184,7 @@ public class AdminDiscounts extends Fragment {
             List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
             jsonObjectData.add(new BasicNameValuePair("name",newdiscount));
             jsonObjectData.add(new BasicNameValuePair("value",newdiscountvalue));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_add_discounts,

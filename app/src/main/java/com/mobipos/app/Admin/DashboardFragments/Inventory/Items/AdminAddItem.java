@@ -164,7 +164,7 @@ public class AdminAddItem extends Fragment {
 
             JSONParser jsonParser=new JSONParser();
             List parameters=new ArrayList();
-            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_item_parameters,
                     "GET",parameters);
@@ -386,7 +386,7 @@ public class AdminAddItem extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser = new JSONParser();
             List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
-            jsonObjectData.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            jsonObjectData.add(new BasicNameValuePair("user_id",usersdb.get_user_id("admin")));
             jsonObjectData.add(new BasicNameValuePair("product_name",product_name.getText().toString()));
             jsonObjectData.add(new BasicNameValuePair("category_id",AdminAddItemData.select_category));
             jsonObjectData.add(new BasicNameValuePair("shop_id",AdminAddItemData.select_branch));

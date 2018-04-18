@@ -172,7 +172,7 @@ public class AdminAddEmployees extends Fragment {
             jsonObjectData.add(new BasicNameValuePair("residence",residence));
             jsonObjectData.add(new BasicNameValuePair("phone_number",phone));
             jsonObjectData.add(new BasicNameValuePair("shop",shop));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_add_employees,
@@ -235,7 +235,7 @@ public class AdminAddEmployees extends Fragment {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
                             AppConfig.admin_select_branches,

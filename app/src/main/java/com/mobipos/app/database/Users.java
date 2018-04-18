@@ -37,6 +37,7 @@ public class Users extends Controller {
     private static String col_5="active_status";
     private static String col_6="account_type";
     private static String col_7="phone_number";
+    private static String col_8="admin_sales_id";
 
 
     private static String tb_pin="tb_pin";
@@ -58,6 +59,7 @@ public class Users extends Controller {
             col_3+" VARCHAR(50),"+
             col_4+" VARCHAR(50),"+
             col_5+" INT(11),"+
+            col_8+" INT(11),"+
             col_7+" VARCHAR(50),"+
             col_6+" VARCHAR(50))";
 
@@ -210,17 +212,36 @@ public class Users extends Controller {
         return the_pin.equals(pin);
     }
 
-    public String get_user_id(){
+    public String get_user_id(String account_type){
         SQLiteDatabase db=this.getReadableDatabase();
         String sql_pin="SELECT * from "+tb_name + " LIMIT 1";
         String user_id=null;
+
+     //   Log.d("account_type",get_login_details()[2]);
+
 
         Cursor  cursor=db.rawQuery(sql_pin,null);
 
 
         if(cursor.moveToFirst()){
-            user_id=cursor.getString(cursor.getColumnIndex(col_1));
+            String account_=cursor.getString(cursor.getColumnIndex(col_6));
+//            Log.d("admin_sale_id",cursor.getString(cursor.getColumnIndex(col_8)));
+            Log.d("account type",account_);
+            if(account_type.equals("cashier")){
+
+
+
+                if(account_.equals("cashier")){
+                    user_id=cursor.getString(cursor.getColumnIndex(col_1));
+                }else{
+                    user_id=cursor.getString(cursor.getColumnIndex(col_8));
+                }
+            }else{
+                user_id=cursor.getString(cursor.getColumnIndex(col_1));
+            }
+
             Log.d("User id:",cursor.getString(cursor.getColumnIndex(col_1)));
+//            Log.d("cashier id:",user_id);
         }
         db.close();
 
@@ -341,7 +362,70 @@ public class Users extends Controller {
         return data;
     }
 
+    public boolean check_admin_sales_id(String sales_id){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_8+"='"+sales_id+"'";
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
 
+        if(cursor.getCount()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean update_admin_sales_id(String sales_id,String user_id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        try{
+            // db.execSQL(sql);
+            ContentValues values=new ContentValues();
+            values.put(col_8,sales_id);
+
+            db.update(tb_name,values,"user_id="+user_id,null);
+            Log.d("insert stock count:",sales_id);
+            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return check_admin_sales_id(sales_id);
+    }
+
+    public String get_admin_id(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_name + " LIMIT 1";
+        String user_id=null;
+
+        //   Log.d("account_type",get_login_details()[2]);
+
+
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+
+
+        if(cursor.moveToFirst()){
+            user_id=cursor.getString(cursor.getColumnIndex(col_1));
+            Log.d("User id:",cursor.getString(cursor.getColumnIndex(col_1)));
+//            Log.d("cashier id:",user_id);
+        }
+        db.close();
+
+        return user_id;
+    }
+    public int check_admin_sale_id(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT * from "+tb_name + " WHERE "+col_8+" IS NOT NULL";
+        String user_id=null;
+        int sale_id_exists=0;
+        //   Log.d("account_type",get_login_details()[2]);
+
+
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+        sale_id_exists=cursor.getCount();
+        Log.d("admin_sale_id_total",String.valueOf(sale_id_exists));
+        db.close();
+
+        return sale_id_exists;
+    }
 
 
 }

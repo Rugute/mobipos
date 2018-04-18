@@ -163,7 +163,7 @@ public class ReportFragment extends Fragment{
 
         String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString()+".xls";
         String variables="from="+date1.getText().toString()+"&to="+
-                date2.getText().toString()+"&client_id="+users.get_user_id();
+                date2.getText().toString()+"&client_id="+users.get_user_id("admin");
         String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
       //  String url="http://mauzoafrica.mutengeneresort.com/app/reciepts/Atfortech%20Dynamics-03-04-18-21-45-49.pdf";
 
@@ -241,7 +241,7 @@ public class ReportFragment extends Fragment{
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
                             AppConfig.admin_select_branches,

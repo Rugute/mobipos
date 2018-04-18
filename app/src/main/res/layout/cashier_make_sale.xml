@@ -123,8 +123,6 @@
     </LinearLayout>
 
 
-
-
     <ExpandableListView
         android:visibility="visible"
         android:fitsSystemWindows="true"

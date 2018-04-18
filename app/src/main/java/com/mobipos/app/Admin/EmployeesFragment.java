@@ -103,7 +103,7 @@ public class EmployeesFragment extends Fragment {
             List paramters = new ArrayList();
             employeeData=new ArrayList<>();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_get_employees,

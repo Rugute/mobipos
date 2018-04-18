@@ -99,7 +99,7 @@ public class CashierAccount extends Fragment {
             public void onClick(View v) {
                 if(TextUtils.isEmpty(new_pin.getText())||TextUtils.isEmpty(confirm_pin.getText())){
                     if(TextUtils.equals(new_pin.getText(),confirm_pin.getText())){
-                        if(!users.insertPin(new_pin.getText().toString(),users.get_user_id())){
+                        if(!users.insertPin(new_pin.getText().toString(),users.get_user_id("cashier"))){
                             Toast.makeText(getContext(),"Error while resetting pin!!",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getContext(),"Pin reset successful",Toast.LENGTH_SHORT).show();

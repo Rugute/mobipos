@@ -95,7 +95,7 @@ public class AdminMeasurements extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_get_measurements,
@@ -186,7 +186,7 @@ public class AdminMeasurements extends Fragment {
             List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
             jsonObjectData.add(new BasicNameValuePair("name",newmeasure));
             jsonObjectData.add(new BasicNameValuePair("single_unit",newmeasurevalue));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_add_measurements,

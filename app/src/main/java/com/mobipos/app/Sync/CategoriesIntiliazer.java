@@ -60,7 +60,7 @@ public class CategoriesIntiliazer {
                         "GET",paramters);
             }else if(user_type==1){
                 //cashier loading data
-                paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+                paramters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
 
                 jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_categories,
                         "GET",paramters);

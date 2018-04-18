@@ -145,7 +145,7 @@ public class CashierItems extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List parameters=new ArrayList();
-            parameters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            parameters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_items,
                     "GET",parameters);
@@ -326,7 +326,7 @@ public class CashierItems extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List params=new ArrayList();
-            params.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            params.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
 
               JSONObject stock_in_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
                             SyncDefaults.sync_stock_in_movement,

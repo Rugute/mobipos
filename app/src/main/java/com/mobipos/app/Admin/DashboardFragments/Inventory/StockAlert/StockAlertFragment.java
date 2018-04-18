@@ -84,7 +84,7 @@ public class StockAlertFragment extends Fragment {
             stockAlertData=new ArrayList<>();
             List parameters=new ArrayList();
 
-            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
                             com.mobipos.app.Admin.PackageConfig.get_low_stock,

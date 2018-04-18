@@ -59,7 +59,7 @@ public class OrdersSync{
 
             for (int i=0;i<orders.size();i++){
                 List parameters=new ArrayList();
-                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                 parameters.add(new BasicNameValuePair("order_id",orders.get(i).order_id));
                 parameters.add(new BasicNameValuePair("date",orders.get(i).date));
 
@@ -77,7 +77,7 @@ public class OrdersSync{
                     if (success==1){
 
                         List param=new ArrayList();
-                        param.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                        param.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                         param.add(new BasicNameValuePair("order_id",saleData.get(0).orderId));
                         param.add(new BasicNameValuePair("amount_total",saleData.get(0).amount_total));
                         param.add(new BasicNameValuePair("app_sale_id",saleData.get(0).sale_id));

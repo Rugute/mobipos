@@ -12,14 +12,17 @@ public class PullSaleData {
     public String transaction_type;
     public String transaction_code;
     public String date;
+    public String discount;
 
-    public PullSaleData(String sale_id,String orderId,String amount_total,String transaction_type,String transaction_code){
+    public PullSaleData(String sale_id,String orderId,String amount_total,String transaction_type,
+                        String transaction_code,String discount){
 
         this.orderId=orderId;
         this.sale_id=sale_id;
         this.amount_total=amount_total;
         this.transaction_type=transaction_type;
         this.transaction_code=transaction_code;
+        this.discount=discount;
 
     }
 }

@@ -61,7 +61,7 @@ public class InventoryMovementSync{
 
             for (int i=0;i<stock_out.size();i++){
                 List parameters=new ArrayList();
-                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                 parameters.add(new BasicNameValuePair("id",stock_out.get(i).id));
                 parameters.add(new BasicNameValuePair("product_id",stock_out.get(i).product_id));
                 parameters.add(new BasicNameValuePair("movement_type",stock_out.get(i).type));
@@ -87,7 +87,7 @@ public class InventoryMovementSync{
 
                         if(Integer.parseInt(low_count)>=Integer.parseInt(stock_count)){
                             List alert_parameters=new ArrayList();
-                            alert_parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                            alert_parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                             alert_parameters.add(new BasicNameValuePair("product_id",stock_out.get(i).product_id));
 
                             if(Integer.parseInt(stock_count)>0){
@@ -118,7 +118,7 @@ public class InventoryMovementSync{
             }
 
             List params=new ArrayList();
-            params.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            params.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
 
             JSONObject stock_in_object=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
                             SyncDefaults.sync_stock_in_movement,

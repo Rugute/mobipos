@@ -292,7 +292,8 @@ public class PaymentActivity extends AppCompatActivity {
                                 tender.getText().toString(),
                                 grand.getText().toString(),
                                 "CASH",
-                                "N/A"
+                                "N/A",
+                                PackageConfig.DISCOUNT_VALUE
                         ));
 
                         AppConfig.tendered_amount=tender.getText().toString();
@@ -407,19 +408,23 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 List<PushSaleData> data=new ArrayList<>();
-                String total=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+                String grand_total=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
+                int disc=Integer.parseInt(grand_total)*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
+                int net_total=Integer.parseInt(grand_total)-disc;
+                String total=String.valueOf(net_total);
                 data.add(new PushSaleData(PackageConfig.order_no,
                        total,
                        total,
                         "MPESA",
-                        tender.getText().toString()
+                        tender.getText().toString(),
+                        PackageConfig.DISCOUNT_VALUE
                 ));
 
                 AppConfig.tendered_amount=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
                 AppConfig.cash_sale=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));
                 AppConfig.change="0";
                 int total_amount=orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
-                int disc=total_amount*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
+             //   int disc=total_amount*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
 
                 AppConfig.grand=String.valueOf(total_amount-disc);
 
@@ -429,6 +434,11 @@ public class PaymentActivity extends AppCompatActivity {
                     showPrinterPopUp();
                     alertDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"PAYMENT SUCCESSFUL",Toast.LENGTH_SHORT).show();
+                    CheckInternetSettings internetSettings=new CheckInternetSettings(PaymentActivity.this);
+                    if(internetSettings.isNetworkConnected()){
+                        new Synchronizer(getApplicationContext());
+                    }
+
                 }else{
 
                     Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();

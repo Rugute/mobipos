@@ -97,7 +97,7 @@ public class PrinterFragment extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.view_printers,

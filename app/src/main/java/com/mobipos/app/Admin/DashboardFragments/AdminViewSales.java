@@ -109,7 +109,7 @@ public class AdminViewSales extends Fragment {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
             shopDetails=new ArrayList<>();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_today_sales,
                     "GET",paramters);

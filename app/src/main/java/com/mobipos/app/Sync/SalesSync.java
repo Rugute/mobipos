@@ -62,7 +62,7 @@ public class SalesSync{
                 List parameters=new ArrayList();
 
 
-                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+                parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                 parameters.add(new BasicNameValuePair("order_id",saleData.get(i).orderId));
                 parameters.add(new BasicNameValuePair("amount_total",saleData.get(i).amount_total));
                 parameters.add(new BasicNameValuePair("app_sale_id",saleData.get(i).sale_id));

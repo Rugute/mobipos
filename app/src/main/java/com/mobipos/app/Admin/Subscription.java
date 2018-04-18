@@ -99,7 +99,7 @@ public class Subscription extends Fragment{
             SubscriptionData=new ArrayList<>();
             List parameters=new ArrayList();
 
-            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+ AppConfig.hostname+
                             AppConfig.get_transactions,

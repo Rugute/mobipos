@@ -364,7 +364,7 @@ public class CashierLogin extends Activity {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users_db.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users_db.get_user_id("cashier")));
 
           JSONObject  jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ com.mobipos.app.Cashier.PackageConfig.get_categories,
                     "GET",paramters);
@@ -385,7 +385,7 @@ public class CashierLogin extends Activity {
                     }
 
                     List params=new ArrayList();
-                    params.add(new BasicNameValuePair("user_id",users_db.get_user_id()));
+                    params.add(new BasicNameValuePair("user_id",users_db.get_user_id("cashier")));
                     jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
                                     com.mobipos.app.Cashier.PackageConfig.get_items,
                             "GET",params);

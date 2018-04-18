@@ -151,7 +151,7 @@ public class CashierCategories extends Fragment {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_categories,
                     "GET",paramters);

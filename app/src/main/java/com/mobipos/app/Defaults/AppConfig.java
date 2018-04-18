@@ -33,6 +33,8 @@ public class AppConfig {
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";
     public static String admin_delete_user="/app/delete-fxn.php";
     public static String admin_add_printer="admin-add-printer.php";
+    public static String admin_create_default_sales_branch="admin-create-default-sales-branch.php";
+    public static String admin_check_default_sales_branch="admin-check-sales-branch.php";
 
 
 

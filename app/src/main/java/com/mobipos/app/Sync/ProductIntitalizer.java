@@ -72,7 +72,7 @@ public class ProductIntitalizer {
                         "GET",parameters);
             }else{
                 //cashier load data
-                parameters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+                parameters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
                 jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ PackageConfig.get_items,
                         "GET",parameters);
             }
@@ -200,7 +200,7 @@ public class ProductIntitalizer {
         protected String doInBackground(String... strings) {
             JSONParser jsonParser=new JSONParser();
             List params=new ArrayList();
-            params.add(new BasicNameValuePair("user_id",usersdb.get_user_id()));
+            params.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
 
             JSONObject stock_in_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
                             SyncDefaults.sync_stock_in_movement,

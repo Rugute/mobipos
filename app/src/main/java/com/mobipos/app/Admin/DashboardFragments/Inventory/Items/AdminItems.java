@@ -232,7 +232,7 @@ public class AdminItems extends Fragment {
 
             JSONParser jsonParser=new JSONParser();
             List paramters=new ArrayList();
-            paramters.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
                             PackageConfig.get_admin_items,
@@ -245,10 +245,12 @@ public class AdminItems extends Fragment {
                 serverMessage=jsonObject.getString("message");
 
                 data=jsonObject.getJSONArray("data");
-                branches=new String[data.length()];
-                branchesId=new String[data.length()];
-                for(int i=0;i<data.length();i++){
-                    JSONObject jobj=data.getJSONObject(i);
+                branches=new String[data.length()+1];
+                branchesId=new String[data.length()+1];
+                branches[0]="All Branches";
+                branchesId[0]="0";
+                for(int i=1;i<data.length();i++){
+                    JSONObject jobj=data.getJSONObject(i-1);
                     branches[i]=jobj.getString("shop_name");
                     branchesId[i]=jobj.getString("shop_id");
                     JSONArray category_data=jobj.getJSONArray("categories");
@@ -333,55 +335,62 @@ public class AdminItems extends Fragment {
 
     public void initializeCategorySpinner(int branch_id){
 
-        List<AdminCategorySpinnerData> tempData=new ArrayList<>();
+        if(branch_id==0){
+            categoryspinner.setVisibility(View.GONE);
+            initializeAdapter(productData);
+        }else{
+            categoryspinner.setVisibility(View.VISIBLE);
+            List<AdminCategorySpinnerData> tempData=new ArrayList<>();
 
-        Log.d("id entering spinner",String.valueOf(branch_id));
-        final String[] id,name;
-        int getCount=0;
+            Log.d("id entering spinner",String.valueOf(branch_id));
+            final String[] id,name;
+            int getCount=0;
 
-        for(int i=0;i<categoryData.size();i++){
-            int branchid=categoryData.get(i).branchId;
-            if(branch_id==branchid){
-               tempData.add(new AdminCategorySpinnerData(categoryData.get(i).branchId,categoryData.get(i).id,
-                       categoryData.get(i).name));
+            for(int i=0;i<categoryData.size();i++){
+                int branchid=categoryData.get(i).branchId;
+                if(branch_id==branchid){
+                    tempData.add(new AdminCategorySpinnerData(categoryData.get(i).branchId,categoryData.get(i).id,
+                            categoryData.get(i).name));
+                }
             }
-        }
-        Log.d("counter",String.valueOf(getCount));
-        id=new String[tempData.size()];
-        catnames=new String[tempData.size()];
-        for(int i=0;i<tempData.size();i++){
+            Log.d("counter",String.valueOf(getCount));
+            id=new String[tempData.size()];
+            catnames=new String[tempData.size()];
+            for(int i=0;i<tempData.size();i++){
                 id[i]=tempData.get(i).id;
                 catnames[i]=tempData.get(i).name;
                 Log.d("id found",id[i]);
                 Log.d("cat name found",catnames[i]);
-        }
+            }
 
-        ArrayAdapter<String> adapter;
-        adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,catnames);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
-        categoryspinner.setAdapter(adapter);
-        categoryspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int pos=(int)adapterView.getItemIdAtPosition(i);
-                Log.d("select value",String.valueOf(pos));
-                Log.d("select branchId",String.valueOf(id[pos]));
-                try{
-                    filterList(Integer.parseInt(id[pos]));
-                }catch(NumberFormatException e){
-                    List<AdminProductData> data=new ArrayList<>();
-                    data.add(new AdminProductData(0,0,"0","no available products",R.mipmap.ic_launcher,
-                            "0","0","none"));
-                    initializeAdapter(data);
+            ArrayAdapter<String> adapter;
+            adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,catnames);
+            adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+            categoryspinner.setAdapter(adapter);
+            categoryspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    int pos=(int)adapterView.getItemIdAtPosition(i);
+                    Log.d("select value",String.valueOf(pos));
+                    Log.d("select branchId",String.valueOf(id[pos]));
+                    try{
+                        filterList(Integer.parseInt(id[pos]));
+                    }catch(NumberFormatException e){
+                        List<AdminProductData> data=new ArrayList<>();
+                        data.add(new AdminProductData(0,0,"0","no available products",R.mipmap.ic_launcher,
+                                "0","0","none"));
+                        initializeAdapter(data);
+                    }
+
                 }
 
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+        }
 
-            }
-        });
     }
     public void initializeBranchSpinner(String[] branches){
         final ArrayAdapter<String> adapter;

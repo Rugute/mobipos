@@ -117,7 +117,7 @@ public class TaxesFragment extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", usersdb.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", usersdb.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.get_taxes,
@@ -225,7 +225,7 @@ public class TaxesFragment extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", usersdb.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", usersdb.get_user_id("admin")));
             paramters.add(new BasicNameValuePair("mode", mode_selected));
             paramters.add(new BasicNameValuePair("margin",tax_margin_created));
 

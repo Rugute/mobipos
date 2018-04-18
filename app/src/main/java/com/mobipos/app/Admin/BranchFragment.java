@@ -98,7 +98,7 @@ public class BranchFragment extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List paramters = new ArrayList();
 
-            paramters.add(new BasicNameValuePair("user_id", users.get_user_id()));
+            paramters.add(new BasicNameValuePair("user_id", users.get_user_id("admin")));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.admin_select_branches,
@@ -186,7 +186,7 @@ public class BranchFragment extends Fragment {
             JSONParser jsonParser = new JSONParser();
             List<NameValuePair> jsonObjectData=new ArrayList<NameValuePair>();
             jsonObjectData.add(new BasicNameValuePair("name",newoutlet));
-            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id()));
+            jsonObjectData.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
 
             JSONObject jsonObjectResponse = jsonParser.makeHttpRequest(AppConfig.protocol + AppConfig.hostname +
                             AppConfig.add_outlet,
