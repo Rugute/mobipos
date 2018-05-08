@@ -49,6 +49,7 @@ public class PackageConfig {
     public static String DISCOUNT_NAME;
     public static String DISCOUNT_VALUE;
 
+    public static int flag_restart=0;
 
 
 

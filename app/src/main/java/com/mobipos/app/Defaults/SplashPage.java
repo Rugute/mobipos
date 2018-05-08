@@ -73,10 +73,8 @@ public class SplashPage extends Activity {
 
                         startActivity(new Intent(SplashPage.this,PinLogin.class));
                     }else {
-                        if(categoriesdb.EmptyTables()==0){
-                            startActivity(new Intent(SplashPage.this,AdminLogin.class));
-                        }
 
+                            startActivity(new Intent(SplashPage.this,AdminLogin.class));
                     }
 
                }else{

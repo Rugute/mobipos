@@ -109,18 +109,18 @@ public class ProductIntitalizer {
 
                     List params=new ArrayList();
                     params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
-                    JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
-                                    PackageConfig.sync_product_movement,
-                            "GET",params);
-
-                    try {
-                        int state=UpdateSyncStatus.getInt("success");
-                        if(state==1){
-                            Log.d("product sync meso",UpdateSyncStatus.getString("message"));
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+//                    JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+//                                    PackageConfig.sync_product_movement,
+//                            "GET",params);
+//
+//                    try {
+//                        int state=UpdateSyncStatus.getInt("success");
+//                        if(state==1){
+//                            Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+//                        }
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
 
 
                 }

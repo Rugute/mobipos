@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,12 +49,15 @@ import com.mobipos.app.Defaults.PaymentActivity;
 import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
+import com.mobipos.app.database.Controller;
 import com.mobipos.app.database.Discounts;
 import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Order_Items;
 import com.mobipos.app.database.Orders;
+import com.mobipos.app.database.Printers;
 import com.mobipos.app.database.Product_Prices;
 import com.mobipos.app.database.Products;
+import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 import com.mobipos.app.login.AdminLogin;
@@ -93,6 +97,7 @@ public class MakeSale extends Fragment {
     TextView text_order_no;
     LinearLayout src_layout;
     TextView new_order_no;
+    Controller controllerdb;
 
     ListView listView;
 
@@ -108,6 +113,9 @@ public class MakeSale extends Fragment {
     Users users;
     Inventory inventorydb;
     Discounts discountdb;
+    Discounts discountsdb;
+    Printers printersdb;
+    Taxes taxesdb;
 
     public boolean view_cart_seen;
 
@@ -138,6 +146,10 @@ public class MakeSale extends Fragment {
         inventorydb=new Inventory(getActivity(), defaults.database_name,null,1);
         discountdb=new Discounts(getActivity(), defaults.database_name,null,1);
         pricesdb=new Product_Prices(getActivity(), defaults.database_name,null,1);
+        controllerdb=new Controller(getActivity(), defaults.database_name,null,1);
+        discountsdb=new Discounts(getActivity(), defaults.database_name,null,1);
+        printersdb=new Printers(getActivity(), defaults.database_name,null,1);
+        taxesdb=new Taxes(getActivity(), defaults.database_name,null,1);
 
         expandableListView=view.findViewById(R.id.make_sale_list);
         listView=view.findViewById(R.id.view_cart_list);
@@ -158,6 +170,9 @@ public class MakeSale extends Fragment {
         adapter=new MakeSalesAdapter(getActivity(),cartData());
         searchView=view.findViewById(R.id.search);
         src_layout=view.findViewById(R.id.search_layout);
+
+
+        expandableListView.setAdapter(adapter);
 
         src_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,8 +222,13 @@ public class MakeSale extends Fragment {
         });
 
 
+
+
+        Toast.makeText(getContext(),String.valueOf(categoriesdb.getCategoryCount()),Toast.LENGTH_SHORT).show();
+
         if(categoriesdb.getCategoryCount()==0){
             new firstDataLoad().execute();
+
         }
 
         showBackButton(false,"Make Sale");
@@ -254,7 +274,7 @@ public class MakeSale extends Fragment {
 
             }
         }
-        expandableListView.setAdapter(adapter);
+
 
         if(AppConfig.firstRefresh){
             refresh.setVisibility(View.GONE);
@@ -544,20 +564,20 @@ public class MakeSale extends Fragment {
         dialog.show();
     }
 
-    public void sync_data(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(getContext()).
-                setTitle("Missing Inventory").
-                setMessage("Click below to synchronize Data from the server").
-                setPositiveButton( "Synchronize", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                            new firstDataLoad().execute();
-
-                    }
-                });
-
-        alertDialog.show();
-    }
+//    public void sync_data(){
+//        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(getContext()).
+//                setTitle("Missing Inventory").
+//                setMessage("Click below to synchronize Data from the server").
+//                setPositiveButton( "Synchronize", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                            new firstDataLoad().execute();
+//
+//                    }
+//                });
+//
+//        alertDialog.show();
+//    }
 
     public class firstDataLoad extends AsyncTask<String,String,String> {
 
@@ -566,9 +586,11 @@ public class MakeSale extends Fragment {
         protected void onPreExecute(){
             super.onPreExecute();
             dialog.setMessage("Synchronizing data from server. Please wait...");
-            Toast.makeText(getContext(), "Synchronizing data from server. Please wait...", Toast.LENGTH_SHORT).show();
             dialog.setCancelable(false);
             dialog.show();
+
+
+            new load_parameters().execute();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -576,7 +598,8 @@ public class MakeSale extends Fragment {
             List paramters=new ArrayList();
             paramters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
 
-            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ com.mobipos.app.Cashier.PackageConfig.get_categories,
+            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+                            com.mobipos.app.Cashier.PackageConfig.get_categories,
                     "GET",paramters);
 
             try {
@@ -628,6 +651,8 @@ public class MakeSale extends Fragment {
                             com.mobipos.app.Cashier.PackageConfig.lowStockData[l]=jObj.getString("low_stock_count");
                             com.mobipos.app.Cashier.PackageConfig.tax_margin[l]=jObj.getString("tax_mode");
 
+                            Log.d("check this prod id",jObj.getString("product_id"));
+                            Log.d(jObj.getString("product_id"),String.valueOf(productsdb.ProductExists(jObj.getString("product_id"))));
 
                             if(!productsdb.ProductExists(jObj.getString("product_id"))){
                                 if(!productsdb.insertProduct(jObj.getString("product_id"),
@@ -653,18 +678,18 @@ public class MakeSale extends Fragment {
 
                             List params_a=new ArrayList();
                             params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
-                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
-                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
-                                    "GET",params_a);
-
-                            try {
-                                int state=UpdateSyncStatus.getInt("success");
-                                if(state==1){
-                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+//                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+//                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
+//                                    "GET",params_a);
+//
+//                            try {
+//                                int state=UpdateSyncStatus.getInt("success");
+//                                if(state==1){
+//                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+//                                }
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
 
 
                         }
@@ -687,10 +712,110 @@ public class MakeSale extends Fragment {
         protected void onPostExecute(String s){
             super.onPostExecute(s);
             dialog.cancel();
-
            startActivity(new Intent(getContext(),DashboardCashier.class));
            getActivity().finish();
         }
     }
+
+
+    public class load_parameters extends AsyncTask<String,String,String>{
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            JSONParser jsonParser=new JSONParser();
+            List params=new ArrayList();
+
+            params.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
+
+            JSONObject jobjTaxes=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+                    com.mobipos.app.login.PackageConfig.tax_load,"GET",params);
+
+
+         int tax_success=0;
+         JSONArray tax_data,printerArray;
+
+            try{
+                tax_success=jobjTaxes.getInt("success");
+
+                if(tax_success==1){
+                    tax_data=jobjTaxes.getJSONArray("data");
+
+                    for (int i=0;i<tax_data.length();i++){
+                        JSONObject j=tax_data.getJSONObject(i);
+                        if(!taxesdb.insertTax(j.getString("tb_tax_id"),
+                                j.getString("tax_margin"),j.getString("margin_mode"))){
+                            Toast.makeText(getContext(),"Error inserting tax",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    List printerParameters=new ArrayList();
+                    printerParameters.add(new BasicNameValuePair("user_id",users.get_user_id("user_id")));
+
+                    JSONObject printerObject=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+                            com.mobipos.app.login.PackageConfig.printer_load,"GET",params);
+
+                    try {
+
+                        int printer_success=printerObject.getInt("success");
+                        printerArray=printerObject.getJSONArray("data");
+
+                        if(printer_success==1){
+
+                            Log.d("printer success",String.valueOf(printer_success));
+                            Log.d("printer data",printerArray.toString());
+                            for(int i=0;i<printerArray.length();i++){
+                                JSONObject jprinterObj=printerArray.getJSONObject(i);
+
+                                Log.d("printer id",jprinterObj.getString("id"));
+                                Log.d("printer name",jprinterObj.getString("printer_name"));
+                                Log.d("printer mac",jprinterObj.getString("printer_mac"));
+
+                                if(!printersdb.InsertPrinter(jprinterObj.getString("id"),
+                                        jprinterObj.getString("printer_name"),
+                                        jprinterObj.getString("printer_mac"))){
+                                    Toast.makeText(getContext(),"Error inserting printer",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            List discounts_params=new ArrayList();
+                            discounts_params.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
+                            JSONObject discounts_object=jsonParser.makeHttpRequest(com.mobipos.app.login.PackageConfig.protocol+ com.mobipos.app.login.PackageConfig.hostname+
+                                    com.mobipos.app.login.PackageConfig.discounts_load,"GET",discounts_params);
+
+                            try{
+                                int discounts_success=discounts_object.getInt("success");
+                                if(discounts_success==1){
+                                    JSONArray discounts_array=discounts_object.getJSONArray("data");
+                                    for(int k=0;k<discounts_array.length();k++){
+
+                                        JSONObject discounts_obj=discounts_array.getJSONObject(k);
+                                        if(!discountsdb.InsertDiscount(discounts_obj.getString("id"),
+                                                discounts_obj.getString("discount_name"),
+                                                discounts_obj.getString("discount_value"))){
+                                            Toast.makeText(getContext(),"Error inserting discounts",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }catch (Exception e){
+
+                            }
+                        }
+
+                    }catch (Exception e){
+
+                    }
+
+                }
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }
 

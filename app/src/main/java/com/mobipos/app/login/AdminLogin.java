@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.AdminProdRvAdapter;
 import com.mobipos.app.Admin.DashboardAdmin;
+import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -107,11 +110,13 @@ public class AdminLogin extends Activity {
     public void customPopUp(){
        View view=LayoutInflater.from(this).inflate(R.layout.forgot_password,null);
         AlertDialog alertDialog=new AlertDialog.Builder(this).create();
+        final EditText editText=view.findViewById(R.id.email_add);
         alertDialog.setView(view);
                 alertDialog.setButton(Dialog.BUTTON_POSITIVE,"Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        forgot_email=editText.getText().toString();
+                        new forgotPassword().execute();
                     }
                 });
                 alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
@@ -186,8 +191,11 @@ public class AdminLogin extends Activity {
                     Users user_db=new Users(getApplicationContext(), defaults.database_name,null,1);
                    if(!user_db.insertUserData(PackageConfig.login_data)){
                        Toast.makeText(getApplicationContext(),"data not inserted",Toast.LENGTH_SHORT).show();
+                   }else{
+                       startActivity(new Intent(AdminLogin.this,DashboardAdmin.class));
                    }
-                    startActivity(new Intent(AdminLogin.this,DashboardAdmin.class));
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -200,6 +208,32 @@ public class AdminLogin extends Activity {
         }
     }
 
+    public void admin_sale_popup(){
+        View view= LayoutInflater.from(AdminLogin.this).inflate(R.layout.admin_login_switcher,null);
+        Button admin_btn=view.findViewById(R.id.btn_admin_login);
+        Button cashier_btn=view.findViewById(R.id.btn_cashier_login);
+
+        admin_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminLogin.this,DashboardAdmin.class));
+            }
+        });
+
+        cashier_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminLogin.this,DashboardCashier.class));
+            }
+        });
+
+        final AlertDialog alertDialog=new AlertDialog.Builder(AdminLogin.this).create();
+
+        alertDialog.setView(view);
+        alertDialog.setCancelable(true);
+        alertDialog.show();
+    }
+
     public void dialog(boolean state){
         ProgressDialog dialog=new ProgressDialog(this);
         if(state){
@@ -210,5 +244,43 @@ public class AdminLogin extends Activity {
             dialog.cancel();
         }
 
+    }
+    static String forgot_email;
+    public class forgotPassword extends  AsyncTask<String,String,String>{
+
+        int success;
+        String server_message;
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+            Toast.makeText(getApplicationContext(),"sending activation link. please wait",Toast.LENGTH_SHORT);
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser=new JSONParser();
+            List parameters=new ArrayList();
+            parameters.add(new BasicNameValuePair("email",forgot_email));
+
+            JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.admin_hostname+
+                            PackageConfig.forgot_password,"GET",parameters);
+
+            try{
+                success=jsonObject.getInt("success");
+                server_message=jsonObject.getString("message");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String s){
+            super.onPostExecute(s);
+
+            AlertDialog.Builder alert=new AlertDialog.Builder(AdminLogin.this).setTitle("Account Recovery")
+                    .setMessage(server_message)
+                    .setCancelable(true);
+            alert.show();
+
+        }
     }
 }

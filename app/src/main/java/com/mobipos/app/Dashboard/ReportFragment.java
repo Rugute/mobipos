@@ -156,17 +156,19 @@ public class ReportFragment extends Fragment{
 
     public void downloader(){
         File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS),"MAUZO REPORTS");
+                Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
         if(!rootDirectory.exists()){
              rootDirectory.mkdirs();
         }
 
-        String fileName="Report From:"+date1.getText().toString()+" To: "+date2.getText().toString()+".xls";
+        String fileName="Report From-"+date1.getText().toString()+" To- "+date2.getText().toString()+".csv";
+
+
         String variables="from="+date1.getText().toString()+"&to="+
                 date2.getText().toString()+"&client_id="+users.get_user_id("admin");
         String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
       //  String url="http://mauzoafrica.mutengeneresort.com/app/reciepts/Atfortech%20Dynamics-03-04-18-21-45-49.pdf";
-
+     //   String fileName=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
 
         String nameOfFile=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
         File file = new File(rootDirectory,fileName);
@@ -178,7 +180,7 @@ public class ReportFragment extends Fragment{
 
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setTitle("Mauzo Africa Reports");
+        request.setTitle("Mauzo Africa Reports.csv");
         request.setDescription("File is being Downloaded...");
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.allowScanningByMediaScanner();

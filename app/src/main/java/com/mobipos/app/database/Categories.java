@@ -39,7 +39,7 @@ public class Categories extends Controller {
 
     public List<CashierCategoryData> getCategories(){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name+" ORDER BY category_name ASC";
+        String sql="SELECT * FROM "+tb_name+" WHERE "+col_1+" !=0 ORDER BY category_name ASC";
 
         List<CashierCategoryData> data=new ArrayList();
         Cursor cursor=null;
@@ -73,7 +73,7 @@ public class Categories extends Controller {
 
     public List<String> getSpinnerData(){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name;
+        String sql="SELECT * FROM "+tb_name+" WHERE "+col_1+" !=0";
 
         List<String> data=new ArrayList();
         Cursor cursor=null;
@@ -112,6 +112,11 @@ public class Categories extends Controller {
         cursor=db.rawQuery(sql,null);
 
         return cursor.getCount();
+    }
+
+    public void openDb(){
+        SQLiteDatabase db=getReadableDatabase();
+
     }
 
     public boolean CategoryExists(String id){
@@ -177,11 +182,23 @@ public class Categories extends Controller {
 
     public int EmptyTables(){
         SQLiteDatabase db=getWritableDatabase();
-        String sql_cat="DELETE FROM "+tb_name;
-        String sql_prod="DELETE FROM "+Products.tb_name;
+        String sql_cat="DELETE FROM "+tb_name+" WHERE category_id > 1";
+        String sql_prod="DELETE FROM "+Products.tb_name+" WHERE product_id > 1";
+        String sql_inv="DELETE FROM "+Inventory.tb_name+" WHERE product_id > 1";
+        String sql_prices="DELETE FROM "+Product_Prices.tb_name+" WHERE product_id > 1";
+        String sql_taxes="DELETE FROM "+Taxes.tb_name+" WHERE tb_tax_id > 1";
+        String sql_printers="DELETE FROM "+Printers.tb_name+" WHERE printer_id > 1";
+        String sql_discounts="DELETE FROM "+Discounts.tb_name+" WHERE discount_id > 1";
+
+
 
         db.execSQL(sql_cat);
         db.execSQL(sql_prod);
+        db.execSQL(sql_inv);
+        db.execSQL(sql_prices);
+        db.execSQL(sql_taxes);
+        db.execSQL(sql_printers);
+        db.execSQL(sql_discounts);
 
         return getCategoryCount();
     }

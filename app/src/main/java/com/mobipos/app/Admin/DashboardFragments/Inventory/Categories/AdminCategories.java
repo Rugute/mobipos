@@ -200,7 +200,7 @@ public class AdminCategories extends Fragment {
     }
 
     private void initializeAdapter(List<AdminCategoryData> data){
-        AdminCategRvAdapter adapter = new AdminCategRvAdapter(data);
+        AdminCategRvAdapter adapter = new AdminCategRvAdapter(data,getContext());
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }
@@ -255,13 +255,22 @@ public class AdminCategories extends Fragment {
                 data=jsonObject.getJSONArray("data");
                 branches=new String[data.length()+1];
                 branchesId=new String[data.length()+1];
+                add_branch_array=new String[data.length()];
+                add_branch_array_name=new String[data.length()];
                 branches[0]="All Branches";
                 branchesId[0]="0";
 
+                for(int z=0;z<data.length();z++){
+                    JSONObject jsonObject1=data.getJSONObject(z);
+                    add_branch_array[z]=jsonObject1.getString("shop_id");
+                    add_branch_array_name[z]=jsonObject1.getString("shop_name");
+                }
                 for(int i=1;i<data.length()+1;i++){
                     JSONObject jobj=data.getJSONObject(i-1);
                     branches[i]=jobj.getString("shop_name");
                     branchesId[i]=jobj.getString("shop_id");
+
+
                     JSONArray category_data=jobj.getJSONArray("categories");
                     for (int j=0;j<category_data.length();j++){
                         JSONObject catObj=category_data.getJSONObject(j);
@@ -327,7 +336,7 @@ public class AdminCategories extends Fragment {
                if(state==0){
                    filterList(Integer.parseInt(branchesId[id]));
                }else if(state==1){
-                   selectedBranchId=branchesId[id];
+                   selectedBranchId=add_branch_array[id];
                }
 
             }
@@ -358,7 +367,8 @@ public class AdminCategories extends Fragment {
         initializeAdapter(filterData);
     }
 
-
+    static String[] add_branch_array;
+    static String[] add_branch_array_name;
     public void addCategory(){
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.custom_pop_up_add_category,null);
         Spinner spinner=view.findViewById(R.id.admin_add_category_spinner);
@@ -372,12 +382,11 @@ public class AdminCategories extends Fragment {
         alertDialog.setCancelable(true);
 
 
-        String[] add_branch_array=new String[branches.length-1];
-        for(int i=1;i<branches.length;i++){
-            add_branch_array[i-1]=branches[i];
-        }
-
-        spinnerUpdate(add_branch_array,spinner,1);
+//        add_branch_array=new String[branches.length-1];
+//        for(int i=1;i<branches.length;i++){
+//            add_branch_array[i-1]=branches[i];
+//        }
+        spinnerUpdate(add_branch_array_name,spinner,1);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,16 +394,16 @@ public class AdminCategories extends Fragment {
                 alertDialog.cancel();
             }
         });
-
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 catname=cat_name.getText().toString();
                 if(TextUtils.isEmpty(cat_name.getText())){
                     Toast.makeText(getActivity(),"Please add a category",Toast.LENGTH_SHORT).show();
                     //alertDialog.cancel();
                 }else{
-
+                  //  Toast.makeText(getContext(),selectedBranchId,Toast.LENGTH_SHORT).show();
                     new addCategory().execute();
                 }
 

@@ -68,16 +68,35 @@ public class Products extends Controller {
 
     public boolean ProductExists(String id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_1+"= "+id;
+        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_1+"='"+id+"'";
+        Log.d("sql statement",sql);
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 
+
+
         if(cursor.getCount()>0){
+            if(cursor.moveToFirst()){
+                Log.d(cursor.getString(cursor.getColumnIndex(col_2)),cursor.getString(cursor.getColumnIndex(col_1)));
+            }
             return true;
         }else{
             return false;
         }
     }
+
+    public int getCount(){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql="SELECT * FROM "+tb_name;
+
+        List data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        return cursor.getCount();
+    }
+
+
     public boolean insertProduct(String id,String name,String category_id,String measure,String tax_mode){
         SQLiteDatabase db=this.getWritableDatabase();
         //  String sql="DELETE from "+tb_name;
@@ -166,7 +185,7 @@ public class Products extends Controller {
             sql="SELECT tb_products.product_id,tb_products.product_name,tb_products.category_id,tb_products.measure,tb_products_price.price,tb_inventory.inventory_count" +
                     "  FROM "+tb_name+
                     " INNER JOIN "+Product_Prices.tb_name+" ON tb_products.product_id=tb_products_price.product_id INNER JOIN " +
-                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id ORDER BY tb_products.product_name ASC";
+                    Inventory.tb_name+" ON tb_inventory.product_id=tb_products.product_id GROUP BY tb_products.product_name ORDER BY tb_products.product_name ASC";
 
 
 

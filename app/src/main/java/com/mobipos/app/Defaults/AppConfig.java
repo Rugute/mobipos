@@ -28,6 +28,7 @@ public class AppConfig {
     public static String admin_add_employees="admin-add-employee.php";
     public static String admin_add_discounts="admin-add-discounts.php";
     public static String admin_get_discounts="admin-get-discounts.php";
+    public static String admin_update_inventory="update-inventory.php";
     public static String add_printer="";
     public static String view_printers="admin-get-printers.php";
     public static String admin_get_reports="/admin/custom/data/csvExporter/data-exporter.php?";

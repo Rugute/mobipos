@@ -29,7 +29,8 @@ import com.mobipos.app.Admin.DashboardFragments.Inventory.AdminInventory;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItem;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItemData;
-import com.mobipos.app.Cashier.DashboardCashier;
+import com.mobipos.app.Cashier.*;
+import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Dashboard.DashboardFragment;
 import com.mobipos.app.Admin.DashboardFragments.NotificationsFragment;
 import com.mobipos.app.Defaults.AppConfig;
@@ -143,6 +144,11 @@ public class DashboardAdmin extends AppCompatActivity {
         }else if(item.getItemId()==R.id.switch_account){
 
             if(usersdb.check_admin_sale_id() > 0){
+                if(categoriesdb.getCategoryCount()>0){
+                    PackageConfig.flag_restart=0;
+                }else{
+                    PackageConfig.flag_restart=1;
+                }
                 startActivity(new Intent(DashboardAdmin.this,DashboardCashier.class));
                 finish();
             }else{
@@ -231,11 +237,10 @@ public class DashboardAdmin extends AppCompatActivity {
             super.onPostExecute(s);
             dialog.cancel();
             if(success==1){
-                if(usersdb.check_admin_sale_id()==0){
                     if(!usersdb.update_admin_sales_id(id,usersdb.get_admin_id())){
                         Toast.makeText(getApplicationContext(),"Error in creating admin sales id",Toast.LENGTH_SHORT).show();
                     }
-                }
+
                 startActivity(new Intent(DashboardAdmin.this,DashboardCashier.class));
                 finish();
             }else if(success==2){
@@ -507,18 +512,18 @@ public class DashboardAdmin extends AppCompatActivity {
 
                             List params_a=new ArrayList();
                             params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
-                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
-                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
-                                    "GET",params_a);
-
-                            try {
-                                int state=UpdateSyncStatus.getInt("success");
-                                if(state==1){
-                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+//                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+//                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
+//                                    "GET",params_a);
+//
+//                            try {
+//                                int state=UpdateSyncStatus.getInt("success");
+//                                if(state==1){
+//                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+//                                }
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
 
 
                         }
@@ -541,10 +546,14 @@ public class DashboardAdmin extends AppCompatActivity {
         protected void onPostExecute(String s){
             super.onPostExecute(s);
             dialog.cancel();
+
+
             startActivity(new Intent(DashboardAdmin.this,DashboardCashier.class));
             finish();
 
         }
     }
+
+
 
 }

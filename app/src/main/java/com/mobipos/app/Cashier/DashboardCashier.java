@@ -28,6 +28,7 @@ import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.Sync.Synchronizer;
+import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 
@@ -40,6 +41,7 @@ import static android.app.PendingIntent.getActivity;
 public class DashboardCashier extends AppCompatActivity{
 
     Users usersdb;
+    Categories categoriesdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class DashboardCashier extends AppCompatActivity{
 
 
         usersdb=new Users(this, defaults.database_name,null,1);
+        categoriesdb=new Categories(this, defaults.database_name,null,1);
         BottomNavigationView navigationMenuView = findViewById(R.id.cashier_bottom_nav);
 
         Fragment fragment;
@@ -162,6 +165,9 @@ public class DashboardCashier extends AppCompatActivity{
             alertDialog.setMessage((CharSequence) "Are you sure you want to Logout?");
             alertDialog.setPositiveButton((CharSequence) "Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    if(usersdb.check_admin_sale_id() > 0 && categoriesdb.EmptyTables()==0){
+                        finish();
+                    }
                     finish();
                 }
             });
@@ -193,8 +199,12 @@ public class DashboardCashier extends AppCompatActivity{
 
         protected void onPostExecute(String s){
             super.onPostExecute(s);
-            startActivity(new Intent(DashboardCashier.this, DashboardAdmin.class));
-            finish();
+
+            if(categoriesdb.EmptyTables()==0){
+                startActivity(new Intent(DashboardCashier.this, DashboardAdmin.class));
+                finish();
+            }
+
             dialog.cancel();
 
         }

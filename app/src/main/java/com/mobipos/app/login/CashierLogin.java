@@ -443,18 +443,18 @@ public class CashierLogin extends Activity {
 
                             List params_a=new ArrayList();
                             params.add(new BasicNameValuePair("product_id",jObj.getString("product_id")));
-                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
-                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
-                                    "GET",params_a);
-
-                            try {
-                                int state=UpdateSyncStatus.getInt("success");
-                                if(state==1){
-                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+//                            JSONObject UpdateSyncStatus=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+//                                            com.mobipos.app.Cashier.PackageConfig.sync_product_movement,
+//                                    "GET",params_a);
+//
+//                            try {
+//                                int state=UpdateSyncStatus.getInt("success");
+//                                if(state==1){
+//                                    Log.d("product sync meso",UpdateSyncStatus.getString("message"));
+//                                }
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
 
 
                         }
@@ -476,8 +476,9 @@ public class CashierLogin extends Activity {
 
         protected void onPostExecute(String s){
             super.onPostExecute(s);
-            startActivity(new Intent(CashierLogin.this,DashboardCashier.class));
             dialog.cancel();
+            startActivity(new Intent(CashierLogin.this,DashboardCashier.class));
+
         }
     }
 

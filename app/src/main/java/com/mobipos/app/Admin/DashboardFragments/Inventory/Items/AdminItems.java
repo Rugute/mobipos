@@ -249,35 +249,33 @@ public class AdminItems extends Fragment {
                 branchesId=new String[data.length()+1];
                 branches[0]="All Branches";
                 branchesId[0]="0";
-                for(int i=1;i<data.length();i++){
-                    JSONObject jobj=data.getJSONObject(i-1);
-                    branches[i]=jobj.getString("shop_name");
-                    branchesId[i]=jobj.getString("shop_id");
+                for(int i=0;i<data.length();i++){
+                    JSONObject jobj=data.getJSONObject(i);
+                    Log.d("branch object",data.getJSONObject(i).toString());
+                    branches[i+1]=jobj.getString("shop_name");
+                    branchesId[i+1]=jobj.getString("shop_id");
                     JSONArray category_data=jobj.getJSONArray("categories");
                     for (int j=0;j<category_data.length();j++){
                         JSONObject catObj=category_data.getJSONObject(j);
 
-                        categoryData.add(new AdminCategorySpinnerData(Integer.parseInt(branchesId[i]),
+                        categoryData.add(new AdminCategorySpinnerData(Integer.parseInt(branchesId[i+1]),
                                 catObj.getString("category_id"),catObj.getString("category_name")));
                         JSONArray products=catObj.getJSONArray("products");
 
                         for(int k=0;k<products.length();k++){
                             JSONObject prodObj=products.getJSONObject(k);
-                            productData.add(new AdminProductData(Integer.parseInt(branchesId[i]),
+                            productData.add(new AdminProductData(Integer.parseInt(branchesId[i+1]),
                                     Integer.parseInt(catObj.getString("category_id")),
                                     prodObj.getString("product_id"),
                                     prodObj.getString("product_name"),
                                     R.drawable.price,
-                                    prodObj.getString("buying_price"),
+                                    prodObj.getString("items_in_store"),
                                     prodObj.getString("selling_price"),
                                     prodObj.getString("measurement")
                                     ));
                         }
                     }
                 }
-
-
-
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -312,7 +310,7 @@ public class AdminItems extends Fragment {
     }
 
     private void initializeAdapter(List<AdminProductData> data){
-        AdminProdRvAdapter adapter = new AdminProdRvAdapter(data);
+        AdminProdRvAdapter adapter = new AdminProdRvAdapter(data,getContext());
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }
