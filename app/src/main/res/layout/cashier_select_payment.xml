@@ -30,10 +30,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/radio_visa"
             android:text="Visa"
+            android:visibility="gone"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             />
         <RadioButton
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/radio_master"

@@ -93,7 +93,8 @@ public class AlertDialogViewSales  {
         int discount_percentage=Integer.parseInt(salesdb.getSalesData("total",order_no).get(0).discount);
 
         int total_amount=ex_tax+get_cart_data;
-        int discount_total=total_amount*discount_percentage/100;
+        int discount_total=Integer.parseInt(salesdb.getSalesData("total",order_no).get(0).discount_amount);;
+
 
         return discount_total;
     }

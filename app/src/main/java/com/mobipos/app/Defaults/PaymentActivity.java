@@ -125,6 +125,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         AppConfig.discount_amnt=Integer.parseInt(PackageConfig.DISCOUNT_VALUE)*orderItemsdb.getCartTotal(PackageConfig.order_no)/100;
+        AppConfig.discount_amnt=AppConfig.discount_amnt+PackageConfig.discounted_amount;
 
         txt_discount_name.setText("DISCOUNT: "+PackageConfig.DISCOUNT_VALUE+"%");
         txt_discount_amount.setText("-"+String.valueOf(AppConfig.discount_amnt));
@@ -256,7 +257,7 @@ public class PaymentActivity extends AppCompatActivity {
         int total=orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX;
         int disc=total*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
 
-        grand.setText(String.valueOf(total-disc));
+        grand.setText(String.valueOf(total-disc-PackageConfig.discounted_amount));
         grand.setEnabled(false);
 
         tender.addTextChangedListener(new TextWatcher() {
@@ -293,7 +294,8 @@ public class PaymentActivity extends AppCompatActivity {
                                 grand.getText().toString(),
                                 "CASH",
                                 "N/A",
-                                PackageConfig.DISCOUNT_VALUE
+                                PackageConfig.DISCOUNT_VALUE,
+                                String.valueOf(AppConfig.discount_amnt)
                         ));
 
                         AppConfig.tendered_amount=tender.getText().toString();
@@ -410,14 +412,15 @@ public class PaymentActivity extends AppCompatActivity {
                 List<PushSaleData> data=new ArrayList<>();
                 String grand_total=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no)+PackageConfig.EXCLUSIVE_TAX);
                 int disc=Integer.parseInt(grand_total)*Integer.parseInt(PackageConfig.DISCOUNT_VALUE)/100;
-                int net_total=Integer.parseInt(grand_total)-disc;
+                int net_total=Integer.parseInt(grand_total)-disc-PackageConfig.discounted_amount;
                 String total=String.valueOf(net_total);
                 data.add(new PushSaleData(PackageConfig.order_no,
                        total,
                        total,
                         "MPESA",
                         tender.getText().toString(),
-                        PackageConfig.DISCOUNT_VALUE
+                        PackageConfig.DISCOUNT_VALUE,
+                        String.valueOf(AppConfig.discount_amnt)
                 ));
 
                 AppConfig.tendered_amount=String.valueOf(orderItemsdb.getCartTotal(PackageConfig.order_no));

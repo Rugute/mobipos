@@ -53,7 +53,12 @@ public class DiscountAdapter extends BaseAdapter {
         delete_icon.setVisibility(View.INVISIBLE);
 
         discount_name.setText(data.get(i).name);
-        discount_value.setText(data.get(i).value+"%");
+        if(data.get(i).name.equals("Enter fixed discount amount")){
+            discount_value.setText("");
+        }else{
+            discount_value.setText(data.get(i).value+"%");
+        }
+
 
         return view;
     }

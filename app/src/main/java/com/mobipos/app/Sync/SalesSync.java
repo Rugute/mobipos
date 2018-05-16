@@ -68,6 +68,7 @@ public class SalesSync{
                 parameters.add(new BasicNameValuePair("app_sale_id",saleData.get(i).sale_id));
                 parameters.add(new BasicNameValuePair("trans_type",saleData.get(i).transaction_type));
                 parameters.add(new BasicNameValuePair("trans_code",saleData.get(i).transaction_code));
+                parameters.add(new BasicNameValuePair("discount_amount",saleData.get(i).discount_amount));
 
                 JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+SyncDefaults.sync_sales,
                         "GET",parameters);

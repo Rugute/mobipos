@@ -17,6 +17,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +53,7 @@ import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Controller;
+import com.mobipos.app.database.DiscountInterface;
 import com.mobipos.app.database.Discounts;
 import com.mobipos.app.database.Inventory;
 import com.mobipos.app.database.Order_Items;
@@ -546,16 +550,32 @@ public class MakeSale extends Fragment {
         Button title=view.findViewById(R.id.btn_title);
         title.setText("SELECT DISCOUNT");
 
-        listView.setAdapter(new DiscountAdapter(getContext(),discountdb.getDiscounts()));
+        List<DiscountInterface> discount_values=new ArrayList<>();
+        for(int i=0;i<discountsdb.getDiscounts().size();i++){
+                discount_values.add(discountdb.getDiscounts().get(i));
+        }
+
+        discount_values.add(new DiscountInterface("0","Enter fixed discount amount","0"));
+
+        listView.setAdapter(new DiscountAdapter(getContext(),discount_values));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int pos= (int) adapterView.getItemIdAtPosition(i);
-                PackageConfig.DISCOUNT_NAME=discountdb.getDiscounts().get(pos).name;
-                PackageConfig.DISCOUNT_VALUE=discountdb.getDiscounts().get(pos).value;
 
-                startActivity(new Intent(getActivity(), PaymentActivity.class));
+                TextView textView=view.findViewById(R.id.unit_measure);
+                if(textView.getText().toString().equals("Enter fixed discount amount")){
+                    discount_pop_up();
+                    PackageConfig.DISCOUNT_NAME="absolute value";
+                    PackageConfig.DISCOUNT_VALUE="0";
+                }else{
+                    PackageConfig.DISCOUNT_NAME=discountdb.getDiscounts().get(pos).name;
+                    PackageConfig.DISCOUNT_VALUE=discountdb.getDiscounts().get(pos).value;
+
+                    startActivity(new Intent(getActivity(), PaymentActivity.class));
+                }
+
 
                 dialog.cancel();
             }
@@ -571,6 +591,7 @@ public class MakeSale extends Fragment {
 //                setPositiveButton( "Synchronize", new DialogInterface.OnClickListener() {
 //                    @Override
 //                    public void onClick(DialogInterface dialogInterface, int i) {
+//                            new firstDataLoad().execute();
 //                            new firstDataLoad().execute();
 //
 //                    }
@@ -815,6 +836,37 @@ public class MakeSale extends Fragment {
             }
             return null;
         }
+    }
+
+    public void discount_pop_up(){
+
+        View view= LayoutInflater.from(getContext()).inflate(R.layout.absolute_discount,null);
+        final AlertDialog alertDialog=new AlertDialog.Builder(getContext()).create();
+        alertDialog.setView(view);
+
+        final EditText discount_amount_ed;
+        discount_amount_ed=view.findViewById(R.id.discounted_amounte);
+
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE,"CONFIRM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                   PackageConfig.discounted_amount=Integer.parseInt(discount_amount_ed.getText().toString());
+
+                startActivity(new Intent(getActivity(), PaymentActivity.class));
+                Toast.makeText(getContext(),String.valueOf(PackageConfig.discounted_amount),Toast.LENGTH_SHORT).show();
+                   alertDialog.cancel();
+            }
+        });
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+
     }
 
 }

@@ -14,6 +14,7 @@ public class AppConfig {
     public static String url_register="register.php";
     public static String get_today_sales="admin-get-todays-sales.php";
     public static String get_transactions="admin-get-transcations.php";
+    public static String get_other_date_sales="admin-get-other-sales-date.php";
 
     public static String admin_select_branches="admin-get-branches.php";
     public static String get_items="admin-get-products-to-sale.php";

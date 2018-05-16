@@ -84,6 +84,7 @@ public class OrdersSync{
                         param.add(new BasicNameValuePair("trans_type",saleData.get(0).transaction_type));
                         param.add(new BasicNameValuePair("trans_code",saleData.get(0).transaction_code));
                         param.add(new BasicNameValuePair("date",orders.get(i).date));
+                        param.add(new BasicNameValuePair("discount_amount",saleData.get(i).discount_amount));
 
                         JSONObject jsonObject1=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
                                         SyncDefaults.sync_sales,

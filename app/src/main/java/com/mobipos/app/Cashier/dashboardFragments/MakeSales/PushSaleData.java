@@ -12,9 +12,10 @@ public class PushSaleData {
     public String transaction_type;
     public String transaction_code;
     public String discount;
+    public String discounted_amount;
 
     public PushSaleData(String orderId, String amountTendered,
-                        String amount_total, String transaction_type, String transaction_code,String discount){
+                        String amount_total, String transaction_type, String transaction_code,String discount,String discounted_amount){
 
         this.orderId=orderId;
         this.amountTendered=amountTendered;
@@ -22,5 +23,6 @@ public class PushSaleData {
         this.transaction_type=transaction_type;
         this.transaction_code=transaction_code;
         this.discount=discount;
+        this.discounted_amount=discounted_amount;
     }
 }

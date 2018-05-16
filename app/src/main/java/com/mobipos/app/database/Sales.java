@@ -38,6 +38,7 @@ public class Sales extends Controller {
     public static String col_7="trans_type";
     public static String col_8="trans_code";
     public static String col_9="discount";
+    public static String col_10="discount_amount";
 
 
 
@@ -50,6 +51,7 @@ public class Sales extends Controller {
             col_4+" INT(11),"+
             col_5+" INT(11),"+
             col_9+" INT(11),"+
+            col_10+" INT(11),"+
             col_7+" VARCHAR(50),"+
             col_8+" VARCHAR(50),"+
             col_6+" INT(11))";
@@ -122,6 +124,7 @@ public class Sales extends Controller {
             values.put(col_7,data.get(0).transaction_type);
             values.put(col_8,data.get(0).transaction_code);
             values.put(col_9,data.get(0).discount);
+            values.put(col_10,data.get(0).discounted_amount);
 
             db.insert(tb_name,null,values);
             Log.d("sales id: ",String.valueOf(salesId));
@@ -171,7 +174,8 @@ public class Sales extends Controller {
                             cursor.getString(cursor.getColumnIndex(col_4)),
                             cursor.getString(cursor.getColumnIndex(col_7)),
                             cursor.getString(cursor.getColumnIndex(col_8)),
-                            cursor.getString(cursor.getColumnIndex(col_9))
+                            cursor.getString(cursor.getColumnIndex(col_9)),
+                            cursor.getString(cursor.getColumnIndex(col_10))
                           ));
                     Log.d("order no:",cursor.getString(cursor.getColumnIndex(col_2)));
                     Log.d("sales id",cursor.getString(cursor.getColumnIndex(col_1)));
