@@ -37,7 +37,7 @@ public class NotificationsFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.admin_notifications_fragment, container, false);
+         return inflater.inflate(R.layout.admin_notifications_fragment, container, false);
 
 
     }
