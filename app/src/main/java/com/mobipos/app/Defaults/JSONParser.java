@@ -23,44 +23,52 @@ public class JSONParser {
     static String json = "";
 
     public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params) {
-        try {
-            if (method == HttpPost.METHOD_NAME) {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-                httpPost.setEntity(new UrlEncodedFormEntity((List) params));
-                is = httpClient.execute(httpPost).getEntity().getContent();
-            } else if (method == HttpGet.METHOD_NAME) {
-                Log.d("http request",url + "?" + URLEncodedUtils.format((List)params,"utf-8"));
-                is = new DefaultHttpClient().execute(new HttpGet(url + "?" + URLEncodedUtils.format((List) params, "utf-8"))).getEntity().getContent();
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e2) {
-            e2.printStackTrace();
-        } catch (IOException e3) {
-            e3.printStackTrace();
-        }
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-            StringBuilder sb = new StringBuilder();
-            while (true) {
-                String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                sb.append(line + "\n");
-            }
-            is.close();
-            json = sb.toString();
-            Log.d("http response:",json);
-        } catch (Exception e4) {
-            Log.e("Buffer Error", "Error converting result " + e4.toString());
-        }
-        try {
-            jObj = new JSONObject(json);
-        } catch (JSONException e5) {
-            Log.e("JSON Parser", "Error parsing data " + e5.toString());
-        }
-        return jObj;
+         JSONObject jsonObject=new OkJsonRequest().makeRequest(new UrlBuilder().build(url,params));
+
+         return jsonObject;
     }
+
+    public void old_version(){
+//
+//        try {
+//            if (method == HttpPost.METHOD_NAME) {
+//                DefaultHttpClient httpClient = new DefaultHttpClient();
+//                HttpPost httpPost = new HttpPost(url);
+//                httpPost.setEntity(new UrlEncodedFormEntity((List) params));
+//                is = httpClient.execute(httpPost).getEntity().getContent();
+//            } else if (method == HttpGet.METHOD_NAME) {
+//                Log.d("http request",url + "?" + URLEncodedUtils.format((List)params,"utf-8"));
+//                is = new DefaultHttpClient().execute(new HttpGet(url + "?" + URLEncodedUtils.format((List) params, "utf-8"))).getEntity().getContent();
+//            }
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e2) {
+//            e2.printStackTrace();
+//        } catch (IOException e3) {
+//            e3.printStackTrace();
+//        }
+//        try {
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+//            StringBuilder sb = new StringBuilder();
+//            while (true) {
+//                String line = reader.readLine();
+//                if (line == null) {
+//                    break;
+//                }
+//                sb.append(line + "\n");
+//            }
+//            is.close();
+//            json = sb.toString();
+//            Log.d("http response:",json);
+//        } catch (Exception e4) {
+//            Log.e("Buffer Error", "Error converting result " + e4.toString());
+//        }
+//        try {
+//            jObj = new JSONObject(json);
+//        } catch (JSONException e5) {
+//            Log.e("JSON Parser", "Error parsing data " + e5.toString());
+//        }
+//        return jObj;
+   }
+
 }
