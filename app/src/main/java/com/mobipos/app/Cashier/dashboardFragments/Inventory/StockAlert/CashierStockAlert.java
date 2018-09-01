@@ -66,7 +66,7 @@ public class CashierStockAlert extends Fragment{
 
 
     private void initializeAdapter(List<AdminStockAlertData> data){
-        StockAlertRvAdapter adapter = new StockAlertRvAdapter(data);
+        StockAlertRvAdapter adapter = new StockAlertRvAdapter(data,getContext());
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }

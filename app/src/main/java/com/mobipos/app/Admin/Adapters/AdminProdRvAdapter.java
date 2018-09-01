@@ -82,7 +82,7 @@ public class AdminProdRvAdapter extends RecyclerView.Adapter<AdminProdRvAdapter.
     public void onBindViewHolder(final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.Category.setText(productData.get(i).name);
         itemViewHolder.Item.setText("Remaining: "+productData.get(i).buying+" "+productData.get(i).measure);
-        itemViewHolder.CatPic.setImageResource(R.mipmap.ic_tagheur);
+        itemViewHolder.CatPic.setImageResource(R.drawable.price);
       //  itemViewHolder.Item.setVisibility(View.INVISIBLE);
 
         itemViewHolder.cv.setOnClickListener(new View.OnClickListener() {

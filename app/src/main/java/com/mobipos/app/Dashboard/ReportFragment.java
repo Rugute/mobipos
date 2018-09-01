@@ -1,14 +1,17 @@
 package com.mobipos.app.Dashboard;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -177,6 +180,7 @@ public class ReportFragment extends Fragment{
         } catch (IOException e) {
              e.printStackTrace();
         }
+
 
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));

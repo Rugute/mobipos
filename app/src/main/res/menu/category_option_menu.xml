@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/view_products"
+        android:title="view products"/>
+    <item
         android:id="@+id/delete_category"
         android:title="delete category"/>
     <item android:id="@+id/update_category"
         android:title="update category"/>
+
 </menu>

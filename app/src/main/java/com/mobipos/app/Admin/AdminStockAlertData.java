@@ -6,6 +6,7 @@ package com.mobipos.app.Admin;
 
 public class AdminStockAlertData {
 
+
     public String productname;
     public String productId;
     public String productcategory;
@@ -21,6 +22,7 @@ public class AdminStockAlertData {
         this.productalert= productalert;
         this.alert_type= alert_type;
         this.remainder= remainder;
+
 
     }
 }

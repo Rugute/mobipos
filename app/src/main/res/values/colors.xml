@@ -9,4 +9,6 @@
     <color name="colorpic4">#5C538C</color>
     <color name="colorpic5">#544367</color>
     <color name="colorpic6">#fff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_trans">#99FFFFFF</color>
 </resources>
