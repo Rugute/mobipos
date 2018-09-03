@@ -1,11 +1,14 @@
 package com.mobipos.app.Admin.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -23,7 +26,10 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.AdminStockAlertData;
 
+import com.mobipos.app.Admin.BranchFragment;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminProductData;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.StockAlert.StockAlertFragment;
+import com.mobipos.app.Admin.PackageConfig;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -45,6 +51,8 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
         CardView scv;
         TextView p_name,p_categ,stock_alert,remainder;
         ImageView imageView;
+
+        static boolean updatedItem;
         public ItemViewHolder(View itemView) {
             super(itemView);
 
@@ -64,6 +72,7 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
     public StockAlertRvAdapter(List<AdminStockAlertData> stockAlertData,Context context){
         this.stockAlertData = stockAlertData;
         this.context=context;
+
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -112,6 +121,8 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
                                 product_info=stockAlertData.get(j).productname+"\ncurrent inventory:"+stockAlertData.get(j).remainder
                                         ;
                                 update_pop_up();
+
+                                if(PackageConfig.isItemUpdated)notifyItemRemoved(j);
                                 break;
                         }
                         return false;
@@ -148,6 +159,8 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
                 if(!TextUtils.isEmpty(update_count.getText())){
                     new_count=update_count.getText().toString();
                     new update_inventory().execute();
+
+
                     alertDialog.cancel();
                 }else{
                     Toast.makeText(context,"no product updated",Toast.LENGTH_SHORT).show();
@@ -208,13 +221,9 @@ public class StockAlertRvAdapter extends RecyclerView.Adapter<StockAlertRvAdapte
 
             if(successState==1){
                 Toast.makeText(context,"product updated successfully",Toast.LENGTH_SHORT).show();
-//                Fragment fragment=null;
-//                fragment= MakeSale.newInstance();
-//                FragmentTransaction transaction =
-//                transaction.replace(R.id.frame_layout, fragment);
-//                transaction.commit();
-            }else{
-                Toast.makeText(context,"error in updating product",Toast.LENGTH_SHORT).show();
+
+                PackageConfig.isItemUpdated=true;
+
             }
         }
     }

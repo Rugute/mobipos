@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -54,6 +56,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static android.Manifest.*;
 import static android.os.Environment.DIRECTORY_DOCUMENTS;
 
 /**
@@ -157,32 +160,66 @@ public class ReportFragment extends Fragment{
 
     }
 
-    public void downloader(){
-        File rootDirectory=new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS),"MAUZO REPORTS");
-        if(!rootDirectory.exists()){
-             rootDirectory.mkdirs();
+    public static final int reqeustcode=123;
+
+    public static String fileName,url;
+
+    public void downloader() {
+        File rootDirectory = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), "MAUZO REPORTS");
+        if (!rootDirectory.exists()) {
+            rootDirectory.mkdirs();
         }
 
-        String fileName="Report From-"+date1.getText().toString()+" To- "+date2.getText().toString()+".csv";
+        fileName = "Report From-" + date1.getText().toString() + " To- " + date2.getText().toString() + ".csv";
 
 
-        String variables="from="+date1.getText().toString()+"&to="+
-                date2.getText().toString()+"&client_id="+users.get_user_id("admin");
-        String url=AppConfig.protocol+AppConfig.admin_get_reports+variables;
-      //  String url="http://mauzoafrica.mutengeneresort.com/app/reciepts/Atfortech%20Dynamics-03-04-18-21-45-49.pdf";
-     //   String fileName=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
+        String variables = "from=" + date1.getText().toString() + "&to=" +
+                date2.getText().toString() + "&client_id=" + users.get_user_id("admin");
+        url = AppConfig.protocol + AppConfig.admin_get_reports + variables;
+        //  String url="http://mauzoafrica.mutengeneresort.com/app/reciepts/Atfortech%20Dynamics-03-04-18-21-45-49.pdf";
+        //   String fileName=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
 
-        String nameOfFile=URLUtil.guessFileName(url,null,MimeTypeMap.getFileExtensionFromUrl(url));
-        File file = new File(rootDirectory,fileName);
+        String nameOfFile = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
+        File file = new File(rootDirectory, fileName);
         try {
             file.createNewFile();
         } catch (IOException e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
 
+                download(url,fileName);
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, reqeustcode);
+
+            }
+
+        } else {
+            download(url, fileName);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == requestCode
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                download(url,fileName);
+        }
+    }
+
+
+    public void download(String url,String fileName){
+        Log.d("url link",url);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setTitle("Mauzo Africa Reports.csv");
         request.setDescription("File is being Downloaded...");
@@ -194,10 +231,9 @@ public class ReportFragment extends Fragment{
         DownloadManager manager = (DownloadManager)getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
 
         manager.enqueue(request);
-
-         //   new DownloadFileFromURL().execute(url);
-
     }
+
+
 
     public void updateDate(EditText editText){
         String format="yyyy-MM-dd";
@@ -237,10 +273,14 @@ public class ReportFragment extends Fragment{
         JSONArray branch ;
         String outlet=null;
 
-
+        ProgressDialog dialog=new ProgressDialog(getContext());
 
         protected  void onPreExecute(){
             super.onPreExecute();
+
+            dialog.setMessage("Loading branches. Please wait..");
+            dialog.setCancelable(false);
+            dialog.show();
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -275,6 +315,7 @@ public class ReportFragment extends Fragment{
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+
             if(success==1){
                 if(AppConfig.branchIds.length>0){
                     SelectOutletPop(1);
@@ -283,6 +324,8 @@ public class ReportFragment extends Fragment{
                 }
 
             }
+
+            dialog.dismiss();
         }
     }
 

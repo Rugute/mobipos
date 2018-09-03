@@ -6,7 +6,7 @@ package com.mobipos.app.Defaults;
 
 public class AppConfig {
 
-    public static String protocol="https://mauzoafrica.com";
+    public static String protocol="https://system.mauzoafrica.com";
     public static String hostname ="/app/";
     public static String hostname_admin="/admin/custom/data/apis/log/";
    // public static String protocol="http://192.168.173.1/mobipos.com";
@@ -68,5 +68,5 @@ public class AppConfig {
     public static int discount_amnt;
 
 
-
+    public static String store_request;
 }

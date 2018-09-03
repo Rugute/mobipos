@@ -6,7 +6,7 @@ package com.mobipos.app.login;
 
 public class PackageConfig {
 
-    public static String protocol="http://mauzoafrica.com/";
+    public static String protocol="https://system.mauzoafrica.com/";
   //  public static String protocol="http://192.168.173.1/mobipos.com/";
     public static String hostname="app/";
     public static String admin_hostname="admin/custom/data/apis/";

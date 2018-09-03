@@ -18,4 +18,6 @@ public class PackageConfig {
     public static String selectedBranchId;
 
     public static String[] catnames;
+
+    public static boolean isItemUpdated=false;
 }

@@ -1,5 +1,6 @@
 package com.mobipos.app.Defaults;
 
+import android.content.Context;
 import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,8 +25,13 @@ public class JSONParser {
 
     public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params) {
          JSONObject jsonObject=new OkJsonRequest().makeRequest(new UrlBuilder().build(url,params));
+        return jsonObject;
 
-         return jsonObject;
+    }
+
+    public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params, Context context){
+        JSONObject jsonObject=new VolleyRequest(new UrlBuilder().build(url,params),context).requestData();
+        return jsonObject;
     }
 
     public void old_version(){

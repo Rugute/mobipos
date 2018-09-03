@@ -6,9 +6,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import javax.net.ssl.SSLContext;
+
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by folio on 7/12/2018.
@@ -20,11 +33,31 @@ public class OkJsonRequest  {
     JSONObject jsonObject;
     public JSONObject makeRequest(String url){
         Log.d("request made to server",url);
+
+
         okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();
         String json_data=null;
 
         try {
-            client=new OkHttpClient();
+
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, null, null);
+
+            ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_2)
+                    .build();
+
+            List<ConnectionSpec> specs = new ArrayList<>();
+            specs.add(cs);
+            specs.add(ConnectionSpec.COMPATIBLE_TLS);
+            specs.add(ConnectionSpec.CLEARTEXT);
+
+            client=new OkHttpClient.Builder().
+                    connectionSpecs(specs).
+
+                    sslSocketFactory(new TLS12SocketFactory(sc.getSocketFactory())).
+                    build();
+
             okhttp3.Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
@@ -43,14 +76,17 @@ public class OkJsonRequest  {
             else{
                 json_data="error in fetching data";
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         try {
             jsonObject=new JSONObject(json_data);
         } catch (JSONException e) {
-            e.printStackTrace();
+            try {
+                jsonObject = new JSONObject("{\"success\":0,\"message\":\"error in netwok\"}");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
         }
 
         return jsonObject;
