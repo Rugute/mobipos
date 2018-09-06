@@ -15,11 +15,7 @@ import java.util.List;
 
 import javax.net.ssl.SSLContext;
 
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
+import com.squareup.okhttp.*;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,13 +25,13 @@ import static android.content.ContentValues.TAG;
 
 public class OkJsonRequest  {
 
-    OkHttpClient client;
+    OkHttpClient  client;
     JSONObject jsonObject;
     public JSONObject makeRequest(String url){
         Log.d("request made to server",url);
 
 
-        okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).build();
         String json_data=null;
 
         try {
@@ -52,13 +48,10 @@ public class OkJsonRequest  {
             specs.add(ConnectionSpec.COMPATIBLE_TLS);
             specs.add(ConnectionSpec.CLEARTEXT);
 
-            client=new OkHttpClient.Builder().
-                    connectionSpecs(specs).
+            client=new OkHttpClient().
+                    setConnectionSpecs(specs).setSslSocketFactory(new TLS12SocketFactory(sc.getSocketFactory()));
 
-                    sslSocketFactory(new TLS12SocketFactory(sc.getSocketFactory())).
-                    build();
-
-            okhttp3.Response response = client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 Headers responseHeaders = response.headers();
