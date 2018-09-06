@@ -405,6 +405,7 @@ public class AdminCategories extends Fragment {
                 }else{
                   //  Toast.makeText(getContext(),selectedBranchId,Toast.LENGTH_SHORT).show();
                     new addCategory().execute();
+                    alertDialog.cancel();
                 }
 
             }

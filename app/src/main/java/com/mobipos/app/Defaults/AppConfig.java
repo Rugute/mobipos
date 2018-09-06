@@ -69,4 +69,6 @@ public class AppConfig {
 
 
     public static String store_request;
+    public static String alertMessage;
+    public static boolean checkAlert;
 }

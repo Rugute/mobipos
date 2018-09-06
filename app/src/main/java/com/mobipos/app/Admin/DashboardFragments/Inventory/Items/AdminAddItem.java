@@ -26,6 +26,7 @@ import com.mobipos.app.Admin.BranchFragment;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategories;
 import com.mobipos.app.Admin.DashboardFragments.Settings.TaxesFragment;
 import com.mobipos.app.Admin.PackageConfig;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -224,6 +225,8 @@ public class AdminAddItem extends Fragment {
         protected void onPostExecute(String s){
             super.onPostExecute(s);
 
+            AppConfig.checkAlert=true;
+            AppConfig.alertMessage=message;
             if(success==100){
                 Fragment fragment=null;
                 fragment= BranchFragment.newInstance();
@@ -249,6 +252,7 @@ public class AdminAddItem extends Fragment {
                 transaction.replace(R.id.frame_layout, fragment);
                 transaction.commit();
             }
+
 
             Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
 

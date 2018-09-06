@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.MeasureData;
 import com.mobipos.app.Admin.Adapters.MeasurementAdapter;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -58,6 +59,8 @@ public class AdminMeasurements extends Fragment {
         return inflater.inflate(R.layout.admin_measurement_fragment, container, false);
     }
     public void onViewCreated(View view,Bundle savedInstanceState){
+
+        if(AppConfig.checkAlert==true) new Alerts(getActivity(),true,AppConfig.alertMessage).showDialog();
         users = new Users(getContext(), defaults.database_name, null, 1);
         fmeasure=view.findViewById(R.id.fab_add_measure);
         listView=view.findViewById(R.id.measure_listview);

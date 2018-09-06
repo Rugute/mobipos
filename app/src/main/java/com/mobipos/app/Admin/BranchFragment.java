@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -60,6 +61,8 @@ public class BranchFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        if(AppConfig.checkAlert==true) new Alerts(getActivity(),false,AppConfig.alertMessage);
         users = new Users(getContext(), defaults.database_name, null, 1);
         listView = view.findViewById(R.id.branch_listview);
         fbranch=(FloatingActionButton)view.findViewById(R.id.fab_add_branch);
