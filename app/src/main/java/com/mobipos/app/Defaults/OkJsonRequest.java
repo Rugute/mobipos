@@ -13,7 +13,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 
 import com.squareup.okhttp.*;
 
@@ -49,7 +52,14 @@ public class OkJsonRequest  {
             specs.add(ConnectionSpec.CLEARTEXT);
 
             client=new OkHttpClient().
-                    setConnectionSpecs(specs).setSslSocketFactory(new TLS12SocketFactory(sc.getSocketFactory()));
+                    setConnectionSpecs(specs).
+                    setSslSocketFactory(new TLS12SocketFactory(sc.getSocketFactory())).setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String s, SSLSession sslSession) {
+                    HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+                    return hv.verify("system.mauzoafrica.com",sslSession);
+                }
+            });
 
             Response response = client.newCall(request).execute();
 
