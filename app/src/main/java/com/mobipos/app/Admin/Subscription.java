@@ -69,10 +69,7 @@ public class Subscription extends Fragment{
         phone_number=view.findViewById(R.id.phoneOfPerson);
 
         name.setText(usersdb.get_user_name());
-
-
-
-       new  loadData().execute();
+        new  loadData().execute();
 
 
     }

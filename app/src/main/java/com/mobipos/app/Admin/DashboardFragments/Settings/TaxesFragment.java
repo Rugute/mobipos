@@ -23,6 +23,7 @@ import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItem;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItemData;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.MeasureMarginData;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -65,6 +66,7 @@ public class TaxesFragment extends Fragment {
     }
 
     public void onViewCreated(View view,Bundle savedInstanceState){
+        if(AppConfig.checkAlert==true) new Alerts(getActivity(),true,AppConfig.alertMessage).showDialog();
         usersdb=new Users(getContext(), defaults.database_name,null,1);
         listView=view.findViewById(R.id.view_outlet);
         btn_title=view.findViewById(R.id.btn_title);
@@ -248,6 +250,7 @@ public class TaxesFragment extends Fragment {
             super.onPostExecute(s);
 
             if (success==1){
+                AppConfig.checkAlert=false;
                 new loadData().execute();
                 Toast.makeText(getActivity(),"Tax Created ",Toast.LENGTH_SHORT).show();
             }else{

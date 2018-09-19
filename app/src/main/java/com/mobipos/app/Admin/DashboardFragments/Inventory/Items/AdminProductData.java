@@ -13,9 +13,10 @@ public class AdminProductData {
     public int branchId;
     public int categoryId;
     public int image;
+    public String buying_price;
 
     public AdminProductData(int branchId,int categoryId,String id, String name, int image,String buying,String selling,
-                            String measure) {
+                            String measure,String buying_price) {
         this.name = name;
         this.id = id;
         this.branchId = branchId;
@@ -24,5 +25,6 @@ public class AdminProductData {
         this.buying = buying;
         this.selling = selling;
         this.measure = measure;
+        this.buying_price=buying_price;
     }
 }

@@ -55,19 +55,22 @@
             android:layout_toRightOf="@+id/img1"
             android:layout_below="@+id/text_item_name"
             />
+
         <TextView
+            android:id="@+id/text_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_item_price"
-            android:text="item price"
-            android:textColor="#465b86"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textAlignment="viewEnd"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/text_price"
             android:layout_below="@+id/text_item_name"
-            android:gravity="end" />
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:gravity="end"
+            android:text="item price"
+            android:textAlignment="viewEnd"
+            android:textColor="#465b86"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

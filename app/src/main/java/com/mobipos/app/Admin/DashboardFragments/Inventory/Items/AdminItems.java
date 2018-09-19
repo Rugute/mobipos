@@ -271,7 +271,8 @@ public class AdminItems extends Fragment {
                                     R.drawable.price,
                                     prodObj.getString("items_in_store"),
                                     prodObj.getString("selling_price"),
-                                    prodObj.getString("measurement")
+                                    prodObj.getString("measurement"),
+                                    prodObj.getString("buying_price")
                                     ));
                         }
                     }
@@ -310,7 +311,7 @@ public class AdminItems extends Fragment {
     }
 
     private void initializeAdapter(List<AdminProductData> data){
-        AdminProdRvAdapter adapter = new AdminProdRvAdapter(data,getContext());
+        AdminProdRvAdapter adapter = new AdminProdRvAdapter(data,getContext(),getActivity());
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
     }
@@ -324,7 +325,7 @@ public class AdminItems extends Fragment {
             if(category==category_id){
                 filterData.add(new AdminProductData(productData.get(i).branchId,productData.get(i).categoryId,
                         productData.get(i).id, productData.get(i).name,R.mipmap.ic_launcher, productData.get(i).buying,
-                        productData.get(i).selling, productData.get(i).measure));
+                        productData.get(i).selling, productData.get(i).measure,productData.get(i).buying_price));
             }
         }
 
@@ -376,7 +377,7 @@ public class AdminItems extends Fragment {
                     }catch(NumberFormatException e){
                         List<AdminProductData> data=new ArrayList<>();
                         data.add(new AdminProductData(0,0,"0","no available products",R.mipmap.ic_launcher,
-                                "0","0","none"));
+                                "0","0","none","0"));
                         initializeAdapter(data);
                     }
 
@@ -415,3 +416,28 @@ public class AdminItems extends Fragment {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

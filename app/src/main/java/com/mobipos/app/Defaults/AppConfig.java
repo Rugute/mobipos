@@ -1,5 +1,9 @@
 package com.mobipos.app.Defaults;
 
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminProductData;
+
+import java.util.List;
+
 /**
  * Created by folio on 12/15/2017.
  */
@@ -37,7 +41,7 @@ public class AppConfig {
     public static String admin_add_printer="admin-add-printer.php";
     public static String admin_create_default_sales_branch="admin-create-default-sales-branch.php";
     public static String admin_check_default_sales_branch="admin-check-sales-branch.php";
-
+    public static String admin_load_cat_products ="admin-get-cat-products.php";
 
 
 
@@ -70,5 +74,7 @@ public class AppConfig {
 
     public static String store_request;
     public static String alertMessage;
-    public static boolean checkAlert;
+    public static boolean checkAlert=false;
+
+    public static List<AdminProductData> data;
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UPDATE PRODUCT PRICE"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:background="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buying Price"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Buying Price"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:id="@+id/upd_buying_price"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selling Price"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Selling Price"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:id="@+id/upd_selling_price"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UPDATE"
+        android:layout_marginTop="10pt"
+        android:id="@+id/btn_update_price"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:background="@color/colorPrimary"/>
+
+</LinearLayout>

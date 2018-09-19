@@ -219,7 +219,7 @@ public class BranchFragment extends Fragment {
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            AppConfig.checkAlert=false;
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
                 new BranchSelection().execute();
             }

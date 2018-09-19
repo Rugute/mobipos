@@ -1,5 +1,6 @@
 package com.mobipos.app.Admin.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategoryData;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminProductData;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.UpdatePrice;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.MakeSale;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
@@ -61,9 +63,11 @@ public class AdminProdRvAdapter extends RecyclerView.Adapter<AdminProdRvAdapter.
 
     List<AdminProductData> productData;
     Context context;
-    public AdminProdRvAdapter(List<AdminProductData> productData,Context context){
+    Activity activity;
+    public AdminProdRvAdapter(List<AdminProductData> productData,Context context,Activity activity){
         this.productData = productData;
         this.context=context;
+        this.activity=activity;
     }
 
     @Override
@@ -107,6 +111,11 @@ public class AdminProdRvAdapter extends RecyclerView.Adapter<AdminProdRvAdapter.
                                 product_info=productData.get(i).name+"\ncurrent inventory:"+productData.get(i).buying+" "+
                                         productData.get(i).measure;
                                 update_pop_up();
+                                break;
+
+                            case R.id.update_price:
+                                new UpdatePrice(activity,productData.get(i).buying_price,
+                                        productData.get(i).selling,productData.get(i).id).showDialog();
                                 break;
                         }
                         return false;

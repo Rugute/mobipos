@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.AdminCategoryData;
+import com.mobipos.app.Admin.DashboardFragments.Inventory.Categories.LoadCatProducts;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.JSONParser;
@@ -99,6 +100,10 @@ public class AdminCategRvAdapter extends RecyclerView.Adapter<AdminCategRvAdapte
                         switch (menuItem.getItemId()){
                             case R.id.delete_category:
                                 new delete_fxn().execute();
+                                break;
+
+                            case R.id.view_products:
+                                new LoadCatProducts(context,category_id,categoryData.get(i).name).showProducts();
                                 break;
 
                         }

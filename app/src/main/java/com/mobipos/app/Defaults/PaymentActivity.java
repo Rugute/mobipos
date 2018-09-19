@@ -387,7 +387,7 @@ public class PaymentActivity extends AppCompatActivity {
                     AppConfig.print_branch_name=usersdb.printer_header()[0];
 
                     startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
-                }else {
+                }else if(no_rec.isChecked()) {
                     startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
                 }
             }

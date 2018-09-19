@@ -221,6 +221,7 @@ public class AdminMeasurements extends Fragment {
             super.onPostExecute(s);
 
             if(successState==1){
+                AppConfig.checkAlert=false;
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(getActivity(),"server error",Toast.LENGTH_SHORT).show();

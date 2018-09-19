@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.mobipos.app.Admin.Adapters.AdminProdRvAdapter;
 import com.mobipos.app.Admin.DashboardAdmin;
 import com.mobipos.app.Cashier.DashboardCashier;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
@@ -56,6 +57,8 @@ public class AdminLogin extends Activity {
         btn_login=findViewById(R.id.login);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
+
+        btn_login.requestFocus();
 
         VectorDrawableCompat drawableCompat= VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, email.getContext().getTheme());
         email.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableCompat, null, null, null);
@@ -202,7 +205,9 @@ public class AdminLogin extends Activity {
 
                 Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
 
-            }else{
+            }else if(success==100){
+                 new Alerts(AdminLogin.this,true,serverMessage);
+            } else{
                 Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
             }
         }

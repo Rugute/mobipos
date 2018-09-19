@@ -37,6 +37,7 @@ import com.mobipos.app.Cashier.Adapters.CashierCategRvAdapter;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Admin.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
+import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
@@ -99,7 +100,7 @@ public class AdminCategories extends Fragment {
     }
 
     public void onViewCreated(View view,Bundle savedInstanceState){
-
+        if(AppConfig.checkAlert==true) new Alerts(getActivity(),true,AppConfig.alertMessage).showDialog();
         users=new Users(getActivity(),defaults.database_name,null,1);
 
         bar=view.findViewById(R.id.progessbar_admin_category);
@@ -192,12 +193,6 @@ public class AdminCategories extends Fragment {
         }
     }
 
-    private void initializeData(){
-   //     categoryData= new ArrayList<>();
-//        categoryData.add(new CashierCategoryData("Fruits", "Mango", R.mipmap.ic_launcher));
-//        categoryData.add(new CashierCategoryData("Beverage", "Coffee", R.mipmap.ic_launcher));
-//        categoryData.add(new CashierCategoryData("Meat", "Beef", R.mipmap.ic_launcher));
-    }
 
     private void initializeAdapter(List<AdminCategoryData> data){
         AdminCategRvAdapter adapter = new AdminCategRvAdapter(data,getContext());
@@ -468,6 +463,7 @@ public class AdminCategories extends Fragment {
                 transaction.commit();
 
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
+                AppConfig.checkAlert=false;
             }else{
                 Toast.makeText(getActivity(),serverMessage,Toast.LENGTH_SHORT).show();
             }
