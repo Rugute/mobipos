@@ -332,12 +332,12 @@ public class Users extends Controller {
         String[] data=new String[2];
 
         if(cursor.moveToFirst()){
-
+            Log.d("business name",cursor.getString(cursor.getColumnIndex("business_name")));
+            Log.d("branch name",cursor.getString(cursor.getColumnIndex("branch_name")));
                 data[0]=cursor.getString(cursor.getColumnIndex("business_name"));
                 data[1]=cursor.getString(cursor.getColumnIndex("branch_name"));
 
-                Log.d("business name",cursor.getString(cursor.getColumnIndex("business_name")));
-                Log.d("branch name",cursor.getString(cursor.getColumnIndex("branch_name")));
+
         }
         db.close();
 
@@ -351,11 +351,26 @@ public class Users extends Controller {
         String data=null;
 
         if(cursor.moveToFirst()){
+            do{
+                data=cursor.getString(cursor.getColumnIndex("branch_name"));
+            }while (cursor.moveToNext());
 
-            data=cursor.getString(cursor.getColumnIndex("branch_name"));
+        }
+        db.close();
 
-            Log.d("business name",cursor.getString(cursor.getColumnIndex("business_name")));
-            Log.d("branch name",cursor.getString(cursor.getColumnIndex("branch_name")));
+        return data;
+    }
+
+    public String business_name(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String sql_pin="SELECT business_name from "+tb_branch + " LIMIT 1";
+        Cursor  cursor=db.rawQuery(sql_pin,null);
+        String data=null;
+
+        if(cursor.moveToFirst()){
+            do{
+                data=cursor.getString(cursor.getColumnIndex("business_name"));
+            }while (cursor.moveToNext());
         }
         db.close();
 
@@ -425,6 +440,47 @@ public class Users extends Controller {
         db.close();
 
         return sale_id_exists;
+    }
+
+    public void update_casher_info(String phone,String email,int id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        try{
+            // db.execSQL(sql);
+            ContentValues values=new ContentValues();
+            values.put(col_3,email);
+            values.put(col_7,phone);
+
+            db.update(tb_name,values,"user_id="+id,null);
+            Log.d("insert stock count:",get_user_id("cashier"));
+            db.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void deleteTables(){
+        SQLiteDatabase db = getWritableDatabase();
+        String deleteStatement = "DROP TABLE IF EXISTS ";
+        String createTables="CREATE TABLE IF NOT EXISTS ";
+        db.execSQL(Categories.DROP_TABLE);
+        db.execSQL(Products.DROP_TABLE);
+        db.execSQL(Product_Prices.DROP_TABLE);
+        db.execSQL(Order_Items.DROP_TABLE);
+        db.execSQL(Orders.DROP_TABLE);
+        db.execSQL(Taxes.DROP_TABLE);
+        db.execSQL(Inventory.DROP_TABLE);
+        db.execSQL(inventory_movement.DROP_TABLE);
+
+        db.execSQL(Categories.CREATE_TABLE_CATEGORIES);
+        db.execSQL(Products.CREATE_TABLE_PRODUCTS);
+        db.execSQL(Product_Prices.CREATE_TABLE_PRODUCTS_PRICE);
+        db.execSQL(Order_Items.CREATE_TABLE_ORDER_ITEMS);
+        db.execSQL(Orders.CREATE_TABLE_ORDERS);
+        db.execSQL(Taxes.CREATE_TABLE_TAXES);
+        db.execSQL(Inventory.CREATE_TABLE_INVENTORY);
+        db.execSQL(inventory_movement.CREATE_TABLE_INVENTORY_MOVEMENT);
     }
 
 

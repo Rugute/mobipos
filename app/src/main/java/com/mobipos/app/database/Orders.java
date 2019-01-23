@@ -23,13 +23,15 @@ public class Orders  extends Controller{
     public static String col_1="order_no";
     public static String col_2="date";
     public static String col_3="sync_status";
+    public static String col_4="sales_status";
 
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_ORDERS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" VARCHAR(50),"+
             col_3+" INT(11),"+
+            col_4+" INT(11),"+
             col_2+" VARCHAR(50))";
 
 
@@ -45,6 +47,7 @@ public class Orders  extends Controller{
             values.put(col_1,order);
             values.put(col_2,date);
             values.put(col_3,0);
+            values.put(col_4,0);
 
 
 
@@ -96,7 +99,29 @@ public class Orders  extends Controller{
         SQLiteDatabase db=getReadableDatabase();
         String sql=null;
 
-        sql="SELECT date FROM "+tb_name+ " WHERE "+col_1+"= "+order;
+        sql="SELECT date FROM "+tb_name+" where order_no='"+order+"'";
+        Log.d("date selected",sql);
+        List data=new ArrayList();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+        String date=null;
+        if(cursor.moveToFirst()){
+           do {
+               date = cursor.getString(cursor.getColumnIndex(col_2));
+           }while (cursor.moveToNext());
+
+        }
+        Log.d("date selected ",date);
+        db.close();
+        //    Log.d("product count in loop:",String.valueOf(cursor.getCount()));
+        return date;
+    }
+
+    public String getStatus(String order){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql="SELECT sales_status FROM "+tb_name+ " WHERE "+col_1+"= '"+order+"'";
 
         List data=new ArrayList();
         Cursor cursor=null;
@@ -104,11 +129,11 @@ public class Orders  extends Controller{
         String date=null;
         if(cursor.moveToFirst()){
 
-          date =cursor.getString(cursor.getColumnIndex(col_2));
+            date =cursor.getString(cursor.getColumnIndex(col_4));
             Log.d("date selected ",date);
         }
 
-        db.close();
+     //   db.close();
 
 
         //    Log.d("product count in loop:",String.valueOf(cursor.getCount()));
@@ -120,23 +145,36 @@ public class Orders  extends Controller{
     public List<orders_interface> DataSync(){
         SQLiteDatabase db=getReadableDatabase();
 
-        String sql="SELECT * FROM "+tb_name+" WHERE sync_status=0";
+        String sql="SELECT * FROM "+tb_name+" WHERE sync_status=0 ";
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
         List<orders_interface> data=new ArrayList<>();
 
+        Log.d("orders to be synced",String.valueOf(cursor.getCount()));
         if(cursor.moveToFirst()){
 
             do{
                 data.add(new orders_interface(cursor.getString(cursor.getColumnIndex(col_1)),
                         cursor.getString(cursor.getColumnIndex(col_2))));
                 Log.d("order to sync",cursor.getString(cursor.getColumnIndex(col_1)));
+                Log.d("sales status",cursor.getString(cursor.getColumnIndex(col_4)));
                 Log.d("date to sync",cursor.getString(cursor.getColumnIndex(col_2)));
             }while (cursor.moveToNext());
         }
 
         db.close();
         return data;
+    }
+
+    public void updateSalesInfo(String order_no) {
+        Log.d("you reached"," here "+order_no);
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(col_4,"1");
+        db.update(tb_name,values,col_1+"='"+order_no+"'",null);
+        Log.d("updat reached",order_no);
+        Log.d("status",getStatus(order_no));
+        db.close();
     }
 
 }

@@ -29,7 +29,7 @@ public class Inventory extends Controller {
     public static String col_4="sync_status";
     public static String col_5="active_status";
 
-    public static  String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static  String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_INVENTORY="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
           //  col_1+" INT(11) PRIMARY KEY AUTO_INCREMENT,"+
@@ -42,7 +42,7 @@ public class Inventory extends Controller {
 
     public boolean ProductExists(String id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_2+"= "+id;
+        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_2+"= '"+id+"'";
         Cursor cursor=null;
         cursor=db.rawQuery(sql,null);
 
@@ -80,20 +80,24 @@ public class Inventory extends Controller {
 
     public String getOpeningStock(String product_id){
         SQLiteDatabase db=getReadableDatabase();
-        String sql="SELECT inventory_count FROM "+tb_name+ " WHERE "+col_2+"="+product_id;
+        String sql="SELECT * FROM "+tb_name+ " WHERE "+col_2+"='"+product_id+"'";
         Cursor cursor=null;
         String count=null;
+        Log.d("query statement ",sql);
         cursor=db.rawQuery(sql,null);
 
         try {
+            Log.d("count of items",String.valueOf(cursor.getCount()));
             if(cursor.moveToFirst()){
-                count=cursor.getString(cursor.getColumnIndex(col_3));
-
+                    count=cursor.getString(cursor.getColumnIndex(col_3));
+                    Log.d("inventory count from db",cursor.getString(cursor.getColumnIndex(col_3)));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+        db.close();
 
+//        Log.d("inventory count db2",count);
         return count;
     }
 

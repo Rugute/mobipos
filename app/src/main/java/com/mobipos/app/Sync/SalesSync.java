@@ -31,8 +31,7 @@ public class SalesSync{
     Sales salesdb;
     Users usersdb;
     Orders ordersdb;
-    int successState=0;
-    String server="stupid";
+
     public SalesSync(Context context){
         this.context=context;
         salesdb=new Sales(context,defaults.database_name,null,1);
@@ -43,16 +42,21 @@ public class SalesSync{
     }
 
     class DataLoad extends AsyncTask<String,String,String>{
+        List<PullSaleData> saleData=new ArrayList<>();
+        List<orders_interface> orders=new ArrayList<>();
+
+        int successState=0;
+        String server="sales sync not working";
         @Override
         protected void onPreExecute(){
          //   saleData=salesdb.getSalesData("sync");
         }
         @Override
         protected String doInBackground(String... strings) {
-            List<PullSaleData> saleData=new ArrayList<>();
-            List<orders_interface> orders=new ArrayList<>();
+
             orders=ordersdb.DataSync();
-            saleData=salesdb.getSalesData("sync","NOT");
+            saleData=salesdb.getSalesData();
+            Log.d("sales Data count",String.valueOf(saleData.size()));
             JSONParser jsonParser=new JSONParser();
 
             for (int i=0;i<saleData.size();i++){
@@ -61,6 +65,7 @@ public class SalesSync{
 
                 List parameters=new ArrayList();
 
+                Log.d("the date of order",ordersdb.getOrderDate(saleData.get(i).orderId));
 
                 parameters.add(new BasicNameValuePair("user_id",usersdb.get_user_id("cashier")));
                 parameters.add(new BasicNameValuePair("order_id",saleData.get(i).orderId));
@@ -68,9 +73,11 @@ public class SalesSync{
                 parameters.add(new BasicNameValuePair("app_sale_id",saleData.get(i).sale_id));
                 parameters.add(new BasicNameValuePair("trans_type",saleData.get(i).transaction_type));
                 parameters.add(new BasicNameValuePair("trans_code",saleData.get(i).transaction_code));
+                parameters.add(new BasicNameValuePair("date",ordersdb.getOrderDate(saleData.get(i).orderId)));
                 parameters.add(new BasicNameValuePair("discount_amount",saleData.get(i).discount_amount));
 
-                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+SyncDefaults.sync_sales,
+                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+
+                                PackageConfig.hostname+SyncDefaults.sync_sales,
                         "GET",parameters);
 
                 Log.d("sync sales status:",jsonObject.toString());

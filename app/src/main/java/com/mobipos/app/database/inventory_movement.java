@@ -25,7 +25,7 @@ public class inventory_movement extends Controller {
     public static String col_6="DATE";
     public static String col_5="sync_status";
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_INVENTORY_MOVEMENT="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INTEGER PRIMARY KEY,"+

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,10 +44,11 @@ import java.util.List;
 
 public class AdminLogin extends Activity {
 
-    TextView textLink;
+    TextView textLink,textNotification;
     Button btn_login;
     EditText email,password;
     static String stremail,strpassword;
+    CardView notificationCard;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -57,7 +59,8 @@ public class AdminLogin extends Activity {
         btn_login=findViewById(R.id.login);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
-
+        textNotification = findViewById(R.id.text_notification);
+        notificationCard=findViewById(R.id.notification_card);
         btn_login.requestFocus();
 
         VectorDrawableCompat drawableCompat= VectorDrawableCompat.create(getResources(), R.drawable.ic_account_circle, email.getContext().getTheme());
@@ -152,7 +155,8 @@ public class AdminLogin extends Activity {
             paramaters.add(new BasicNameValuePair("email",stremail));
             paramaters.add(new BasicNameValuePair("password",strpassword));
 
-            JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+PackageConfig.admin_log,
+            JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+
+                            PackageConfig.hostname+PackageConfig.admin_log,
                     "GET",paramaters);
 
             Log.d("json object",jsonObject.toString());
@@ -206,9 +210,11 @@ public class AdminLogin extends Activity {
                 Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
 
             }else if(success==100){
-                 new Alerts(AdminLogin.this,true,serverMessage);
+                displayNofication(serverMessage);
+               //  new Alerts(AdminLogin.this,true,serverMessage);
             } else{
-                Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
+                displayNofication(serverMessage);
+               // Toast.makeText(getApplicationContext(),serverMessage,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -287,5 +293,10 @@ public class AdminLogin extends Activity {
             alert.show();
 
         }
+    }
+
+    public void displayNofication(String notificationMessage){
+       notificationCard.setVisibility(View.VISIBLE);
+       textNotification.setText(notificationMessage);
     }
 }

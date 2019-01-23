@@ -1,6 +1,8 @@
 package com.mobipos.app.Cashier.dashboardFragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -19,12 +21,23 @@ import android.widget.Toast;
 
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
+import com.mobipos.app.Cashier.dashboardFragments.Account.CashierData;
+import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
+import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Sales;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
 import com.mobipos.app.login.PinLogin;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by root on 1/31/18.
@@ -35,6 +48,8 @@ public class CashierAccount extends Fragment {
     TextView name,phone,email,cash_id;
     Sales salesdb;
     Users users;
+
+    String phoneNumber,emailAdress;
 
     public static CashierAccount newInstance(){
         CashierAccount fragment= new CashierAccount();
@@ -97,7 +112,7 @@ public class CashierAccount extends Fragment {
         reset_pin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(new_pin.getText())||TextUtils.isEmpty(confirm_pin.getText())){
+                if(!TextUtils.isEmpty(new_pin.getText())||!TextUtils.isEmpty(confirm_pin.getText())){
                     if(TextUtils.equals(new_pin.getText(),confirm_pin.getText())){
                         if(!users.insertPin(new_pin.getText().toString(),users.get_user_id("cashier"))){
                             Toast.makeText(getContext(),"Error while resetting pin!!",Toast.LENGTH_SHORT).show();
@@ -168,9 +183,75 @@ public class CashierAccount extends Fragment {
         final AlertDialog dialog= new AlertDialog.Builder(getContext()).create();
         View view=LayoutInflater.from(getContext()).inflate(R.layout.cashier_update_info,null);
 
+        List<CashierData> data = users.getCashierData();
+        EditText ed_phone = view.findViewById(R.id.new_phone_number);
+        EditText ed_email = view.findViewById(R.id.new_email);
+        Button btn_update = view.findViewById(R.id.update_action);
+
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                phoneNumber = ed_phone.getText().toString();
+                emailAdress=ed_email.getText().toString();
+                new updateContactInformation().execute();
+            }
+        });
+        ed_email.setText(data.get(0).email);
+        ed_phone.setText(data.get(0).phone);
 
         dialog.setView(view);
         dialog.show();
+    }
+
+
+    public class updateContactInformation extends AsyncTask<String,String,String>{
+
+        int success;
+        String message;
+        ProgressDialog dialog=new ProgressDialog(getContext());
+        protected void onPreExecute(){
+            super.onPreExecute();
+            dialog.setCancelable(false);
+            dialog.setMessage("Updating your information. Please wait...");
+            dialog.show();
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser = new JSONParser();
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("phone",phoneNumber));
+            params.add(new BasicNameValuePair("email",emailAdress));
+            params.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
+
+            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+
+                            AppConfig.hostname+
+                            PackageConfig.update_info,
+                    "GET",params);
+
+
+            try {
+                success=jsonObject.getInt("success");
+                message = jsonObject.getString("message");
+            }catch (NullPointerException e){
+                success=400;
+            } catch (JSONException e) {
+                success=400;
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            dialog.dismiss();
+            if(success==1){
+                users.update_casher_info(phoneNumber,emailAdress,Integer.parseInt(users.get_user_id("cashier")));
+
+            }
+            Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

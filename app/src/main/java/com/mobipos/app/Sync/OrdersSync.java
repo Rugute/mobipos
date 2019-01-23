@@ -29,14 +29,11 @@ import java.util.List;
 public class OrdersSync{
 
     Context context;
-    List<orders_interface> orders=new ArrayList<>();
-    List<PullSaleData> saleData=new ArrayList<>();
     Sales salesdb;
     Users usersdb;
     Orders ordersdb;
-    int successState=0;
-    int successStateSales=0;
     Controller controller;
+
     public OrdersSync(Context context){
         this.context=context;
         controller=new Controller(context,defaults.database_name,null,1);
@@ -48,8 +45,14 @@ public class OrdersSync{
     }
 
     class DataLoad extends AsyncTask<String,String,String> {
+        List<orders_interface> orders=new ArrayList<>();
+        List<PullSaleData> saleData=new ArrayList<>();
+
+        int successState=0;
+        int successStateSales=0;
         @Override
         protected void onPreExecute(){
+            super.onPreExecute();
             orders=ordersdb.DataSync();
 
         }
@@ -84,21 +87,21 @@ public class OrdersSync{
                         param.add(new BasicNameValuePair("trans_type",saleData.get(0).transaction_type));
                         param.add(new BasicNameValuePair("trans_code",saleData.get(0).transaction_code));
                         param.add(new BasicNameValuePair("date",orders.get(i).date));
-                        param.add(new BasicNameValuePair("discount_amount",saleData.get(i).discount_amount));
+                        param.add(new BasicNameValuePair("discount_amount",saleData.get(0).discount_amount));
 
                         JSONObject jsonObject1=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+
                                         SyncDefaults.sync_sales,
                                 "GET",param);
 
                         Log.d("sync sales status:",jsonObject1.toString());
-                        //    salesdb.updateSyncStatus(saleData.get(i).sale_id,salesdb.tb_name,salesdb.col_5);
+                        salesdb.updateSyncStatus(saleData.get(0).sale_id,salesdb.tb_name,salesdb.col_5);
                         try{
                             int successSales=jsonObject1.getInt("success");
                             if (successSales==1){
                                 successStateSales=1;
                                 //  server=jsonObject.getString("message");
 
-                                Log.d("sale id:",saleData.get(i).sale_id);
+                                Log.d("sale id:",saleData.get(0).sale_id);
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -106,6 +109,8 @@ public class OrdersSync{
                         successState=1;
 
                         Log.d("sale id:",orders.get(i).order_id);
+                    }else{
+
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -121,7 +126,7 @@ public class OrdersSync{
             if(successState==1){
                 Toast.makeText(context,"sync successful",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(context,"sync failed!!",Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(context,"sync failed orders!!",Toast.LENGTH_SHORT).show();
             }
         }
     }

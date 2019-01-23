@@ -28,7 +28,7 @@ public class Taxes extends Controller {
     public static String col_2="tax_margin";
     public static String col_3="margin_mode";
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_TAXES="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11),"+

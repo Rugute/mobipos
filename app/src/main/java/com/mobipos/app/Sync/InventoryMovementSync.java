@@ -31,13 +31,12 @@ import java.util.List;
 public class InventoryMovementSync{
 
     Context context;
-    List<inventory_movement_interface> stock_out=new ArrayList<>();
+
     Sales salesdb;
     Users usersdb;
     Inventory inventorydb;
     inventory_movement stockMovedb;
     Orders ordersdb;
-    int successState=0;
     Controller controller;
 
     public InventoryMovementSync(Context context){
@@ -51,6 +50,8 @@ public class InventoryMovementSync{
     }
 
     class DataLoad extends AsyncTask<String,String,String> {
+        List<inventory_movement_interface> stock_out=new ArrayList<>();
+        int successState;
         @Override
         protected void onPreExecute(){
             stock_out=stockMovedb.DataSync();
@@ -69,21 +70,18 @@ public class InventoryMovementSync{
                 parameters.add(new BasicNameValuePair("sale_id",stock_out.get(i).saleId));
                 parameters.add(new BasicNameValuePair("date",stock_out.get(i).date));
 
-                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+PackageConfig.hostname+SyncDefaults.sync_stock_movement,
+                JSONObject jsonObject=jsonParser.makeHttpRequest(PackageConfig.protocol+
+                                PackageConfig.hostname+SyncDefaults.sync_stock_movement,
                         "GET",parameters);
 
                 Log.d("sync order status:",jsonObject.toString());
                 salesdb.updateSyncStatus(stock_out.get(i).id,stockMovedb.tb_name,stockMovedb.col_1);
                 try{
-                    int success=jsonObject.getInt("success");
-                    if (success==1){
-                        successState=1;
-
+                    successState=jsonObject.getInt("success");
+                    if (successState==1){
                         Log.d("movement id:",stock_out.get(i).id);
                         String stock_count=inventorydb.getOpeningStock(stock_out.get(i).product_id);
                         String low_count=inventorydb.LowStockValue(stock_out.get(i).product_id);
-
-
 
                         if(Integer.parseInt(low_count)>=Integer.parseInt(stock_count)){
                             List alert_parameters=new ArrayList();
@@ -131,8 +129,12 @@ public class InventoryMovementSync{
                     if(updateArray.length()>0){
                         for (int i=0;i<updateArray.length();i++){
                             JSONObject updateObject=updateArray.getJSONObject(i);
-                            String inventory_count=inventorydb.getOpeningStock(updateObject.getString("product_id"));
+                            String product_id=updateObject.getString("product_id");
+                            String inventory_count=inventorydb.getOpeningStock(product_id);
                             String inventory_update=updateObject.getString("quantity");
+                            Log.d("inventory_count",inventory_count);
+                            Log.d("inventory_update",inventory_update);
+
                             String count=String.valueOf(Integer.parseInt(inventory_count)+Integer.parseInt(inventory_update));
 
                             if(!inventorydb.updateStock(updateObject.getString("product_id"),count)){
@@ -172,7 +174,7 @@ public class InventoryMovementSync{
             if(successState==1){
                 Toast.makeText(context,"sync successful",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(context,"sync failed!!",Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(context,"sync failed inventory!!",Toast.LENGTH_SHORT).show();
             }
         }
     }

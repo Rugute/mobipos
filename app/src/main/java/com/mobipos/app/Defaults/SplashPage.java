@@ -64,8 +64,8 @@ public class SplashPage extends Activity {
 
                 if(users.CheckUserOrPin(users.tb_name)>0) {
 
-                   Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name))
-                           +users.get_login_details()[2],Toast.LENGTH_SHORT).show();
+//                   Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name))
+//                           +users.get_login_details()[2],Toast.LENGTH_SHORT).show();
                     bar.setVisibility(View.GONE);
 
                     if(users.get_login_details()[2].equals("cashier")){
@@ -78,7 +78,7 @@ public class SplashPage extends Activity {
                     }
 
                }else{
-                    Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name)),Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getApplicationContext(),String.valueOf(users.CheckUserOrPin(users.tb_name)),Toast.LENGTH_SHORT).show();
                     bar.setVisibility(View.GONE);
                 linear_loggers.setVisibility(View.VISIBLE);
                 linear_loggers.startAnimation(animation_linear);

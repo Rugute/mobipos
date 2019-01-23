@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AlertDialog.Builder;
 
+import com.mobipos.app.services.DatabaseUpdate;
+
 public class CheckInternetSettings {
     public Context context;
 
-    public CheckInternetSettings(Activity activity) {
+    public CheckInternetSettings(Context activity) {
         this.context = activity;
     }
+
+
 
     public void showSettingsAlert() {
         Builder alertDialog = new Builder(this.context);

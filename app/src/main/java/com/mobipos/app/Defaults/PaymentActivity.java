@@ -143,7 +143,7 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Order Already Paid !!",Toast.LENGTH_SHORT).show();
                 }else{
                     selectPaymentPopup();
-                    btn_proceed_payment.setEnabled(false);
+                    btn_proceed_payment.setEnabled(true);
 
                 }
 
@@ -388,6 +388,9 @@ public class PaymentActivity extends AppCompatActivity {
 
                     startActivity(new Intent(PaymentActivity.this, PrinterActivity.class));
                 }else if(no_rec.isChecked()) {
+                    if (internetSettings.isNetworkConnected()){
+                        new Synchronizer(getApplicationContext());
+                    }
                     startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
                 }
             }
@@ -433,6 +436,9 @@ public class PaymentActivity extends AppCompatActivity {
 
 
                 if(!salesdb.addSaleData(data)){
+
+                    ordersdb.updateSalesInfo(PackageConfig.order_no);
+
                     salesdb.getSalesData("loadLocal","NO NEED");
                     showPrinterPopUp();
                     alertDialog.dismiss();
@@ -488,6 +494,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         AlertDialog alertDialog=new AlertDialog.Builder(this).create();
         alertDialog.setView(view);
+        alertDialog.setCancelable(false);
         alertDialog.setButton(Dialog.BUTTON_POSITIVE,"Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -547,6 +554,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),server_message,Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(getApplicationContext(),server_message,Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(PaymentActivity.this, DashboardCashier.class));
             }
             dialog.cancel();
         }

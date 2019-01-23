@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobipos.app.Admin.Adapters.BranchAdapter;
 import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
 import com.mobipos.app.Defaults.Alerts;
 import com.mobipos.app.Defaults.AppConfig;
@@ -67,6 +68,13 @@ public class BranchFragment extends Fragment {
         listView = view.findViewById(R.id.branch_listview);
         fbranch=(FloatingActionButton)view.findViewById(R.id.fab_add_branch);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String branchId = AppConfig.branchIds[i];
+                Toast.makeText(getContext(),branchId,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         fbranch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +140,7 @@ public class BranchFragment extends Fragment {
 
             if (success == 1) {
                 if (AppConfig.branchIds.length > 0) {
-                    QuickSaleAdapter adapter=new QuickSaleAdapter(getContext(), AppConfig.branchNames);
+                    BranchAdapter adapter=new BranchAdapter(getContext(), AppConfig.branchNames);
                     adapter.notifyDataSetChanged();
                     listView.setAdapter(adapter);
 

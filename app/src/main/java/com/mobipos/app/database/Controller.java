@@ -79,6 +79,29 @@ public class Controller extends SQLiteOpenHelper implements Serializable {
 
         return true;
     }
+    public boolean UpdateDropTables(){
+        SQLiteDatabase sqLiteDatabase=getWritableDatabase();
+        sqLiteDatabase.execSQL(Users.DROP_TABLE);
+        sqLiteDatabase.execSQL(Users.DROP_TABLE_PIN);
+        sqLiteDatabase.execSQL(Users.DROP_TABLE_BRANCH);
+        sqLiteDatabase.execSQL(Categories.DROP_TABLE);
+        sqLiteDatabase.execSQL(Products.DROP_TABLE);
+        sqLiteDatabase.execSQL(Product_Prices.DROP_TABLE);
+        sqLiteDatabase.execSQL(Inventory.DROP_TABLE);
+        sqLiteDatabase.execSQL(inventory_movement.DROP_TABLE);
+        sqLiteDatabase.execSQL(Orders.DROP_TABLE);
+        sqLiteDatabase.execSQL(Order_Items.DROP_TABLE);
+        sqLiteDatabase.execSQL(Sales.DROP_TABLE);
+        sqLiteDatabase.execSQL(Taxes.DROP_TABLE);
+        sqLiteDatabase.execSQL(Printers.DROP_TABLE);
+        sqLiteDatabase.execSQL(Discounts.DROP_TABLE);
+
+        return true;
+    }
+
+
+
+
 
 
 

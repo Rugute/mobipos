@@ -15,8 +15,13 @@ public class PullSaleData {
     public String discount;
     public String discount_amount;
 
-    public PullSaleData(String sale_id,String orderId,String amount_total,String transaction_type,
-                        String transaction_code,String discount,String discount_amount){
+    public PullSaleData(String sale_id,
+                        String orderId,
+                        String amount_total,
+                        String transaction_type,
+                        String transaction_code,
+                        String discount,
+                        String discount_amount){
 
         this.orderId=orderId;
         this.sale_id=sale_id;
@@ -25,6 +30,27 @@ public class PullSaleData {
         this.transaction_code=transaction_code;
         this.discount=discount;
         this.discount_amount=discount_amount;
+
+
+    }
+
+    public PullSaleData(String sale_id,
+                        String orderId,
+                        String amount_total,
+                        String transaction_type,
+                        String transaction_code,
+                        String discount,
+                        String discount_amount,
+                        String date){
+
+        this.orderId=orderId;
+        this.sale_id=sale_id;
+        this.amount_total=amount_total;
+        this.transaction_type=transaction_type;
+        this.transaction_code=transaction_code;
+        this.discount=discount;
+        this.discount_amount=discount_amount;
+        this.date = date;
 
     }
 }

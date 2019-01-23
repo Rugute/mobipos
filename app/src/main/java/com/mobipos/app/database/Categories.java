@@ -29,7 +29,7 @@ public class Categories extends Controller {
     public static String col_2="category_name";
     public static String col_4="active_status";
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_CATEGORIES="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11) PRIMARY KEY ,"+

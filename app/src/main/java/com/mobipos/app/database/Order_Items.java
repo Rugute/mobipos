@@ -31,7 +31,7 @@ public class Order_Items extends Controller {
     public static String col_4="product_count";
 
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_ORDER_ITEMS="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11) PRIMARY KEY,"+

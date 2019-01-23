@@ -14,6 +14,7 @@ import com.mobipos.app.R;
 import com.mobipos.app.Sync.DatabaseInitializers;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
+import com.mobipos.app.services.DatabaseUpdate;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -60,7 +61,7 @@ public class PinLogin extends Activity {
                             final CheckInternetSettings internet=new CheckInternetSettings(PinLogin.this);
                             if(internet.isNetworkConnected()){
                                 try{
-                                   // new DatabaseInitializers(getApplicationContext(),1);
+                                    new DatabaseUpdate(getApplicationContext()).update();
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }finally {

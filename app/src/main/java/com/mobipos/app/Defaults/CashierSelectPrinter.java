@@ -165,8 +165,8 @@ public class CashierSelectPrinter extends Fragment {
     int readBufferPosition;
     volatile boolean stopWorker;
     Thread workerThread;
-    String printer_header_biz=usersdb.printer_header()[1];
-    String branch_name=usersdb.printer_header()[0];
+    String printer_header_biz=usersdb.branch_name();
+    String branch_name=usersdb.business_name();
     String  msg = "       \u0002"+AppConfig.print_biz_name+" \n       \u0002Branch :\t\t" + AppConfig.print_branch_name +
             "\t\n" + "       \u0002Order id:" + PackageConfig.order_no + "\n       \u0002" + new Date().toLocaleString() + "\n\n\n";
 

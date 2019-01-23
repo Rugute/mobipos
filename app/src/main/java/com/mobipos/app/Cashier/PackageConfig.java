@@ -18,17 +18,13 @@ public class PackageConfig {
     public static String get_items="cashier-get-items.php";
     public static String sync_product_movement="cashier-sync-product-movement.php";
     public static String email_receipt="email-receipt.php";
-
+    public static String update_info="update-info.php";
     public static int[] images2={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp};
     public static String[] inventory_title2={"Category","Products","Stock Alert"};
-
     public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp,R.drawable.ic_shop,R.drawable.ic_set_stuff};
     public static String[] inventory_title={"Category","Products","Stock Alert","Reports","Branches","Settings"};
-
-
     public static String[] categoryArrayId;
     public static String[] categoryArrayName;
-
     public static String[] itemArrayId;
     public static String[] itemArrayName;
     public static String[] itemArrayMeasurement;
@@ -37,24 +33,14 @@ public class PackageConfig {
     public static String[] stockData;
     public static String[] lowStockData;
     public static String[] tax_margin;
-
-
     public static ArrayList<cartItemData> orders_items;
-
     public static String order_no;
     public static String date;
     public static int INCLUSIVE_TAX=0;
     public static int EXCLUSIVE_TAX=0;
-
     public static String DISCOUNT_NAME;
     public static String DISCOUNT_VALUE;
-
     public static int flag_restart=0;
-
     public static int discounted_amount=0;
-
-
-
-
 
 }

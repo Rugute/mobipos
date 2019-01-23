@@ -12,8 +12,7 @@ public class Synchronizer {
 
         this.context=context;
         new OrdersSync(context);
-        new InventoryMovementSync(context);
       //  new SalesSync(context);
-
+        new InventoryMovementSync(context);
     }
 }

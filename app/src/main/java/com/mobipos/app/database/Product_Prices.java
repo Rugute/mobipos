@@ -23,7 +23,7 @@ public class Product_Prices extends Controller {
     public static String col_4="sync_status";
     public static String col_5="active_status";
 
-    public static String DROP_TABLE="DROP TABLE IF NOT EXISTS "+ tb_name;
+    public static String DROP_TABLE="DROP TABLE IF  EXISTS "+ tb_name;
 
     public static String CREATE_TABLE_PRODUCTS_PRICE="CREATE TABLE IF NOT EXISTS "+tb_name+" ("+
             col_1+" INT(11),"+

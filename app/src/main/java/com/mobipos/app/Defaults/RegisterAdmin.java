@@ -89,9 +89,8 @@ public class RegisterAdmin extends Activity {
                 if (!name.isEmpty() && !biz.isEmpty() && !residence.isEmpty() && !phone.isEmpty() && !email.isEmpty() && !pin.isEmpty() && !cpin.isEmpty()) {
                     if(pin.equals(cpin)){
                         new RegisterUser().execute();
-
                     }else {
-                        Toast.makeText(getApplicationContext(),"password dont match",Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(),"password don't match",Toast.LENGTH_SHORT);
                     }
 
                 } else {

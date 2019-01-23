@@ -151,7 +151,9 @@ public class MakeSale extends Fragment {
         discountdb=new Discounts(getActivity(), defaults.database_name,null,1);
         pricesdb=new Product_Prices(getActivity(), defaults.database_name,null,1);
         controllerdb=new Controller(getActivity(), defaults.database_name,null,1);
-        discountsdb=new Discounts(getActivity(), defaults.database_name,null,1);
+        discountsdb=new Discounts(
+
+                getActivity(), defaults.database_name,null,1);
         printersdb=new Printers(getActivity(), defaults.database_name,null,1);
         taxesdb=new Taxes(getActivity(), defaults.database_name,null,1);
 

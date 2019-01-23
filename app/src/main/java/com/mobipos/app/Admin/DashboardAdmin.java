@@ -125,7 +125,6 @@ public class DashboardAdmin extends AppCompatActivity {
             //setTitle("Mauzo Africa: Administator");
         }else if(item.getItemId()==R.id.logout_btn){
 
-
             if(internet.isNetworkConnected()){
                   finish();
                   System.exit(0);
@@ -142,13 +141,14 @@ public class DashboardAdmin extends AppCompatActivity {
                 alertBuilder.show();
             }
         }else if(item.getItemId()==R.id.switch_account){
-
+            usersdb.deleteTables();
             if(usersdb.check_admin_sale_id() > 0){
                 if(categoriesdb.getCategoryCount()>0){
                     PackageConfig.flag_restart=0;
                 }else{
                     PackageConfig.flag_restart=1;
                 }
+
                 startActivity(new Intent(DashboardAdmin.this,DashboardCashier.class));
                 finish();
             }else{

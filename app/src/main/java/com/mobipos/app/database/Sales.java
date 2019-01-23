@@ -38,6 +38,7 @@ public class Sales extends Controller {
     public static String col_7="trans_type";
     public static String col_8="trans_code";
     public static String col_9="discount";
+    public static String col_11="date_of_sale";
     public static String col_10="discount_amount";
 
 
@@ -53,6 +54,7 @@ public class Sales extends Controller {
             col_9+" INT(11),"+
             col_10+" INT(11),"+
             col_7+" VARCHAR(50),"+
+            col_11+" VARCHAR(50),"+
             col_8+" VARCHAR(50),"+
             col_6+" INT(11))";
 
@@ -114,6 +116,10 @@ public class Sales extends Controller {
 
         try{
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = simpleDateFormat.format(new Date());
+            Log.d("date created",date);
+
             ContentValues values=new ContentValues();
             values.put(col_1,salesId);
             values.put(col_2,data.get(0).orderId);
@@ -121,6 +127,7 @@ public class Sales extends Controller {
             values.put(col_4,data.get(0).amount_total);
             values.put(col_5,"0");
             values.put(col_6,"1");
+            values.put(col_11,date);
             values.put(col_7,data.get(0).transaction_type);
             values.put(col_8,data.get(0).transaction_code);
             values.put(col_9,data.get(0).discount);
@@ -145,6 +152,8 @@ public class Sales extends Controller {
 
         }
 
+
+
         return salesIdExists("sales_id",String.valueOf(createId()));
     }
 
@@ -156,8 +165,8 @@ public class Sales extends Controller {
 
 
         }else{
-             sql= "SELECT * FROM tb_sales WHERE  sync_status=0 AND order_id='"+order+"'";
-
+             sql= "SELECT * FROM tb_sales WHERE  sync_status=0 AND order_id= '"+order+"'";
+            Log.d("order sync sale sql",sql);
 
         }
 
@@ -177,7 +186,54 @@ public class Sales extends Controller {
                             cursor.getString(cursor.getColumnIndex(col_9)),
                             cursor.getString(cursor.getColumnIndex(col_10))
                           ));
+                    if(mode.equals("sync")){
+                        Log.d("order no sync:",cursor.getString(cursor.getColumnIndex(col_2)));
+                    }
                     Log.d("order no:",cursor.getString(cursor.getColumnIndex(col_2)));
+
+                    Log.d("sales id",cursor.getString(cursor.getColumnIndex(col_1)));
+                    Log.d("AMOUNT  TOTAL",cursor.getString(cursor.getColumnIndex(col_4)));
+                    Log.d("discount",cursor.getString(cursor.getColumnIndex(col_9)));
+                    Log.d("amount tendered:",cursor.getString(cursor.getColumnIndex(col_3)));
+                }while (cursor.moveToNext());
+
+            }
+
+            cursor.close();
+        } catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+    public List<PullSaleData> getSalesData(){
+        SQLiteDatabase db=getReadableDatabase();
+        String sql=null;
+
+        sql= "SELECT * FROM tb_sales ORDER BY tb_sale_id DESC";
+
+        List<PullSaleData> data=new ArrayList<>();
+        Cursor cursor=null;
+        cursor=db.rawQuery(sql,null);
+
+        try {
+            if (cursor.moveToFirst()) {
+
+                do{
+                    data.add(new PullSaleData(
+                            cursor.getString(cursor.getColumnIndex(col_1)),
+                            cursor.getString(cursor.getColumnIndex(col_2)),
+                            cursor.getString(cursor.getColumnIndex(col_4)),
+                            cursor.getString(cursor.getColumnIndex(col_7)),
+                            cursor.getString(cursor.getColumnIndex(col_8)),
+                            cursor.getString(cursor.getColumnIndex(col_9)),
+                            cursor.getString(cursor.getColumnIndex(col_10))
+
+                    ));
+
+                    Log.d("order no:",cursor.getString(cursor.getColumnIndex(col_2)));
+
                     Log.d("sales id",cursor.getString(cursor.getColumnIndex(col_1)));
                     Log.d("AMOUNT  TOTAL",cursor.getString(cursor.getColumnIndex(col_4)));
                     Log.d("discount",cursor.getString(cursor.getColumnIndex(col_9)));
