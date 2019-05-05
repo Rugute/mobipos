@@ -173,7 +173,7 @@ public class AdminItems extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        showBackButton(true,"Products");
+        showBackButton(true,"ProductData");
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
         if(internetOn.isNetworkConnected()){
             new LoadItems().execute();

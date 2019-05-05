@@ -7,7 +7,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +16,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,12 +32,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobipos.app.Admin.Adapters.QuickSaleAdapter;
-import com.mobipos.app.Admin.DashboardAdmin;
-import com.mobipos.app.Admin.DashboardFragments.Inventory.Items.AdminAddItemData;
 import com.mobipos.app.Cashier.Adapters.DiscountAdapter;
 import com.mobipos.app.Cashier.Adapters.ListViewCartAdapter;
 import com.mobipos.app.Cashier.Adapters.MakeSalesAdapter;
+import com.mobipos.app.Cashier.DO.Category;
+import com.mobipos.app.Cashier.DO.ProductData;
 import com.mobipos.app.Cashier.DashboardCashier;
 import com.mobipos.app.Cashier.PackageConfig;
 import com.mobipos.app.Cashier.dashboardFragments.Inventory.Categories.CashierCategoryData;
@@ -49,7 +44,6 @@ import com.mobipos.app.Defaults.AppConfig;
 import com.mobipos.app.Defaults.CheckInternetSettings;
 import com.mobipos.app.Defaults.JSONParser;
 import com.mobipos.app.Defaults.PaymentActivity;
-import com.mobipos.app.Defaults.SplashPage;
 import com.mobipos.app.R;
 import com.mobipos.app.database.Categories;
 import com.mobipos.app.database.Controller;
@@ -64,8 +58,6 @@ import com.mobipos.app.database.Products;
 import com.mobipos.app.database.Taxes;
 import com.mobipos.app.database.Users;
 import com.mobipos.app.database.defaults;
-import com.mobipos.app.login.AdminLogin;
-import com.mobipos.app.login.PinLogin;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -233,8 +225,9 @@ public class MakeSale extends Fragment {
         Toast.makeText(getContext(),String.valueOf(categoriesdb.getCategoryCount()),Toast.LENGTH_SHORT).show();
 
         if(categoriesdb.getCategoryCount()==0){
-            new firstDataLoad().execute();
-
+           /* new firstDataLoad().execute();
+            */
+           new SecondDataLoad().execute();
         }
 
         showBackButton(false,"Make Sale");
@@ -870,6 +863,121 @@ public class MakeSale extends Fragment {
 
 
     }
+
+    public class SecondDataLoad extends AsyncTask<String,String,String>{
+
+        ProgressDialog dialog=new ProgressDialog(getContext());
+
+        protected void onPreExecute(){
+            super.onPreExecute();
+            dialog.setMessage("Synchronizing data from server. Please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+
+
+            new load_parameters().execute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            JSONParser jsonParser=new JSONParser();
+            List paramters=new ArrayList();
+            paramters.add(new BasicNameValuePair("user_id",users.get_user_id("cashier")));
+
+            JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+
+                            PackageConfig.get_categories_v1,
+                    "GET",paramters);
+
+            try{
+
+                PackageConfig.categoryList = new ArrayList<>();
+                int success = jsonObject.getInt("success");
+                if(success==1){
+                        JSONArray data = jsonObject.getJSONArray("data");
+
+                        for(int i=0;i<data.length();i++){
+                            JSONObject object= data.getJSONObject(i);
+
+                            Category category = new Category();
+                            category.setId(object.getString("cat_id"));
+                            category.setName(object.getString("cat_name"));
+                            List<ProductData> productData = new ArrayList<>();
+
+                            JSONArray pData = object.getJSONArray("products");
+                            for(int j=0;j<pData.length();j++){
+                                JSONObject productObject = pData.getJSONObject(j);
+                                ProductData productData1 = new ProductData();
+                                productData1.setId(productObject.getString("product_id"));
+                                productData1.setName(productObject.getString("product_name"));
+                                productData1.setTax(productObject.getString("tax_mode"));
+                                productData1.setLowStockCount(productObject.getString("low_stock_count"));
+                                productData1.setMeasurementName(productObject.getString("measurement_name"));
+                                productData1.setPrice(productObject.getString("price"));
+                                productData1.setPriceId(productObject.getString("price_id"));
+                                productData1.setStock(String.valueOf(productObject.getInt("opening_stock")));
+
+                                productData.add(productData1);
+
+                            }
+
+                            category.setProducts(productData);
+                            PackageConfig.categoryList.add(category);
+
+                        }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+        protected void onPostExecute(String s){
+            super.onPostExecute(s);
+
+            // inserting data
+            for (Category category : PackageConfig.categoryList){
+                if(!categoriesdb.insertCategory(category.getId(),category.getName())) {
+                    Log.d("error inserting data","data not inserted");
+                }
+
+                for (ProductData product : category.getProducts()){
+                    if(!productsdb.ProductExists(product.getId())){
+                        if(!productsdb.insertProduct(product.getId(),
+                                product.getName(),
+                                category.getId(),
+                                product.getMeasurementName(),
+                                product.getTax())){
+                            Log.d("err inserting products","not inserted");
+                        }else{
+                            if(!pricesdb.insertPrices(product.getPriceId(),
+                                    product.getPriceId(),
+                                    product.getPrice())){
+                                Log.d("err inserting prices","not inserted");
+                            }else{
+                                if(!inventorydb.insertStock(product.getId(),
+                                        product.getStock(),
+                                        product.getLowStockCount())){
+                                    Log.d("err inserting stocks","not inserted");
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+
+
+            dialog.cancel();
+            startActivity(new Intent(getContext(),DashboardCashier.class));
+            getActivity().finish();
+        }
+
+    }
+
+
+
 
 }
 

@@ -2,6 +2,7 @@ package com.mobipos.app.Cashier;
 
 import android.app.Activity;
 
+import com.mobipos.app.Cashier.DO.Category;
 import com.mobipos.app.Cashier.dashboardFragments.MakeSales.cartItemData;
 import com.mobipos.app.R;
 
@@ -14,15 +15,16 @@ import java.util.List;
 
 public class PackageConfig {
 
+    public static String get_categories_v1="cashier-get-products-v1.php";
     public static String get_categories="cashier-get-categories.php";
     public static String get_items="cashier-get-items.php";
     public static String sync_product_movement="cashier-sync-product-movement.php";
     public static String email_receipt="email-receipt.php";
     public static String update_info="update-info.php";
     public static int[] images2={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp};
-    public static String[] inventory_title2={"Category","Products","Stock Alert"};
+    public static String[] inventory_title2={"Category","ProductData","Stock Alert"};
     public static int[] images={R.drawable.ic_filter_list_black_24dp,R.drawable.ic_view_list_black_24dp,R.drawable.ic_announcement_black_24dp,R.drawable.ic_assessment_black_24dp,R.drawable.ic_shop,R.drawable.ic_set_stuff};
-    public static String[] inventory_title={"Category","Products","Stock Alert","Reports","Branches","Settings"};
+    public static String[] inventory_title={"Category","ProductData","Stock Alert","Reports","Branches","Settings"};
     public static String[] categoryArrayId;
     public static String[] categoryArrayName;
     public static String[] itemArrayId;
@@ -42,5 +44,7 @@ public class PackageConfig {
     public static String DISCOUNT_VALUE;
     public static int flag_restart=0;
     public static int discounted_amount=0;
+
+    public static List<Category> categoryList;
 
 }

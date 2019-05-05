@@ -85,7 +85,7 @@ public class CashierCategories extends Fragment {
         }
 
       //  initializeData();
-        showBackButton(true,"Categories");
+        showBackButton(true,"ProductData");
       //  initializeAdapter();
 
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
@@ -96,7 +96,7 @@ public class CashierCategories extends Fragment {
                 initializeAdapter();
             }else{
                 AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getActivity()).
-                        setTitle("Categories not found").
+                        setTitle("ProductData not found").
                         setMessage("Enable your internet to sync data from server").
                         setPositiveButton((CharSequence) "Settings", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {

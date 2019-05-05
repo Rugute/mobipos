@@ -38,8 +38,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -140,7 +142,9 @@ public class AdminViewSales extends Fragment {
             List paramters=new ArrayList();
             shopDetails=new ArrayList<>();
             paramters.add(new BasicNameValuePair("user_id",users.get_user_id("admin")));
+            String today = new Date().toString();
 
+            paramters.add(new BasicNameValuePair("date",today));
             JSONObject jsonObject=jsonParser.makeHttpRequest(AppConfig.protocol+AppConfig.hostname+ AppConfig.get_today_sales,
                     "GET",paramters);
             Log.d("data recieved",jsonObject.toString());

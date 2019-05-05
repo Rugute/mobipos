@@ -95,7 +95,7 @@ public class ReportFragment extends Fragment{
        date2=(EditText)view.findViewById(R.id.editText);
        branchselect=(TextView)view.findViewById(R.id.choose);
         users=new Users(getContext(), defaults.database_name,null,1);
-        //categoriesdb=new Categories(getContext(), defaults.database_name,null,1);
+        //categoriesdb=new ProductData(getContext(), defaults.database_name,null,1);
 
 
       final DatePickerDialog.OnDateSetListener fDate=new DatePickerDialog.OnDateSetListener() {

@@ -101,7 +101,7 @@ public class CashierItems extends Fragment {
 
 
 
-        showBackButton(true,"Products");
+        showBackButton(true,"ProductData");
 
         final CheckInternetSettings internetOn=new CheckInternetSettings(getActivity());
         if(internetOn.isNetworkConnected()){

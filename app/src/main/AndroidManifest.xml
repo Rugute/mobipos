@@ -34,20 +34,24 @@
         <activity android:name=".Defaults.SplashPage"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".login.AdminLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:noHistory="true"/>
+            android:noHistory="true">
+
+        </activity>
         <activity android:name=".login.CashierLogin"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateVisible"/>
+            android:windowSoftInputMode="stateVisible">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".login.PinLogin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateVisible"

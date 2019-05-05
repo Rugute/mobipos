@@ -61,7 +61,7 @@ public class PinLogin extends Activity {
                             final CheckInternetSettings internet=new CheckInternetSettings(PinLogin.this);
                             if(internet.isNetworkConnected()){
                                 try{
-                                    new DatabaseUpdate(getApplicationContext()).update();
+                                 //   new DatabaseUpdate(getApplicationContext()).update();
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }finally {

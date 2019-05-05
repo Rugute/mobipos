@@ -140,7 +140,7 @@ public class DashboardAdmin extends AppCompatActivity {
                         });
                 alertBuilder.show();
             }
-        }else if(item.getItemId()==R.id.switch_account){
+//        }else if(item.getItemId()==R.id.switch_account){
             usersdb.deleteTables();
             if(usersdb.check_admin_sale_id() > 0){
                 if(categoriesdb.getCategoryCount()>0){

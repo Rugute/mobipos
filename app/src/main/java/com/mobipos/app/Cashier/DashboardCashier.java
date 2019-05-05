@@ -126,7 +126,7 @@ public class DashboardCashier extends AppCompatActivity{
                        });
                alertBuilder.show();
            }
-       }else if(item.getItemId()==R.id.switch_account){
+//       }else if(item.getItemId()==R.id.switch_account){
 
            if(usersdb.get_login_details()[2].equals("cashier")){
                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(this).
